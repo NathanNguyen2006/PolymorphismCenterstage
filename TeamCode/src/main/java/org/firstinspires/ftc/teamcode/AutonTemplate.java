@@ -180,10 +180,22 @@ public class AutonTemplate extends LinearOpMode
         }else{
             switch(tagOfInterest.id){
                 case 1:
+                    telemetry.addLine(String.format("\nDetected tag ID=%d", tagOfInterest.id));
+                    telemetry.addLine(String.format("Translation X: %.2f feet", tagOfInterest.pose.x*FEET_PER_METER));
+                    telemetry.addLine(String.format("Translation Y: %.2f feet", tagOfInterest.pose.y*FEET_PER_METER));
+                    telemetry.addLine(String.format("Translation Z: %.2f feet", tagOfInterest.pose.z*FEET_PER_METER));
                     break;
                 case 2:
+                    telemetry.addLine(String.format("\nDetected tag ID=%d", tagOfInterest.id));
+                    telemetry.addLine(String.format("Translation X: %.2f feet", tagOfInterest.pose.x*FEET_PER_METER));
+                    telemetry.addLine(String.format("Translation Y: %.2f feet", tagOfInterest.pose.y*FEET_PER_METER));
+                    telemetry.addLine(String.format("Translation Z: %.2f feet", tagOfInterest.pose.z*FEET_PER_METER));
                     break;
                 case 3:
+                    telemetry.addLine(String.format("\nDetected tag ID=%d", tagOfInterest.id));
+                    telemetry.addLine(String.format("Translation X: %.2f feet", tagOfInterest.pose.x*FEET_PER_METER));
+                    telemetry.addLine(String.format("Translation Y: %.2f feet", tagOfInterest.pose.y*FEET_PER_METER));
+                    telemetry.addLine(String.format("Translation Z: %.2f feet", tagOfInterest.pose.z*FEET_PER_METER));
                     break;
             }
         }

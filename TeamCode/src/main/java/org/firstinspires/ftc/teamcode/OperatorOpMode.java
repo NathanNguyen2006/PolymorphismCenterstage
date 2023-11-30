@@ -47,9 +47,7 @@ public class OperatorOpMode extends LinearOpMode{
             roboController.interpretMovepad(movePad);
             roboController.interpretArmpad(armPad);
             //roboController.interpretArmpad(armPad);
-            // roboController.testWheels(movePad);
-            telemetry.addData("movepad.right_stick_x:", gamepad2.right_stick_y);
-            telemetry.addData("movepad.left_stick_y", gamepad2.left_stick_y);
+            // roboController.testWheels(movePad)
             telemetry.addData("Status", "Running");
             telemetry.addData("Direction", roboController.direction);
             telemetry.addData("Drive", roboController.drivePower);
@@ -58,7 +56,7 @@ public class OperatorOpMode extends LinearOpMode{
             //telemetry.addData("Armbasepos", roboController.getThePosition());
             telemetry.addData("Wrist", roboController.Wrist.getPosition());
             telemetry.addData("ClawR", roboController.ClawR.getPosition());
-            telemetry.addData("Wrist", roboController.ClawL.getPosition());
+            telemetry.addData("ClawL", roboController.ClawL.getPosition());
             telemetry.addData("ArmL", roboController.ArmL.getCurrentPosition());
             telemetry.addData("ArmR", roboController.ArmR.getCurrentPosition());
             telemetry.addData("ArmRpow", roboController.ArmR.getPower());
