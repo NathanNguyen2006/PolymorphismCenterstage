@@ -45,11 +45,11 @@ public class hatredanddepression2 extends LinearOpMode {
             telemetry.addData("positon", position);
 
             if (position == 0) {
-                roboController.moveOnYAxis(RoboController.inchesToCounts(30));
+                roboController.moveOnYAxis(RoboController.inchesToCounts(18));
+                roboController.Spin(RoboController.inchesToCounts(12));
                 roboController.ClawR.setPosition(0.4);
                 sleep(5000);
-                roboController.moveOnXAxis(RoboController.inchesToCounts(24));
-                roboController.Spin(RoboController.inchesToCounts(12));
+                roboController.moveOnYAxis(RoboController.inchesToCounts(-42));
 
             } else if (position == 1) {
                 roboController.moveOnYAxis(RoboController.inchesToCounts(36));
