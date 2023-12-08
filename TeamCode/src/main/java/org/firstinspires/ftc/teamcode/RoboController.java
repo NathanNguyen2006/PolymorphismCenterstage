@@ -260,7 +260,7 @@ public class RoboController {
                 ClawL.setPosition(1);
             }
             if(open){
-                ClawR.setPosition(1);
+                ClawR.setPosition(0.9);
                 ClawL.setPosition(0);
             }
         }
