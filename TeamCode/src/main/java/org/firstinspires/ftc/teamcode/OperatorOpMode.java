@@ -60,6 +60,7 @@ public class OperatorOpMode extends LinearOpMode{
             telemetry.addData("ArmL", roboController.ArmL.getCurrentPosition());
             telemetry.addData("ArmR", roboController.ArmR.getCurrentPosition());
             telemetry.addData("ArmRpow", roboController.ArmR.getPower());
+            telemetry.addData("Drone: Plane Launcher", roboController.Drone.getPosition());
             telemetry.update();
         }
     }
