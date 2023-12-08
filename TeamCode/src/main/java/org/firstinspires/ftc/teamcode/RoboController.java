@@ -321,12 +321,22 @@ public class RoboController {
             }
 
             if(armpad.circle){
+                if(Drone.getPosition(0)){
+                    Drone.setPosition(1);
+                } else if(Drone.getPosition(1)){
+                    Drone.setPosition(0);
+                }
+            }
+
+            /*
+            if(armpad.circle){
                 Drone.setPosition(1);
 
             }
             if(armpad.square){
                 Drone.setPosition(0);
             }
+             */
 
             //double 1775 for board
         //double 95 for floor
