@@ -321,11 +321,11 @@ public class RoboController {
             }
 
             if(armpad.circle){
-                if(Drone.getPosition() <= 0){
-                    Drone.setPosition(0.7);
-                } else if(Drone.getPosition() >= 0.7){
-                    Drone.setPosition(0);
-                }
+                Drone.setPosition(0.7);
+            }
+
+            if(armpad.square){
+                Drone.setPosition(0);
             }
 
             /*
