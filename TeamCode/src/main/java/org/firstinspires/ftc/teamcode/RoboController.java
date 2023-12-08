@@ -256,12 +256,12 @@ public class RoboController {
         if(a && armpad.left_bumper){
             open = !open;
             if(!open) {
-                ClawR.setPosition(0.4);
-                ClawL.setPosition(0.8);
+                ClawR.setPosition(0);
+                ClawL.setPosition(1);
             }
             if(open){
                 ClawR.setPosition(1);
-                ClawL.setPosition(0.4);
+                ClawL.setPosition(0);
             }
         }
         a = !armpad.left_bumper;
