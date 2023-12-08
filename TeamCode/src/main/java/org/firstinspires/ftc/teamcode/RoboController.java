@@ -221,7 +221,7 @@ public class RoboController {
     //Not Implemented
     public void interpretArmpad(Gamepad armpad){
 
-        if(ArmR.getCurrentPosition() > 2000) {
+        if(ArmR.getCurrentPosition() > 2100) {
             ArmL.setPower(-0.1);
             ArmR.setPower(-0.1);
         }
