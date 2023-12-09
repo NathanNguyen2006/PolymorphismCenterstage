@@ -57,6 +57,13 @@ public class AutoModeRight extends LinearOpMode {
             roboController.ClawR.setPosition(1);
             roboController.ClawL.setPosition(0);
             sleep(1000);
+            while(roboController.ArmR.getCurrentPosition() > 10) {
+                roboController.ArmL.setPower(-0.45);
+                roboController.ArmR.setPower(-0.45);
+            }
+            roboController.ArmL.setPower(0);
+            roboController.ArmR.setPower(0);
+
             roboController.Wrist.setPosition(0);
             sleep(1000);
             roboController.ClawR.setPosition(0);
@@ -64,15 +71,9 @@ public class AutoModeRight extends LinearOpMode {
             sleep(1000);
             roboController.Wrist.setPosition(0.55);
             sleep(1000);
-            while(roboController.ArmR.getCurrentPosition() > 10) {
-                roboController.ArmL.setPower(-0.45);
-                roboController.ArmR.setPower(-0.45);
-            }
-            roboController.ArmL.setPower(0);
-            roboController.ArmR.setPower(0);
             roboController.moveOnYAxis(RoboController.inchesToCounts(3));
             roboController.moveOnXAxis(RoboController.inchesToCounts(-27));
-            roboController.moveOnYAxis(RoboController.inchesToCounts(-22));
+            roboController.moveOnYAxis(RoboController.inchesToCounts(-20));
 
             /*
             Signal face = Signal.One;
