@@ -35,19 +35,38 @@ public class AutoModeRight extends LinearOpMode {
         //roboController.ClawR.setPosition(0.5);
 
         if (opModeIsActive()) {
+            /*
             sleep(3000);
 
             roboController.moveOnXAxis(RoboController.inchesToCounts(52));
+             */
 
 
             // starting autonomous scoring
+            sleep(2000);
             roboController.moveOnXAxis(RoboController.inchesToCounts(27));
             roboController.moveOnYAxis(RoboController.inchesToCounts(27));
             roboController.Spin(RoboController.inchesToCounts(-20));
             roboController.moveOnYAxis(RoboController.inchesToCounts(-20));
             while(roboController.ArmR.getCurrentPosition() < 1000) {
-
+                roboController.ArmL.setPower(0.45);
+                roboController.ArmR.setPower(0.45);
             }
+            roboController.ArmL.setPower(0);
+            roboController.ArmR.setPower(0);
+            roboController.ClawR.setPosition(0.9);
+            roboController.ClawL.setPosition(0);
+            sleep(2000);
+            roboController.ClawR.setPosition(0);
+            roboController.ClawL.setPosition(1);
+            while(roboController.ArmR.getCurrentPosition() > 10) {
+                roboController.ArmL.setPower(-0.45);
+                roboController.ArmR.setPower(-0.45);
+            }
+            roboController.ArmL.setPower(0);
+            roboController.ArmR.setPower(0);
+            roboController.moveOnXAxis(RoboController.inchesToCounts(-27));
+            roboController.moveOnYAxis(RoboController.inchesToCounts(-27));
 
             /*
             Signal face = Signal.One;
