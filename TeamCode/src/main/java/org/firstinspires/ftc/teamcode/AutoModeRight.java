@@ -43,7 +43,7 @@ public class AutoModeRight extends LinearOpMode {
 
 
             // starting autonomous scoring
-            sleep(2000);
+            //sleep(2000);
             roboController.moveOnXAxis(RoboController.inchesToCounts(27));
             roboController.moveOnYAxis(RoboController.inchesToCounts(27));
             roboController.Spin(RoboController.inchesToCounts(-18));
@@ -56,9 +56,14 @@ public class AutoModeRight extends LinearOpMode {
             roboController.ArmR.setPower(0);
             roboController.ClawR.setPosition(1);
             roboController.ClawL.setPosition(0);
-            sleep(2000);
+            sleep(1000);
+            roboController.Wrist.setPosition(0);
+            sleep(1000);
             roboController.ClawR.setPosition(0);
             roboController.ClawL.setPosition(1);
+            sleep(1000);
+            roboController.Wrist.setPosition(0.55);
+            sleep(1000);
             while(roboController.ArmR.getCurrentPosition() > 10) {
                 roboController.ArmL.setPower(-0.45);
                 roboController.ArmR.setPower(-0.45);
@@ -67,7 +72,7 @@ public class AutoModeRight extends LinearOpMode {
             roboController.ArmR.setPower(0);
             roboController.moveOnYAxis(RoboController.inchesToCounts(3));
             roboController.moveOnXAxis(RoboController.inchesToCounts(-27));
-            roboController.moveOnYAxis(RoboController.inchesToCounts(-27));
+            roboController.moveOnYAxis(RoboController.inchesToCounts(-22));
 
             /*
             Signal face = Signal.One;
