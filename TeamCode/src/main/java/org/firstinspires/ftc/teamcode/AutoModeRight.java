@@ -46,15 +46,15 @@ public class AutoModeRight extends LinearOpMode {
             sleep(2000);
             roboController.moveOnXAxis(RoboController.inchesToCounts(27));
             roboController.moveOnYAxis(RoboController.inchesToCounts(27));
-            roboController.Spin(RoboController.inchesToCounts(-20));
+            roboController.Spin(RoboController.inchesToCounts(-18));
             roboController.moveOnYAxis(RoboController.inchesToCounts(-20));
-            while(roboController.ArmR.getCurrentPosition() < 1000) {
+            while(roboController.ArmR.getCurrentPosition() < 2100) {
                 roboController.ArmL.setPower(0.45);
                 roboController.ArmR.setPower(0.45);
             }
             roboController.ArmL.setPower(0);
             roboController.ArmR.setPower(0);
-            roboController.ClawR.setPosition(0.9);
+            roboController.ClawR.setPosition(1);
             roboController.ClawL.setPosition(0);
             sleep(2000);
             roboController.ClawR.setPosition(0);
@@ -65,6 +65,7 @@ public class AutoModeRight extends LinearOpMode {
             }
             roboController.ArmL.setPower(0);
             roboController.ArmR.setPower(0);
+            roboController.moveOnYAxis(RoboController.inchesToCounts(3));
             roboController.moveOnXAxis(RoboController.inchesToCounts(-27));
             roboController.moveOnYAxis(RoboController.inchesToCounts(-27));
 
