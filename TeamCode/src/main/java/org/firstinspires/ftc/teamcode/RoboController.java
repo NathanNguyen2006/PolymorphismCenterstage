@@ -93,9 +93,6 @@ public class RoboController {
 
     }
 
-
-
-
     //arm stuff
     public double armBasePower;
     public double armTopPower;
@@ -221,21 +218,26 @@ public class RoboController {
     //Not Implemented
     public void interpretArmpad(Gamepad armpad){
 
+        // sets max range for how far the arm can move back
+        // when the arm goes further than 2150, the power of the arm is set to go in the
+        // opposite direction to counteract the power set by the joystick
         if(ArmR.getCurrentPosition() > 2150) {
             ArmL.setPower(-0.1);
             ArmR.setPower(-0.1);
         }
+        // moving the left joystick up or down will also move the arm up or down
         else if(armpad.left_stick_y > 0.5 ){
             ArmL.setPower(-0.45);
             ArmR.setPower(-0.45);
         }
         else if(armpad.left_stick_y < -0.5) {
-            ArmL.setPower(0.45);
-            ArmR.setPower(0.45);
-        }
-        else if(armpad.left_stick_y < -0.5 && ArmR.getCurrentPosition() > 1100) {
-            ArmL.setPower(0.3);
-            ArmR.setPower(0.3);
+            if (ArmR.getCurrentPosition() > 1100) {
+                ArmL.setPower(0.3);
+                ArmR.setPower(0.3);
+            } else {
+                ArmL.setPower(0.45);
+                ArmR.setPower(0.45);
+            }
         }
 
         else{

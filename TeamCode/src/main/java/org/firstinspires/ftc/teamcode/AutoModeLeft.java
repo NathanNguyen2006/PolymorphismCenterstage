@@ -46,7 +46,7 @@ public class AutoModeLeft extends LinearOpMode {
         if (opModeIsActive()) {
             sleep(3000);
 
-            roboController.moveOnXAxis(RoboController.inchesToCounts(-48));
+            roboController.moveOnXAxis(RoboController.inchesToCounts(-52));
 
             /*
             Signal face = Signal.One;
