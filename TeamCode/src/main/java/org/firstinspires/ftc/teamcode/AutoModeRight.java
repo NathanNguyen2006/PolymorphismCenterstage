@@ -39,6 +39,16 @@ public class AutoModeRight extends LinearOpMode {
 
             roboController.moveOnXAxis(RoboController.inchesToCounts(52));
 
+
+            // starting autonomous scoring
+            roboController.moveOnXAxis(RoboController.inchesToCounts(27));
+            roboController.moveOnYAxis(RoboController.inchesToCounts(27));
+            roboController.Spin(RoboController.inchesToCounts(-20));
+            roboController.moveOnYAxis(RoboController.inchesToCounts(-20));
+            while(roboController.ArmR.getCurrentPosition() < 1000) {
+
+            }
+
             /*
             Signal face = Signal.One;
             for (int i = 0; i < 5; i++) {
