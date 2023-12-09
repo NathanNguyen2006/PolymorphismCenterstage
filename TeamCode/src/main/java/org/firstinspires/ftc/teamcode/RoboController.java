@@ -221,7 +221,7 @@ public class RoboController {
         // sets max range for how far the arm can move back
         // when the arm goes further than 2160, the power of the arm is set to go in the
         // opposite direction to counteract the power set by the joystick
-        if(ArmR.getCurrentPosition() > 2160) {
+        if(ArmR.getCurrentPosition() > 2200) {
             ArmL.setPower(-0.1);
             ArmR.setPower(-0.1);
         }
