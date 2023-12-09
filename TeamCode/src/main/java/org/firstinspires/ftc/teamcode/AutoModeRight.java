@@ -37,7 +37,7 @@ public class AutoModeRight extends LinearOpMode {
         if (opModeIsActive()) {
             sleep(3000);
 
-            roboController.moveOnXAxis(RoboController.inchesToCounts(40));
+            roboController.moveOnXAxis(RoboController.inchesToCounts(48));
 
             /*
             Signal face = Signal.One;
