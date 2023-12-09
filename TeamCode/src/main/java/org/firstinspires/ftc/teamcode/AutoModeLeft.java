@@ -27,14 +27,14 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 public class AutoModeLeft extends LinearOpMode {
     private RoboController roboController;
 
-    private SolidColorStrategy strategy;
-    private Direction direction = Direction.Left;
+    //private SolidColorStrategy strategy;
+    //private Direction direction = Direction.Left;
 
 
     @Override
     public void runOpMode() {
         roboController = new RoboController(this);
-        strategy = new SolidColorStrategy(this, direction);
+        //strategy = new SolidColorStrategy(this, direction);
 
         /** Wait for the game to begin */
         telemetry.addData(">", "Press Play to start op mode");
@@ -45,6 +45,10 @@ public class AutoModeLeft extends LinearOpMode {
 
         if (opModeIsActive()) {
             sleep(3000);
+
+            roboController.moveOnXAxis(RoboController.inchesToCounts(-40));
+
+            /*
             Signal face = Signal.One;
             for (int i = 0; i < 5; i++) {
                 Signal newFace = getConeFace();
@@ -55,10 +59,17 @@ public class AutoModeLeft extends LinearOpMode {
                 else sleep(2000);
             }
             roboController.moveTo(face, direction);
+
+             */
+
+            stop();
         }
     }
 
+    /*
     private Signal getConeFace() {
         return strategy.getConePosition();
     }
+
+     */
 }

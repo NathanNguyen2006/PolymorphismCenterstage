@@ -18,13 +18,14 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 public class AutoModeRight extends LinearOpMode {
     private RoboController roboController;
 
-    private SolidColorStrategy strategy;
-    private Direction direction = Direction.Right;
+    //private SolidColorStrategy strategy;
+    //private Direction direction = Direction.Right;
+
 
     @Override
     public void runOpMode() {
         roboController = new RoboController(this);
-        strategy = new SolidColorStrategy(this, direction);
+        //strategy = new SolidColorStrategy(this, direction);
 
         /** Wait for the game to begin */
         telemetry.addData(">", "Press Play to start op mode");
@@ -35,6 +36,10 @@ public class AutoModeRight extends LinearOpMode {
 
         if (opModeIsActive()) {
             sleep(3000);
+
+            roboController.moveOnXAxis(RoboController.inchesToCounts(40));
+
+            /*
             Signal face = Signal.One;
             for (int i = 0; i < 5; i++) {
                 Signal newFace = getConeFace();
@@ -45,10 +50,17 @@ public class AutoModeRight extends LinearOpMode {
                 else sleep(2000);
             }
             roboController.moveTo(face, direction);
+
+             */
+
+            stop();
         }
     }
 
+    /*
     private Signal getConeFace() {
         return strategy.getConePosition();
     }
+
+     */
 }

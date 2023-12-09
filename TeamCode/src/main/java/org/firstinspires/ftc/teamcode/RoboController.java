@@ -244,7 +244,7 @@ public class RoboController {
         }
          if(armpad.right_stick_y > 0.5  ){
 
-            Extender.setPower(0.7  );
+            Extender.setPower(0.7);
         }
         else if(armpad.right_stick_y < -0.5 ){
             Extender.setPower(-0.7);
