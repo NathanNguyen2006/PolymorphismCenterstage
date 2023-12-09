@@ -320,11 +320,11 @@ public class RoboController {
                 ArmL.setPower(1);
             }
 
-            if(armpad.circle){
+            if(armpad.square){
                 Drone.setPosition(0.7);
             }
 
-            if(armpad.square){
+            if(armpad.circle){
                 Drone.setPosition(0);
             }
 
