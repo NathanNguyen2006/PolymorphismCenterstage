@@ -43,8 +43,8 @@ public class AutoModeScoreBLUE extends LinearOpMode {
             // move back right against the middle of the backboard
             roboController.moveOnYAxis(RoboController.inchesToCounts(-19));
 
-            // move the arm back until it reaches a position thats right against the backboard (2100)
-            while(roboController.ArmR.getCurrentPosition() < 2100) {
+            // move the arm back until it reaches a position thats right against the backboard (2000)
+            while(roboController.ArmR.getCurrentPosition() < 2000) {
                 roboController.ArmL.setPower(0.45);
                 roboController.ArmR.setPower(0.45);
             }
@@ -96,7 +96,7 @@ public class AutoModeScoreBLUE extends LinearOpMode {
             roboController.moveOnXAxis(RoboController.inchesToCounts(27));
 
             // move back to the space next to the backboard
-            roboController.moveOnYAxis(RoboController.inchesToCounts(-18));
+            roboController.moveOnYAxis(RoboController.inchesToCounts(-16));
             stop();
         }
     }
