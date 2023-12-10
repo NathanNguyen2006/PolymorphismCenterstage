@@ -43,7 +43,7 @@ public class AutoModeScoreBLUE extends LinearOpMode {
             // move back right against the middle of the backboard
             roboController.moveOnYAxis(RoboController.inchesToCounts(-19));
 
-            // move the arm back until it reaches a position thats right against the backboard (2000)
+            // move the arm back until it reaches a position thats right against the backboard (2050)
             while(roboController.ArmR.getCurrentPosition() < 2050) {
                 roboController.ArmL.setPower(0.45);
                 roboController.ArmR.setPower(0.45);
