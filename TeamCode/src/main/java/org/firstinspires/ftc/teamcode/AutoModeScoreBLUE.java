@@ -96,7 +96,7 @@ public class AutoModeScoreBLUE extends LinearOpMode {
             roboController.moveOnXAxis(RoboController.inchesToCounts(27));
 
             // move back to the space next to the backboard
-            roboController.moveOnYAxis(RoboController.inchesToCounts(-20));
+            roboController.moveOnYAxis(RoboController.inchesToCounts(-18));
             stop();
         }
     }
