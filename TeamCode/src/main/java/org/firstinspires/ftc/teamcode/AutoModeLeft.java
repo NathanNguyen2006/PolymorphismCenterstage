@@ -44,7 +44,8 @@ public class AutoModeLeft extends LinearOpMode {
         //roboController.ClawR.setPosition(0.5);
 
         if (opModeIsActive()) {
-            sleep(3000);
+            // waits 2 seconds and then just moves to the right (for the red side)
+            sleep(2000);
 
             roboController.moveOnXAxis(RoboController.inchesToCounts(-52));
 

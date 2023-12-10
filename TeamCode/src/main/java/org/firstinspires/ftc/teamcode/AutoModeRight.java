@@ -35,45 +35,10 @@ public class AutoModeRight extends LinearOpMode {
         //roboController.ClawR.setPosition(0.5);
 
         if (opModeIsActive()) {
-            /*
-            sleep(3000);
+            // waits 2 seconds and then just moves to the right (for the red side)
+            sleep(2000);
 
             roboController.moveOnXAxis(RoboController.inchesToCounts(52));
-             */
-
-
-            // starting autonomous scoring
-            //sleep(2000);
-            roboController.moveOnXAxis(RoboController.inchesToCounts(27));
-            roboController.moveOnYAxis(RoboController.inchesToCounts(27));
-            roboController.Spin(RoboController.inchesToCounts(-18));
-            roboController.moveOnYAxis(RoboController.inchesToCounts(-20));
-            while(roboController.ArmR.getCurrentPosition() < 2100) {
-                roboController.ArmL.setPower(0.45);
-                roboController.ArmR.setPower(0.45);
-            }
-            roboController.ArmL.setPower(0);
-            roboController.ArmR.setPower(0);
-            roboController.ClawR.setPosition(1);
-            roboController.ClawL.setPosition(0);
-            sleep(1000);
-            while(roboController.ArmR.getCurrentPosition() > 10) {
-                roboController.ArmL.setPower(-0.45);
-                roboController.ArmR.setPower(-0.45);
-            }
-            roboController.ArmL.setPower(0);
-            roboController.ArmR.setPower(0);
-
-            roboController.Wrist.setPosition(0);
-            sleep(1000);
-            roboController.ClawR.setPosition(0);
-            roboController.ClawL.setPosition(1);
-            sleep(1000);
-            roboController.Wrist.setPosition(0.55);
-            sleep(1000);
-            roboController.moveOnYAxis(RoboController.inchesToCounts(3));
-            roboController.moveOnXAxis(RoboController.inchesToCounts(-27));
-            roboController.moveOnYAxis(RoboController.inchesToCounts(-20));
 
             /*
             Signal face = Signal.One;
