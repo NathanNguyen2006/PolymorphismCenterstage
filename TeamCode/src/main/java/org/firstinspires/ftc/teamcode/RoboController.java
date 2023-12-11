@@ -120,11 +120,11 @@ public class RoboController {
             //direction = Compass.West;
         }
         else if(movepad.left_stick_y < -0.3){
-            drivePower = 0.75;
+            drivePower = 1;
             //direction = Compass.North;
         }
         else if(movepad.left_stick_y > 0.3){
-            drivePower = -0.75;
+            drivePower = -1;
             //direction = Compass.South;
         }
         else{
