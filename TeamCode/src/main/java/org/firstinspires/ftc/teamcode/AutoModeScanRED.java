@@ -3,9 +3,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name = "Autonomous Mode Scoring BLUE", group = "Concept")
+@Autonomous(name = "Autonomous Mode Scaning Team Prop RED", group = "Concept")
 
-public class AutoModeScoreBLUE extends LinearOpMode {
+public class AutoModeScanRED extends LinearOpMode {
     private RoboController roboController;
 
     @Override
@@ -18,17 +18,28 @@ public class AutoModeScoreBLUE extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
-            // autonomous scoring for the blue side (towards the backboard)
+            // !! ADD CODE FOR ACTUALLY SCANNING PROP ONCE ITS DONE !!
+
+            // autonomous scoring for the red side (towards the backboard)
             sleep(1000);
 
-            // move left to the middle of the adjacent panel
-            roboController.moveOnXAxis(RoboController.inchesToCounts(-27));
+            // move right to the middle of the adjacent panel
+            roboController.moveOnXAxis(RoboController.inchesToCounts(27));
 
             // move forward to the middle of the adjacent panel
             roboController.moveOnYAxis(RoboController.inchesToCounts(27));
 
-            // turn right by about 90 degrees
-            roboController.Spin(RoboController.inchesToCounts(18));
+            // turn left by about 90 degrees
+            roboController.Spin(RoboController.inchesToCounts(-18));
+
+            // if team prop is on the LEFT
+            roboController.moveOnXAxis(RoboController.inchesToCounts(2));
+
+            // if team prop is in the MIDDLE
+            // stay in that position
+
+            // if team prop is on the RIGHT
+            roboController.moveOnXAxis(RoboController.inchesToCounts(-2));
 
             // move back right against the middle of the backboard
             roboController.moveOnYAxis(RoboController.inchesToCounts(-19));
@@ -82,8 +93,8 @@ public class AutoModeScoreBLUE extends LinearOpMode {
             // move forward so that the bot isn't right against the backboard
             roboController.moveOnYAxis(RoboController.inchesToCounts(3));
 
-            // move right to the middle of the adjacent panel
-            roboController.moveOnXAxis(RoboController.inchesToCounts(27));
+            // move left to the middle of the adjacent panel
+            roboController.moveOnXAxis(RoboController.inchesToCounts(-27));
 
             // move back to the space next to the backboard
             roboController.moveOnYAxis(RoboController.inchesToCounts(-13));
