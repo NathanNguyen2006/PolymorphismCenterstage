@@ -111,20 +111,20 @@ public class RoboController {
             turnPower = 0;
         }
 
-        if(movepad.left_stick_x > 0.3){
+        if(movepad.left_stick_x > 0.2){
             strafePower = movepad.left_stick_x;
             //direction = Compass.East;
         }
-        else if(movepad.left_stick_x < -0.3){
+        else if(movepad.left_stick_x < -0.2){
             strafePower = movepad.left_stick_x;
             //direction = Compass.West;
         }
-        else if(movepad.left_stick_y < -0.3){
-            drivePower = movepad.left_stick_y;
+        else if(movepad.left_stick_y < -0.2){
+            drivePower = -movepad.left_stick_y;
             //direction = Compass.North;
         }
-        else if(movepad.left_stick_y > 0.3){
-            drivePower = movepad.left_stick_y;
+        else if(movepad.left_stick_y > 0.2){
+            drivePower = -movepad.left_stick_y;
             //direction = Compass.South;
         }
         else{
