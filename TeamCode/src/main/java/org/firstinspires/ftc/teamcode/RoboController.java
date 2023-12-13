@@ -105,26 +105,26 @@ public class RoboController {
         BRW.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         if(Math.abs(movepad.right_stick_x) > .2){
-            turnPower = movepad.right_stick_x*0.35;
+            turnPower = movepad.right_stick_x*0.5;
         }
         else{
             turnPower = 0;
         }
 
         if(movepad.left_stick_x > 0.3){
-            strafePower = 1;
+            strafePower = movepad.left_stick_x;
             //direction = Compass.East;
         }
         else if(movepad.left_stick_x < -0.3){
-            strafePower = -1;
+            strafePower = movepad.left_stick_x;
             //direction = Compass.West;
         }
         else if(movepad.left_stick_y < -0.3){
-            drivePower = 1;
+            drivePower = movepad.left_stick_y;
             //direction = Compass.North;
         }
         else if(movepad.left_stick_y > 0.3){
-            drivePower = -1;
+            drivePower = movepad.left_stick_y;
             //direction = Compass.South;
         }
         else{
