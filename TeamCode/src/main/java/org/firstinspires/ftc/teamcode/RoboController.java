@@ -72,8 +72,8 @@ public class RoboController {
         ArmL = hardwareMap.get(DcMotor.class,"ArmL");
         ArmR = hardwareMap.get(DcMotor.class,"ArmR");
         Extender = hardwareMap.get(DcMotor.class,"Extender");
-        ClawR = hardwareMap.get(Servo.class, "ClawR");
-        ClawL = hardwareMap.get(Servo.class, "ClawL");
+        ClawR = hardwareMap.get(CRServo.class, "ClawR");
+        ClawL = hardwareMap.get(CRServo.class, "ClawL");
         Wrist = hardwareMap.get(Servo.class, "Wrist");
         Drone = hardwareMap.get(Servo.class, "Drone");
 
