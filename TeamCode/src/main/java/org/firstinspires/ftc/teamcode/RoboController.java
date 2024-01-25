@@ -300,10 +300,11 @@ public class RoboController {
             }
         }
 
-        // press a to change the direction of the rotation of the claw
-        if(armpad.x){
+        // press x to change the direction of the rotation of the claw
+        if(a && armpad.x){
             rotateDirIn = !rotateDirIn;
         }
+        a = !armpad.x;
 
 
         //if(armpad.right_bumper) {
