@@ -272,24 +272,34 @@ public class RoboController {
         */
 
 
-
+        // hold down left bumper to start rotating the claw
         if(armpad.left_bumper){
             rotate = true;
         } else {
             rotate = false;
         }
 
+        // depending on the direction the claw is set to, it will rotate in that
+        // direction if it's set to rotate
+        // otherwise the claw won't rotate at all
+        if(rotate){
+            if(rotateDirIn){
+                ClawR.setPosition(0);
+                ClawL.setPosition(0.8);
+            } else if(!rotateDirIn){
+                ClawR.setPosition(0);
+                ClawL.setPosition(0.8);
+            }
+        } else {
+            ClawR.setPosition(0);
+            ClawL.setPosition(0);
+        }
+
+        // press a to change the direction of the rotation of the claw
         if(a){
             rotateDirIn = !rotateDirIn;
         }
 
-        if(rotateDirIn){
-            ClawR.setPosition(0);
-            ClawL.setPosition(0.8);
-        } else if(!rotateDirIn){
-            ClawR.setPosition(0);
-            ClawL.setPosition(0.8);
-        }
 
         //if(armpad.right_bumper) {
             //ClawR.setPosition(0.4);
