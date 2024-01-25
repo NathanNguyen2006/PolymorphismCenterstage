@@ -212,7 +212,8 @@ public class RoboController {
     boolean b = false;
     boolean c = false;
     boolean permaPower = false;
-    boolean open = false;
+    boolean rotate = false;
+    boolean rotateDirIn = true;
     boolean open2 = false;
 
     //Not Implemented
@@ -255,18 +256,39 @@ public class RoboController {
             Extender.setPower(0);
         }
 
+        /*
         if(a && armpad.left_bumper){
             open = !open;
             if(!open) {
                 ClawR.setPosition(0);
-                ClawL.setPosition(1);
+                ClawL.setPosition(0.8);
             }
             if(open){
-                ClawR.setPosition(0.9);
+                ClawR.setPosition(0.8);
                 ClawL.setPosition(0);
             }
         }
         a = !armpad.left_bumper;
+        */
+
+
+        if(armpad.left_bumper){
+            rotate = true;
+        } else {
+            rotate = false;
+        }
+
+        if(a){
+            rotateDirIn = !rotateDirIn;
+        }
+
+        if(rotateDirIn){
+            ClawR.setPosition(0);
+            ClawL.setPosition(0.8);
+        } else if(!rotateDirIn){
+            ClawR.setPosition(0);
+            ClawL.setPosition(0.8);
+        }
 
         //if(armpad.right_bumper) {
             //ClawR.setPosition(0.4);
