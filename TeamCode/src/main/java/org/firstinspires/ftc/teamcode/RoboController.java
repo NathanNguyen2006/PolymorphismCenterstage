@@ -284,11 +284,11 @@ public class RoboController {
         // otherwise the claw won't rotate at all
         if(rotate){
             if(rotateDirIn){
-                ClawR.setPosition(0);
-                ClawL.setPosition(0.8);
+                ClawR.setPosition(0.75);
+                ClawL.setPosition(0);
             } else if(!rotateDirIn){
                 ClawR.setPosition(0);
-                ClawL.setPosition(0.8);
+                ClawL.setPosition(0.75);
             }
         } else {
             ClawR.setPosition(0);
