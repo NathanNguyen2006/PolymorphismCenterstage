@@ -285,14 +285,14 @@ public class RoboController {
         if(rotateDirIn){
             if(rotate) {
                 ClawR.setPosition(0.75);
-                ClawL.setPosition(0);
+                ClawL.setPosition(-0.75);
             } else {
                 ClawR.setPosition(0);
                 ClawL.setPosition(0);
             }
         } else if(!rotateDirIn) {
             if (rotate) {
-                ClawR.setPosition(0);
+                ClawR.setPosition(-0.75);
                 ClawL.setPosition(0.75);
             } else {
                 ClawR.setPosition(0);
@@ -303,8 +303,10 @@ public class RoboController {
         // press x to change the direction of the rotation of the claw
         if(a && armpad.x){
             rotateDirIn = !rotateDirIn;
+            a = false;
+        } else {
+            a = true;
         }
-        a = !armpad.x;
 
 
         //if(armpad.right_bumper) {
