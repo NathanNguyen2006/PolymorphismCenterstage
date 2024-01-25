@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -31,8 +32,8 @@ public class RoboController {
     public DcMotor ArmR;
     public DcMotor Extender;
     public Servo Wrist;
-    public Servo ClawR;
-    public Servo ClawL;
+    public CRServo ClawR;
+    public CRServo ClawL;
     public Servo Drone;
 
 
@@ -276,14 +277,18 @@ public class RoboController {
         // direction if it's set to rotate
         // otherwise the claw won't rotate at all
         if(armpad.dpad_up){
-            ClawR.setPosition(0.75);
-            ClawL.setPosition(-0.75);
+            ClawR.setDirection(DcMotorSimple.Direction.FORWARD);
+            ClawR.setPower(0.75);
+            ClawL.setDirection(DcMotorSimple.Direction.REVERSE);
+            ClawL.setPower(0.75);
         } else if(armpad.dpad_down) {
-            ClawR.setPosition(-0.75);
-            ClawL.setPosition(0.75);
+            ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
+            ClawR.setPower(0.75);
+            ClawL.setDirection(DcMotorSimple.Direction.FORWARD);
+            ClawL.setPower(0.75);
         } else {
-            ClawR.setPosition(0);
-            ClawL.setPosition(0);
+            ClawR.setPower(0);
+            ClawL.setPower(0);
         }
 
         //if(armpad.right_bumper) {
