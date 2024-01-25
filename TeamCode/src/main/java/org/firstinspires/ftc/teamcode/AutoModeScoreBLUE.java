@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @Autonomous(name = "Autonomous Mode Scoring BLUE", group = "Concept")
 
@@ -43,12 +44,18 @@ public class AutoModeScoreBLUE extends LinearOpMode {
             roboController.ArmL.setPower(0);
             roboController.ArmR.setPower(0);
 
-            // open the claw to release the pixels
-            roboController.ClawR.setPosition(1);
-            roboController.ClawL.setPosition(0);
+            // push pixels out
+            roboController.ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
+            roboController.ClawR.setPower(0.75);
+            roboController.ClawL.setDirection(DcMotorSimple.Direction.FORWARD);
+            roboController.ClawL.setPower(0.75);
 
             // wait a second in case the pixels haven't been completely scored yet
-            sleep(1000);
+            sleep(2000);
+
+            // stop rotating claw
+            roboController.ClawR.setPower(0);
+            roboController.ClawL.setPower(0);
 
             // move the arm forward until it reaches a position thats about where the floor is (10)
             while(roboController.ArmR.getCurrentPosition() > 10) {
@@ -59,22 +66,6 @@ public class AutoModeScoreBLUE extends LinearOpMode {
             // once the arm is against the floor, stop moving it forward
             roboController.ArmL.setPower(0);
             roboController.ArmR.setPower(0);
-
-            // flip the claw down so that it can be closed without obstruction
-            roboController.Wrist.setPosition(0);
-
-            // wait a second to give the bot time to flip the claw
-            sleep(1000);
-
-            // close the claw
-            roboController.ClawR.setPosition(0);
-            roboController.ClawL.setPosition(1);
-
-            // wait a second to give the bot time to close the claw
-            sleep(1000);
-
-            // flip the claw back up so that the bot can move without obstruction
-            roboController.Wrist.setPosition(0.55);
 
             // wait a second to give the bot time to flip the claw
             sleep(1000);
