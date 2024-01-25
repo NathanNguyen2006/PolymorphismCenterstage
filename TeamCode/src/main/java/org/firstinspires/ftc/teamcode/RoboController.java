@@ -317,7 +317,7 @@ public class RoboController {
         if(b && (armpad.right_bumper)){
             open2 = !open2;
             if(!open2) {
-                Wrist.setPosition(0);
+                Wrist.setPosition(0.05);
             }
             if(open2){
                 Wrist.setPosition(0.65);
