@@ -72,8 +72,8 @@ public class RoboController {
         ArmL = hardwareMap.get(DcMotor.class,"ArmL");
         ArmR = hardwareMap.get(DcMotor.class,"ArmR");
         Extender = hardwareMap.get(DcMotor.class,"Extender");
-        ClawR = hardwareMap.get(Servo.class, "ClawR");
-        ClawL = hardwareMap.get(Servo.class, "ClawL");
+        ClawR = hardwareMap.get(CRServo.class, "ClawR");
+        ClawL = hardwareMap.get(CRServo.class, "ClawL");
         Wrist = hardwareMap.get(Servo.class, "Wrist");
         Drone = hardwareMap.get(Servo.class, "Drone");
 
@@ -213,24 +213,24 @@ public class RoboController {
     boolean c = false;
     boolean permaPower = false;
     boolean rotate = false;
-    boolean rotateDirIn = true;
     boolean open2 = false;
 
     //Not Implemented
-    public void interpretArmpad(Gamepad armpad) {
+    public void interpretArmpad(Gamepad armpad){
 
         // sets max range for how far the arm can move back
         // when the arm goes further than 2160, the power of the arm is set to go in the
         // opposite direction to counteract the power set by the joystick
-        if (ArmR.getCurrentPosition() > 2200) {
+        if(ArmR.getCurrentPosition() > 2200) {
             ArmL.setPower(-0.1);
             ArmR.setPower(-0.1);
         }
         // moving the left joystick up or down will also move the arm up or down
-        else if (armpad.left_stick_y > 0.5) {
+        else if(armpad.left_stick_y > 0.5 ){
             ArmL.setPower(-0.45);
             ArmR.setPower(-0.45);
-        } else if (armpad.left_stick_y < -0.5) {
+        }
+        else if(armpad.left_stick_y < -0.5) {
             if (ArmR.getCurrentPosition() > 1100) {
                 ArmL.setPower(0.3);
                 ArmR.setPower(0.3);
@@ -238,16 +238,20 @@ public class RoboController {
                 ArmL.setPower(0.45);
                 ArmR.setPower(0.45);
             }
-        } else {
+        }
+
+        else{
             ArmL.setPower(0);
             ArmR.setPower(0);
         }
-        if (armpad.right_stick_y > 0.5) {
+         if(armpad.right_stick_y > 0.5  ){
 
             Extender.setPower(0.7);
-        } else if (armpad.right_stick_y < -0.5) {
+        }
+        else if(armpad.right_stick_y < -0.5 ){
             Extender.setPower(-0.7);
-        } else {
+        }
+        else{
             Extender.setPower(0);
         }
 
@@ -267,23 +271,20 @@ public class RoboController {
         */
 
 
+
         // depending on the direction the claw is set to, it will rotate in that
         // direction if it's set to rotate
         // otherwise the claw won't rotate at all
-        if(armpad.dpad_up && armpad.dpad_down) {
-            ClawR.setPosition(0);
-            ClawL.setPosition(0);
-        } else if(!(armpad.dpad_up || armpad.dpad_down)){
-            ClawR.setPosition(0);
-            ClawL.setPosition(0);
-        } else if(armpad.dpad_up){
+        if(armpad.dpad_up){
             ClawR.setPosition(0.75);
             ClawL.setPosition(-0.75);
         } else if(armpad.dpad_down) {
             ClawR.setPosition(-0.75);
             ClawL.setPosition(0.75);
+        } else {
+            ClawR.setPosition(0);
+            ClawL.setPosition(0);
         }
-
 
         //if(armpad.right_bumper) {
             //ClawR.setPosition(0.4);
