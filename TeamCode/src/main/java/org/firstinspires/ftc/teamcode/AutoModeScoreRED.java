@@ -19,6 +19,9 @@ public class AutoModeScoreRED extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
+            // raise the claw so that it stays up completely
+            roboController.Wrist.setPosition(0.65);
+
             // autonomous scoring for the red side (towards the backboard)
             sleep(1000);
 
@@ -51,7 +54,7 @@ public class AutoModeScoreRED extends LinearOpMode {
             roboController.ClawL.setPower(0.75);
 
             // wait a second in case the pixels haven't been completely scored yet
-            sleep(2000);
+            sleep(3000);
 
             // stop rotating claw
             roboController.ClawR.setPower(0);
@@ -67,7 +70,7 @@ public class AutoModeScoreRED extends LinearOpMode {
             roboController.ArmL.setPower(0);
             roboController.ArmR.setPower(0);
 
-            // wait a second to give the bot time to put down the arm
+            // wait three seconds to give the bot time to put down the arm
             sleep(1000);
 
             // move forward so that the bot isn't right against the backboard
