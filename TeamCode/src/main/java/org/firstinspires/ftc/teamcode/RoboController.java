@@ -214,6 +214,7 @@ public class RoboController {
     boolean c = false;
     boolean permaPower = false;
     boolean rotate = false;
+    int input = 0;
     boolean open2 = false;
 
     //Not Implemented
@@ -273,19 +274,29 @@ public class RoboController {
 
 
 
-        // depending on the direction the claw is set to, it will rotate in that
+        // depending on the direction the claw is set to, it will toggle rotate in that
         // direction if it's set to rotate
         // otherwise the claw won't rotate at all
         if(armpad.dpad_up){
-            ClawR.setDirection(DcMotorSimple.Direction.FORWARD);
-            ClawR.setPower(0.75);
-            ClawL.setDirection(DcMotorSimple.Direction.REVERSE);
-            ClawL.setPower(0.75);
+            rotate = !rotate;
+            input = 0;
         } else if(armpad.dpad_down) {
-            ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
-            ClawR.setPower(0.75);
-            ClawL.setDirection(DcMotorSimple.Direction.FORWARD);
-            ClawL.setPower(0.75);
+            rotate = !rotate;
+            input = 1;
+        }
+
+        if(rotate) {
+            if (input == 0){
+                ClawR.setDirection(DcMotorSimple.Direction.FORWARD);
+                ClawR.setPower(0.75);
+                ClawL.setDirection(DcMotorSimple.Direction.REVERSE);
+                ClawL.setPower(0.75);
+            } else if (input == 1){
+                ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
+                ClawR.setPower(0.75);
+                ClawL.setDirection(DcMotorSimple.Direction.FORWARD);
+                ClawL.setPower(0.75);
+            }
         } else {
             ClawR.setPower(0);
             ClawL.setPower(0);
