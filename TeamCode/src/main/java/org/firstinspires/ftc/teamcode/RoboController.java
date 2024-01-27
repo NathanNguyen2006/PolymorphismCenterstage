@@ -120,8 +120,8 @@ public class RoboController {
             strafePower = movepad.left_stick_x;
             //direction = Compass.West;
         }
-        else if(movepad.left_trigger < -0.2){
-            drivePower = movepad.left_trigger;
+        else if(movepad.left_trigger > 0.2){
+            drivePower = -movepad.left_trigger;
             //direction = Compass.North;
         }
         else if(movepad.right_trigger > 0.2){
