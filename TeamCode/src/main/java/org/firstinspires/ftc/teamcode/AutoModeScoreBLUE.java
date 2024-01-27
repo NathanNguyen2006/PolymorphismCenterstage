@@ -19,11 +19,12 @@ public class AutoModeScoreBLUE extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
+            // autonomous scoring for the red side (towards the backboard)
             // raise the claw so that it stays up completely
             roboController.Wrist.setPosition(0.65);
 
-            // autonomous scoring for the blue side (towards the backboard)
-            sleep(1000);
+            // wait a little until the claw is flipped up
+            sleep(1500);
 
             // move left to the middle of the adjacent panel
             roboController.moveOnXAxis(RoboController.inchesToCounts(-27));
@@ -54,7 +55,7 @@ public class AutoModeScoreBLUE extends LinearOpMode {
             roboController.ClawL.setPower(0.75);
 
             // wait three seconds in case the pixels haven't been completely scored yet
-            sleep(3000);
+            sleep(2500);
 
             // stop rotating claw
             roboController.ClawR.setPower(0);
