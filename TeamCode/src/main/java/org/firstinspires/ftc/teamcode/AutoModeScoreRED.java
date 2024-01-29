@@ -26,13 +26,22 @@ public class AutoModeScoreRED extends LinearOpMode {
             // wait a little until the claw is flipped up
             sleep(1500);
 
-            // move right to the middle of the adjacent panel
-            roboController.moveOnXAxis(RoboController.inchesToCounts(27));
-
-            // move forward to the middle of the adjacent panel
-            roboController.moveOnYAxis(RoboController.inchesToCounts(27));
+            // move forward so that the bot isn't right against the backboard
+            roboController.moveOnYAxis(RoboController.inchesToCounts(3));
 
             // turn left by about 90 degrees
+            roboController.Spin(RoboController.inchesToCounts(-18));
+
+            // move forward to the middle of the adjacent panel
+            roboController.moveOnYAxis(RoboController.inchesToCounts(-57));
+    
+                // turn left by about 90 degrees
+                roboController.Spin(RoboController.inchesToCounts(18));
+    
+                // move forward to the middle of the adjacent panel
+                roboController.moveOnYAxis(RoboController.inchesToCounts(27));
+    
+                // turn left by about 90 degrees
             roboController.Spin(RoboController.inchesToCounts(-18));
 
             // move back right against the middle of the backboard
@@ -77,11 +86,18 @@ public class AutoModeScoreRED extends LinearOpMode {
             // move forward so that the bot isn't right against the backboard
             roboController.moveOnYAxis(RoboController.inchesToCounts(3));
 
-            // move left to the middle of the adjacent panel
-            roboController.moveOnXAxis(RoboController.inchesToCounts(-27));
+            // turn left by about 90 degrees
+            roboController.Spin(RoboController.inchesToCounts(18));
 
-            // move back to the space next to the backboard
-            roboController.moveOnYAxis(RoboController.inchesToCounts(-13));
+            // move forward to the middle of the adjacent panel
+            roboController.moveOnYAxis(RoboController.inchesToCounts(-27));
+
+            // turn left by about 90 degrees
+            roboController.Spin(RoboController.inchesToCounts(-18));
+
+            // move forward to the middle of the adjacent panel
+            roboController.moveOnYAxis(RoboController.inchesToCounts(-30));
+            
             stop();
         }
     }
