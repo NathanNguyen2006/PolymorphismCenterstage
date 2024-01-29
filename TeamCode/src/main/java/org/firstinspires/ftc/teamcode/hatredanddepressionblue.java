@@ -33,7 +33,7 @@ public class hatredanddepressionblue extends LinearOpMode {
         //int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         //webcam1 = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
 
-        webcam1.setPipeline(new examplePipeline());
+        webcam1.setPipeline(new examplePipelineL());
         webcam1.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             public void onOpened() {
                 webcam1.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
@@ -42,7 +42,7 @@ public class hatredanddepressionblue extends LinearOpMode {
             public void onError(int errorCode) {
             }
         });
-        webcam2.setPipeline(new examplePipeline());
+        webcam2.setPipeline(new examplePipelineR());
         webcam2.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             public void onOpened() {
                 webcam2.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
@@ -98,7 +98,72 @@ public class hatredanddepressionblue extends LinearOpMode {
         }
     }
 
-    class examplePipeline extends OpenCvPipeline{
+    class examplePipelineL extends OpenCvPipeline{
+        Mat YCbCr = new Mat();
+        Mat leftcrop;
+        Mat rightcrop;
+        Mat middlecrop;
+        double leftavgfin;
+        double middleavgfin;
+        double rightavgfin;
+        Mat outPut = new Mat();
+        Scalar rectColor = new Scalar(255.0,0,0,0);
+
+        public Mat processFrame(Mat input){
+            Imgproc.cvtColor(input, YCbCr, Imgproc.COLOR_RGB2YCrCb);
+            //telemetry.addLine("pipline running");
+
+            Rect leftRect = new Rect(1,1,3,3);
+            Rect rightRect = new Rect(5,1,3,3);
+            Rect middleRect = new Rect(10,1,3,3);
+
+            input.copyTo(outPut);
+            Imgproc.rectangle(outPut, leftRect, rectColor, 2);
+            Imgproc.rectangle(outPut, middleRect, rectColor, 2);
+            Imgproc.rectangle(outPut, rightRect, rectColor, 2);
+
+            leftcrop = YCbCr.submat(leftRect);
+            rightcrop = YCbCr.submat(rightRect);
+            middlecrop = YCbCr.submat(middleRect);
+
+            Core.extractChannel(leftcrop,leftcrop,2);
+            Core.extractChannel(middlecrop,leftcrop,2);
+            Core.extractChannel(rightcrop,rightcrop,2);
+
+            Scalar leftavg = Core.mean(leftcrop);
+            Scalar rightavg = Core.mean(rightcrop);
+            Scalar middleavg = Core.mean(middlecrop);
+
+            leftavgfin = leftavg.val[0];
+            middleavgfin = middleavg.val[0];
+            rightavgfin = rightavg.val[0];
+
+
+            if(leftavgfin > rightavgfin && leftavgfin > middleavgfin){
+                //position = 0;
+                telemetry.addLine("Left");
+            }
+            else if(rightavgfin > leftavgfin && rightavgfin > middleavgfin){
+                //position = 2;
+                telemetry.addLine("right");
+            }
+            else if(middleavgfin > rightavgfin && middleavgfin > leftavgfin){
+                //position = 1;
+                telemetry.addLine("mid");
+            }
+            else{
+                telemetry.addLine("2");
+            }
+            position = 0;
+            telemetry.addData("position", position);
+            telemetry.addData("left", leftavgfin);
+            telemetry.addData("mid", middleavgfin);
+            telemetry.addData("right", rightavgfin);
+            telemetry.update();
+            return(outPut);
+        }
+    }
+    class examplePipelineR extends OpenCvPipeline{
         Mat YCbCr = new Mat();
         Mat leftcrop;
         Mat rightcrop;
