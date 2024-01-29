@@ -574,16 +574,16 @@ public class RoboController {
     }
 
     public void autoMiddle(){
-        this.moveOnYAxis(this.inchesToCounts(4));
+        this.moveOnYAxis(this.inchesToCounts(36));
         this.ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
         this.ClawR.setPower(0.75);
         this.ClawL.setDirection(DcMotorSimple.Direction.FORWARD);
         this.ClawL.setPower(0.75);
     }
     public void autoLeft(){
-        this.moveOnYAxis(this.inchesToCounts(4));
+        this.moveOnYAxis(this.inchesToCounts(29));
         this.Spin(-this.inchesToCounts(18));
-        this.moveOnYAxis(this.inchesToCounts(4));
+        this.moveOnYAxis(this.inchesToCounts(5));
         this.ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
         this.ClawR.setPower(0.75);
         this.ClawL.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -592,50 +592,50 @@ public class RoboController {
         this.Spin(this.inchesToCounts(-18));
     }
     public void autoRight(){
-        this.moveOnYAxis(this.inchesToCounts(4));
+        this.moveOnYAxis(this.inchesToCounts(29));
         this.Spin(this.inchesToCounts(18));
-        this.moveOnYAxis(this.inchesToCounts(4));
+        this.moveOnYAxis(this.inchesToCounts(5));
         this.ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
         this.ClawR.setPower(0.75);
         this.ClawL.setDirection(DcMotorSimple.Direction.FORWARD);
         this.ClawL.setPower(0.75);
-        this.moveOnYAxis(this.inchesToCounts(-4));
+        this.moveOnYAxis(this.inchesToCounts(-5));
         this.Spin(this.inchesToCounts(-18));
     }
 
     public void farToBoard(int isBlue){ //not middle
-        this.moveOnYAxis(this.inchesToCounts(20));
+        this.moveOnYAxis(this.inchesToCounts(36));
         this.Spin(this.inchesToCounts(-18*isBlue));
-        this.moveOnYAxis(this.inchesToCounts(100));
+        this.moveOnYAxis(this.inchesToCounts(72));
         this.Spin(this.inchesToCounts(-18*isBlue));
-        this.moveOnYAxis(this.inchesToCounts(20));
+        this.moveOnYAxis(this.inchesToCounts(36));
         this.Spin(this.inchesToCounts(-18*isBlue));
     }
 
     public void closetoBoard(int isBlue){ //not side
         this.Spin(this.inchesToCounts(18*isBlue));
-        this.moveOnYAxis(this.inchesToCounts(-100));
+        this.moveOnYAxis(this.inchesToCounts(-24));
     }
 
     public void farToBoardObstructed(int isBlue){ //not middle
         this.Spin(this.inchesToCounts(18*isBlue));
-        this.moveOnYAxis(this.inchesToCounts(20));
+        this.moveOnYAxis(this.inchesToCounts(24));
         this.Spin(this.inchesToCounts(-18*isBlue));
-        this.moveOnYAxis(this.inchesToCounts(20));
+        this.moveOnYAxis(this.inchesToCounts(24));
         this.Spin(this.inchesToCounts(-18*isBlue));
-        this.moveOnYAxis(this.inchesToCounts(120));
+        this.moveOnYAxis(this.inchesToCounts(96));
         this.Spin(this.inchesToCounts(-18*isBlue));
-        this.moveOnYAxis(this.inchesToCounts(20));
+        this.moveOnYAxis(this.inchesToCounts(24));
         this.Spin(this.inchesToCounts(-18*isBlue));
     }
 
     public void closetoBoardObstructed(int isBlue){ //not side
 
-        this.moveOnYAxis(this.inchesToCounts(100));
+        this.moveOnYAxis(this.inchesToCounts(36));
         this.Spin(this.inchesToCounts(18*isBlue));
-        this.moveOnYAxis(this.inchesToCounts(100));
+        this.moveOnYAxis(this.inchesToCounts(36));
         this.Spin(this.inchesToCounts(18*isBlue));
-        this.moveOnYAxis(this.inchesToCounts(100));
+        this.moveOnYAxis(this.inchesToCounts(36));
         this.Spin(this.inchesToCounts(18*isBlue));
     }
 }
