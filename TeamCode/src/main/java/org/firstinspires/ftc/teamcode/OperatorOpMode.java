@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 @TeleOp
 public class OperatorOpMode extends LinearOpMode{
     //Personal Class
@@ -64,6 +66,7 @@ public class OperatorOpMode extends LinearOpMode{
             telemetry.addData("ArmRpow", roboController.ArmR.getPower());
             telemetry.addData("Drone: Plane Launcher", roboController.Drone.getPosition());
             telemetry.addData("y-stick value", armPad.left_stick_y);
+            telemetry.addData("Distance from sensor to object", roboController.distanceSensor.getDistance(DistanceUnit.INCH));
             telemetry.update();
         }
     }

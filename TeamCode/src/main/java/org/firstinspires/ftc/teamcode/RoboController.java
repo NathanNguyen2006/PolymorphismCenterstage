@@ -9,6 +9,9 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import java.lang.Math;
 
 public class RoboController {
@@ -35,6 +38,8 @@ public class RoboController {
     public CRServo ClawR;
     public CRServo ClawL;
     public Servo Drone;
+
+    public DistanceSensor distanceSensor;
 
 
 
@@ -68,6 +73,9 @@ public class RoboController {
         FRW.setDirection(DcMotor.Direction.FORWARD);
         BLW.setDirection(DcMotor.Direction.REVERSE);
         BRW.setDirection(DcMotor.Direction.FORWARD);
+
+        // Distance Sensor
+        distanceSensor = hardwareMap.get(DistanceSensor.class, "BackupSens");
 
         //Arms
         ArmL = hardwareMap.get(DcMotor.class,"ArmL");
