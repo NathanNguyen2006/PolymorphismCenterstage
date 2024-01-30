@@ -116,22 +116,10 @@ public class RoboController {
         BLW.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         BRW.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        if(rumbled == false) {
-            if (distanceSensor.getDistance(DistanceUnit.INCH) <= 2) {
-                movepad.rumble(2000);
-                rumbled = true;
-            }
+        if (distanceSensor.getDistance(DistanceUnit.INCH) <= 2) {
+            movepad.rumble(2000);
         }
 
-        while(distanceSensor.getDistance(DistanceUnit.INCH) > 2) {
-            rumbled = false;
-        }
-
-        if(rumbled){
-            canDriveBack = false;
-        } else {
-            canDriveBack = true;
-        }
 
         if(Math.abs(movepad.right_stick_x) > .2){
             turnPower = movepad.right_stick_x*0.5;
@@ -149,12 +137,8 @@ public class RoboController {
             //direction = Compass.West;
         }
         else if(movepad.left_trigger > 0.2){
-            if(canDriveBack) {
-                drivePower = -movepad.left_trigger;
-                //direction = Compass.North;
-            } else {
-                drivePower = 0;
-            }
+            drivePower = -movepad.left_trigger;
+            //direction = Compass.North;
         }
         else if(movepad.right_trigger > 0.2){
             drivePower = movepad.right_trigger;
