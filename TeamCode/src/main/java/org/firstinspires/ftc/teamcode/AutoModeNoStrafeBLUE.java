@@ -4,9 +4,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-@Autonomous(name = "Autonomous Mode Scoring BLUE", group = "Concept")
+@Autonomous(name = "Autonomous Mode (No Strafing) Scoring BLUE", group = "Concept")
 
-public class AutoModeScoreBLUE extends LinearOpMode {
+public class AutoModeNoStrafeBLUE extends LinearOpMode {
     private RoboController roboController;
 
     @Override
@@ -20,15 +20,25 @@ public class AutoModeScoreBLUE extends LinearOpMode {
 
         if (opModeIsActive()) {
             // autonomous scoring for the blue side (towards the backboard)
+            // does NOT utilize strafing
 
             // raise the claw so that it stays up completely
             roboController.Wrist.setPosition(0.65);
 
             // wait a little until the claw is flipped up
-            sleep(1500);
+            sleep(1000);
 
-            // move left to the middle of the adjacent panel
-            roboController.moveOnXAxis(RoboController.inchesToCounts(-27));
+            // move forward so that the bot isn't right against the wall
+            roboController.moveOnYAxis(RoboController.inchesToCounts(3));
+
+            // turn right by about 90 degrees
+            roboController.Spin(RoboController.inchesToCounts(18));
+
+            // move back to the middle of the adjacent panel
+            roboController.moveOnYAxis(RoboController.inchesToCounts(-57));
+
+            // turn left by about 90 degrees
+            roboController.Spin(RoboController.inchesToCounts(-18));
 
             // move forward to the middle of the adjacent panel
             roboController.moveOnYAxis(RoboController.inchesToCounts(27));
@@ -72,17 +82,20 @@ public class AutoModeScoreBLUE extends LinearOpMode {
             roboController.ArmL.setPower(0);
             roboController.ArmR.setPower(0);
 
-            // wait a second to give the bot time to flip the claw
-            sleep(1000);
-
             // move forward so that the bot isn't right against the backboard
             roboController.moveOnYAxis(RoboController.inchesToCounts(3));
 
-            // move right to the middle of the adjacent panel
-            roboController.moveOnXAxis(RoboController.inchesToCounts(27));
+            // turn left by about 90 degrees
+            roboController.Spin(RoboController.inchesToCounts(-18));
+
+            // move back to the middle of the adjacent panel
+            roboController.moveOnYAxis(RoboController.inchesToCounts(-27));
+
+            // turn right by about 90 degrees
+            roboController.Spin(RoboController.inchesToCounts(18));
 
             // move back to the middle of the adjacent panel (to park in the backstage area)
-            roboController.moveOnYAxis(RoboController.inchesToCounts(-13));
+            roboController.moveOnYAxis(RoboController.inchesToCounts(-30));
 
             // autonomous mode has now ended
             stop();

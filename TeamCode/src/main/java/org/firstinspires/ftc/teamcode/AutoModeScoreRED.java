@@ -20,34 +20,26 @@ public class AutoModeScoreRED extends LinearOpMode {
 
         if (opModeIsActive()) {
             // autonomous scoring for the red side (towards the backboard)
+
             // raise the claw so that it stays up completely
             roboController.Wrist.setPosition(0.65);
 
             // wait a little until the claw is flipped up
             sleep(1500);
 
-            // move forward so that the bot isn't right against the backboard
-            roboController.moveOnYAxis(RoboController.inchesToCounts(3));
-
-            // turn left by about 90 degrees
-            roboController.Spin(RoboController.inchesToCounts(-18));
+            // move right to the middle of the adjacent panel
+            roboController.moveOnXAxis(RoboController.inchesToCounts(27));
 
             // move forward to the middle of the adjacent panel
-            roboController.moveOnYAxis(RoboController.inchesToCounts(-57));
-    
-                // turn left by about 90 degrees
-                roboController.Spin(RoboController.inchesToCounts(18));
-    
-                // move forward to the middle of the adjacent panel
-                roboController.moveOnYAxis(RoboController.inchesToCounts(27));
-    
-                // turn left by about 90 degrees
+            roboController.moveOnYAxis(RoboController.inchesToCounts(27));
+
+            // turn left by about 90 degrees
             roboController.Spin(RoboController.inchesToCounts(-18));
 
             // move back right against the middle of the backboard
             roboController.moveOnYAxis(RoboController.inchesToCounts(-19));
 
-            // move the arm back until it reaches a position thats right against the backboard (2050)
+            // move the arm back until it reaches a position that's right against the backboard (2050)
             while(roboController.ArmR.getCurrentPosition() < 2050) {
                 roboController.ArmL.setPower(0.45);
                 roboController.ArmR.setPower(0.45);
@@ -63,14 +55,14 @@ public class AutoModeScoreRED extends LinearOpMode {
             roboController.ClawL.setDirection(DcMotorSimple.Direction.FORWARD);
             roboController.ClawL.setPower(0.75);
 
-            // wait a second in case the pixels haven't been completely scored yet
+            // wait two and a half seconds in case the pixels haven't been completely scored yet
             sleep(2500);
 
             // stop rotating claw
             roboController.ClawR.setPower(0);
             roboController.ClawL.setPower(0);
 
-            // move the arm forward until it reaches a position thats about where the floor is (10)
+            // move the arm forward until it reaches a position that's about where the floor is (10)
             while(roboController.ArmR.getCurrentPosition() > 10) {
                 roboController.ArmL.setPower(-0.45);
                 roboController.ArmR.setPower(-0.45);
@@ -80,24 +72,16 @@ public class AutoModeScoreRED extends LinearOpMode {
             roboController.ArmL.setPower(0);
             roboController.ArmR.setPower(0);
 
-            // wait three seconds to give the bot time to put down the arm
-            sleep(1000);
-
             // move forward so that the bot isn't right against the backboard
             roboController.moveOnYAxis(RoboController.inchesToCounts(3));
 
-            // turn left by about 90 degrees
-            roboController.Spin(RoboController.inchesToCounts(18));
+            // move left to the middle of the adjacent panel
+            roboController.moveOnXAxis(RoboController.inchesToCounts(-27));
 
-            // move forward to the middle of the adjacent panel
-            roboController.moveOnYAxis(RoboController.inchesToCounts(-27));
+            // move back to the middle of the adjacent panel (to park in the backstage area)
+            roboController.moveOnYAxis(RoboController.inchesToCounts(-13));
 
-            // turn left by about 90 degrees
-            roboController.Spin(RoboController.inchesToCounts(-18));
-
-            // move forward to the middle of the adjacent panel
-            roboController.moveOnYAxis(RoboController.inchesToCounts(-30));
-            
+            // autonomous mode has now ended
             stop();
         }
     }
