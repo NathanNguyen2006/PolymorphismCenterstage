@@ -16,8 +16,8 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
 
 @Autonomous
-public class hatredanddepression2 extends LinearOpMode {
-
+public class hatredanddepressionred extends LinearOpMode {
+//Backup sensor(rev 2m dist sensor) is named BackupSens
     OpenCvWebcam webcam1 = null;
     int position; //0 = left, 1 = middle, 2 = right
     private RoboController roboController;
