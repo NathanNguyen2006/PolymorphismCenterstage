@@ -23,7 +23,7 @@ public class AutoModeNoStrafeRED extends LinearOpMode {
             // does NOT utilize strafing
 
             // raise the claw so that it stays up completely
-            roboController.Wrist.setPosition(0.65);
+            roboController.Wrist.setPosition(0.53);
 
             // wait a little until the claw is flipped up
             sleep(1000);
@@ -61,12 +61,12 @@ public class AutoModeNoStrafeRED extends LinearOpMode {
 
             // push pixels out
             roboController.ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
-            roboController.ClawR.setPower(0.75);
+            roboController.ClawR.setPower(0.5);
             roboController.ClawL.setDirection(DcMotorSimple.Direction.FORWARD);
-            roboController.ClawL.setPower(0.75);
+            roboController.ClawL.setPower(0.5);
 
-            // wait two and a half seconds in case the pixels haven't been completely scored yet
-            sleep(2500);
+            // wait one and a half seconds in case the pixels haven't been completely scored yet
+            sleep(1500);
 
             // stop rotating claw
             roboController.ClawR.setPower(0);
@@ -95,7 +95,7 @@ public class AutoModeNoStrafeRED extends LinearOpMode {
             roboController.Spin(RoboController.inchesToCounts(-18));
 
             // move back to the middle of the adjacent panel (to park in the backstage area)
-            roboController.moveOnYAxis(RoboController.inchesToCounts(-30));
+            roboController.moveOnYAxis(RoboController.inchesToCounts(-20));
 
             // autonomous mode has now ended
             stop();

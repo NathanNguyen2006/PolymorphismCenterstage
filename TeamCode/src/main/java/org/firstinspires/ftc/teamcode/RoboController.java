@@ -135,8 +135,8 @@ public class RoboController {
         BRW.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // if the bot is close enough to the back board (or any object really), meaning if it's
-        // 2 inches away or closer, vibrate the controller of the wheels to alert the driver
-        if (distanceSensor.getDistance(DistanceUnit.INCH) <= 2) {
+        // 5 inches away or closer, vibrate the controller of the wheels to alert the driver
+        if(distanceSensor.getDistance(DistanceUnit.INCH) <= 5) {
             movepad.rumble(2000);
             autoSlowBack = true;
         } else {
@@ -219,9 +219,7 @@ public class RoboController {
         else if(movepad.left_stick_y > 0.2){
             if(!driveMode){
                 if(slowDown) {
-                    if (movepad.left_stick_y < 0) {
-                        drivePower = 0.3;
-                    }
+                    drivePower = -0.3;
                 } else {
                     drivePower = -movepad.left_stick_y;
                 }
@@ -230,9 +228,7 @@ public class RoboController {
         else if(movepad.left_stick_y < -0.2){
             if(!driveMode){
                 if(slowDown || autoSlowBack) {
-                    if (movepad.left_stick_y > 0) {
-                        drivePower = -0.3;
-                    }
+                    drivePower = 0.3;
                 } else {
                     drivePower = -movepad.left_stick_y;
                 }
@@ -331,9 +327,9 @@ public class RoboController {
     public void interpretArmpad(Gamepad armpad){
 
         // sets max range for how far the arm can move back
-        // when the arm goes further than 2160, the power of the arm is set to go in the
+        // when the arm goes further than 2300, the power of the arm is set to go in the
         // opposite direction to counteract the power set by the joystick
-        if(ArmR.getCurrentPosition() > 2200) {
+        if(ArmR.getCurrentPosition() > 2300) {
             ArmL.setPower(-0.1);
             ArmR.setPower(-0.1);
         }
@@ -389,14 +385,14 @@ public class RoboController {
         // otherwise the claw won't rotate at all
         if(armpad.dpad_up){
             ClawR.setDirection(DcMotorSimple.Direction.FORWARD);
-            ClawR.setPower(0.75);
+            ClawR.setPower(0.5);
             ClawL.setDirection(DcMotorSimple.Direction.REVERSE);
-            ClawL.setPower(0.75);
+            ClawL.setPower(0.5);
         } else if(armpad.dpad_down) {
             ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
-            ClawR.setPower(0.75);
+            ClawR.setPower(0.5);
             ClawL.setDirection(DcMotorSimple.Direction.FORWARD);
-            ClawL.setPower(0.75);
+            ClawL.setPower(0.5);
         } else {
             ClawR.setPower(0);
             ClawL.setPower(0);
