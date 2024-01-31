@@ -165,9 +165,9 @@ public class RoboController {
         if(Math.abs(movepad.right_stick_x) > .2){
             if(slowDown){
                 if(movepad.right_stick_x > 0){
-                    turnPower = movepad.right_stick_x * 0.25;
+                    turnPower = 0.2;
                 } else if(movepad.right_stick_x < 0){
-                    turnPower = movepad.right_stick_x * -0.25;
+                    turnPower = -0.2;
                 }
             } else {
                 turnPower = movepad.right_stick_x * 0.5;
@@ -179,7 +179,7 @@ public class RoboController {
 
         if(movepad.left_stick_x > 0.2){
             if(slowDown){
-                strafePower = movepad.left_stick_x * 0.4;
+                strafePower = 0.3;
             } else {
                 strafePower = movepad.left_stick_x;
             }
@@ -188,7 +188,7 @@ public class RoboController {
         }
         else if(movepad.left_stick_x < -0.2){
             if(slowDown){
-                strafePower = movepad.left_stick_x * -0.4;
+                strafePower = -0.3;
             } else {
                 strafePower = movepad.left_stick_x;
             }
@@ -197,7 +197,7 @@ public class RoboController {
         else if(movepad.left_trigger > 0.2){
             if(driveMode){
                 if(slowDown || autoSlowBack){
-                    drivePower = -movepad.left_trigger * -0.4;
+                    drivePower = -0.3;
                 } else {
                     drivePower = -movepad.left_trigger;
                 }
@@ -208,7 +208,7 @@ public class RoboController {
         else if(movepad.right_trigger > 0.2){
             if(driveMode){
                 if(slowDown){
-                    drivePower = movepad.right_trigger * 0.4;
+                    drivePower = 0.3;
                 } else {
                     drivePower = movepad.right_trigger;
                 }
@@ -216,15 +216,22 @@ public class RoboController {
 
             //direction = Compass.South;
         }
-        else if(Math.abs(movepad.left_stick_y) > 0.2){
+        else if(movepad.left_stick_y > 0.2){
+            if(!driveMode){
+                if(slowDown) {
+                    if (movepad.left_stick_y < 0) {
+                        drivePower = 0.3;
+                    }
+                } else {
+                    drivePower = -movepad.left_stick_y;
+                }
+            }
+        }
+        else if(movepad.left_stick_y < -0.2){
             if(!driveMode){
                 if(slowDown || autoSlowBack) {
                     if (movepad.left_stick_y > 0) {
-                        drivePower = movepad.left_stick_y * -0.4;
-                    }
-                } else if(slowDown) {
-                    if (movepad.left_stick_y < 0) {
-                        drivePower = movepad.left_stick_y * 0.4;
+                        drivePower = -0.3;
                     }
                 } else {
                     drivePower = -movepad.left_stick_y;
@@ -424,7 +431,7 @@ public class RoboController {
                 Wrist.setPosition(0.05);
             }
             if(open2){
-                Wrist.setPosition(0.55);
+                Wrist.setPosition(0.525);
             }
         }
         // used to set b to the opposite state of the right bumper (true/false or false/true)
