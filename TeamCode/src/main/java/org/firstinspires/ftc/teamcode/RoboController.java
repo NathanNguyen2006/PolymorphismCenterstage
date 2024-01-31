@@ -109,17 +109,45 @@ public class RoboController {
     public boolean canDriveBack = true;
     public boolean rumbled = false;
 
+    public boolean driveMode = false;
+
+    public boolean DM = false;
+
+    // gamepad 1 (blue) - movement of wheels
     public void interpretMovepad(Gamepad movepad){
+        Gamepad.RumbleEffect rumbleEffect1 = new Gamepad.RumbleEffect.Builder()
+                .addStep(1.0, 1.0, 500)  //  Rumble 100% for 500 mSec
+                .build();
+
+        Gamepad.RumbleEffect rumbleEffect2 = new Gamepad.RumbleEffect.Builder()
+                .addStep(1.0, 1.0, 500)  //  Rumble 100% for 500 mSec
+                .addStep(0.0, 0.0, 300)  //  Pause for 300 mSec
+                .addStep(1.0, 1.0, 500)  //  Rumble 100% for 500 mSec
+                .build();
 
         FLW.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         FRW.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         BLW.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         BRW.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        // if the bot is close enough to the back board (or any object really), meaning if it's
+        // 2 inches away or closer, vibrate the controller of the wheels to alert the driver
         if (distanceSensor.getDistance(DistanceUnit.INCH) <= 2) {
             movepad.rumble(2000);
         }
 
+        // driveMode = true --> using left and right triggers for wheels (vibrate twice when switching to this)
+        // driveMode = false --> using up and down left joystick for wheels (vibrate once when switching to this)
+        if(DM && movepad.triangle){
+            driveMode = !driveMode;
+
+            if(driveMode){
+                movepad.runRumbleEffect(rumbleEffect2);
+            } else {
+                movepad.runRumbleEffect(rumbleEffect1);
+            }
+        }
+        DM = !(movepad.triangle);
 
         if(Math.abs(movepad.right_stick_x) > .2){
             turnPower = movepad.right_stick_x*0.5;
@@ -137,12 +165,23 @@ public class RoboController {
             //direction = Compass.West;
         }
         else if(movepad.left_trigger > 0.2){
-            drivePower = -movepad.left_trigger;
+            if(driveMode){
+                drivePower = -movepad.left_trigger;
+            }
+
             //direction = Compass.North;
         }
         else if(movepad.right_trigger > 0.2){
-            drivePower = movepad.right_trigger;
+            if(driveMode){
+                drivePower = movepad.right_trigger;
+            }
+
             //direction = Compass.South;
+        }
+        else if(Math.abs(movepad.left_stick_y) > 0.2){
+            if(!driveMode){
+                drivePower = movepad.left_stick_y;
+            }
         }
         else{
             drivePower = 0;
@@ -233,6 +272,7 @@ public class RoboController {
     boolean open2 = false;
 
     //Not Implemented
+    // gamepad 2 (red) - movement of arm
     public void interpretArmpad(Gamepad armpad){
 
         // sets max range for how far the arm can move back
@@ -262,11 +302,10 @@ public class RoboController {
             ArmR.setPower(0);
         }
 
-         if(armpad.right_stick_y > 0.5  ){
-
+        if(armpad.right_stick_y > 0.5){
             Extender.setPower(-0.7);
         }
-        else if(armpad.right_stick_y < -0.5 ){
+        else if(armpad.right_stick_y < -0.5){
             Extender.setPower(0.7);
         }
         else{
@@ -340,6 +379,11 @@ public class RoboController {
                 Wrist.setPosition(0.5);
             }
         }
+        // used to set b to the opposite state of the right bumper (true/false or false/true)
+        // so that pressing the right bumper won't flip the wrist forever. it will only flip
+        // it once in the one instance where b and the right bumper are both true, before b
+        // gets set to false
+        // (or at least i think this is how it functions)
         b = !(armpad.right_bumper);
 
 //        if(armpad.left_trigger != 0){
@@ -362,13 +406,15 @@ public class RoboController {
                 ArmL.setPower(1);
             }
 
-            if(armpad.square){
-                Drone.setPosition(0.7);
+            // uses square to toggle drone launcher position
+            if(c && armpad.square){
+                if(Drone.getPosition() > 0){
+                    Drone.setPosition(0);
+                } else {
+                    Drone.setPosition(0.7);
+                }
             }
-
-            if(armpad.circle){
-                Drone.setPosition(0);
-            }
+            c = !(armpad.square);
 
             /*
             if(armpad.circle){
