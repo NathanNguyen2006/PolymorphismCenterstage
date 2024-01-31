@@ -113,6 +113,8 @@ public class RoboController {
 
     public boolean DM = false;
 
+    public boolean slowDown = false;
+
     // gamepad 1 (blue) - movement of wheels
     public void interpretMovepad(Gamepad movepad){
         Gamepad.RumbleEffect rumbleEffect1 = new Gamepad.RumbleEffect.Builder()
@@ -149,38 +151,77 @@ public class RoboController {
         }
         DM = !(movepad.triangle);
 
+        if(movepad.left_bumper){
+            slowDown = true;
+        } else {
+            slowDown = false;
+        }
+
         if(Math.abs(movepad.right_stick_x) > .2){
-            turnPower = movepad.right_stick_x*0.5;
+            if(slowDown){
+                if(movepad.right_stick_x > 0){
+                    turnPower = 0.25;
+                } else if(movepad.right_stick_x < 0){
+                    turnPower = -0.25;
+                }
+            } else {
+                turnPower = movepad.right_stick_x * 0.5;
+            }
         }
         else{
             turnPower = 0;
         }
 
         if(movepad.left_stick_x > 0.2){
-            strafePower = movepad.left_stick_x;
+            if(slowDown){
+                strafePower = 0.4;
+            } else {
+                strafePower = movepad.left_stick_x;
+            }
+
             //direction = Compass.East;
         }
         else if(movepad.left_stick_x < -0.2){
-            strafePower = movepad.left_stick_x;
+            if(slowDown){
+                strafePower = -0.4;
+            } else {
+                strafePower = movepad.left_stick_x;
+            }
             //direction = Compass.West;
         }
         else if(movepad.left_trigger > 0.2){
             if(driveMode){
-                drivePower = -movepad.left_trigger;
+                if(slowDown){
+                    drivePower = -0.4;
+                } else {
+                    drivePower = -movepad.left_trigger;
+                }
             }
 
             //direction = Compass.North;
         }
         else if(movepad.right_trigger > 0.2){
             if(driveMode){
-                drivePower = movepad.right_trigger;
+                if(slowDown){
+                    drivePower = 0.4;
+                } else {
+                    drivePower = movepad.right_trigger;
+                }
             }
 
             //direction = Compass.South;
         }
         else if(Math.abs(movepad.left_stick_y) > 0.2){
             if(!driveMode){
-                drivePower = -movepad.left_stick_y;
+                if(slowDown){
+                    if(movepad.left_stick_y > 0){
+                        drivePower = 0.4;
+                    } else if(movepad.left_stick_y < 0){
+                        drivePower = -0.4;
+                    }
+                } else {
+                    drivePower = -movepad.left_stick_y;
+                }
             }
         }
         else{
