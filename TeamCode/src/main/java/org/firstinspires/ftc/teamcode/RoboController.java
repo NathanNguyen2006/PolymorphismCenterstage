@@ -180,7 +180,7 @@ public class RoboController {
         }
         else if(Math.abs(movepad.left_stick_y) > 0.2){
             if(!driveMode){
-                drivePower = movepad.left_stick_y;
+                drivePower = -movepad.left_stick_y;
             }
         }
         else{
