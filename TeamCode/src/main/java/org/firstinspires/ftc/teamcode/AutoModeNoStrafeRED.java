@@ -35,7 +35,7 @@ public class AutoModeNoStrafeRED extends LinearOpMode {
             roboController.Spin(RoboController.inchesToCounts(-18));
 
             // move back to the middle of the adjacent panel
-            roboController.moveOnYAxis(RoboController.inchesToCounts(-57));
+            roboController.moveOnYAxis(RoboController.inchesToCounts(-27));
 
             // turn right by about 90 degrees
             roboController.Spin(RoboController.inchesToCounts(18));

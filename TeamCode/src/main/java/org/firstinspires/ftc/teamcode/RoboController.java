@@ -115,6 +115,8 @@ public class RoboController {
 
     public boolean slowDown = false;
 
+    public boolean autoSlowBack = false;
+
     // gamepad 1 (blue) - movement of wheels
     public void interpretMovepad(Gamepad movepad){
         Gamepad.RumbleEffect rumbleEffect1 = new Gamepad.RumbleEffect.Builder()
@@ -136,6 +138,9 @@ public class RoboController {
         // 2 inches away or closer, vibrate the controller of the wheels to alert the driver
         if (distanceSensor.getDistance(DistanceUnit.INCH) <= 2) {
             movepad.rumble(2000);
+            autoSlowBack = true;
+        } else {
+            autoSlowBack = false;
         }
 
         // driveMode = true --> using left and right triggers for wheels (vibrate twice when switching to this)
@@ -160,9 +165,9 @@ public class RoboController {
         if(Math.abs(movepad.right_stick_x) > .2){
             if(slowDown){
                 if(movepad.right_stick_x > 0){
-                    turnPower = 0.25;
+                    turnPower = movepad.right_stick_x * 0.25;
                 } else if(movepad.right_stick_x < 0){
-                    turnPower = -0.25;
+                    turnPower = movepad.right_stick_x * -0.25;
                 }
             } else {
                 turnPower = movepad.right_stick_x * 0.5;
@@ -174,7 +179,7 @@ public class RoboController {
 
         if(movepad.left_stick_x > 0.2){
             if(slowDown){
-                strafePower = 0.4;
+                strafePower = movepad.left_stick_x * 0.4;
             } else {
                 strafePower = movepad.left_stick_x;
             }
@@ -183,7 +188,7 @@ public class RoboController {
         }
         else if(movepad.left_stick_x < -0.2){
             if(slowDown){
-                strafePower = -0.4;
+                strafePower = movepad.left_stick_x * -0.4;
             } else {
                 strafePower = movepad.left_stick_x;
             }
@@ -191,8 +196,8 @@ public class RoboController {
         }
         else if(movepad.left_trigger > 0.2){
             if(driveMode){
-                if(slowDown){
-                    drivePower = -0.4;
+                if(slowDown || autoSlowBack){
+                    drivePower = -movepad.left_trigger * -0.4;
                 } else {
                     drivePower = -movepad.left_trigger;
                 }
@@ -203,7 +208,7 @@ public class RoboController {
         else if(movepad.right_trigger > 0.2){
             if(driveMode){
                 if(slowDown){
-                    drivePower = 0.4;
+                    drivePower = movepad.right_trigger * 0.4;
                 } else {
                     drivePower = movepad.right_trigger;
                 }
@@ -213,11 +218,13 @@ public class RoboController {
         }
         else if(Math.abs(movepad.left_stick_y) > 0.2){
             if(!driveMode){
-                if(slowDown){
-                    if(movepad.left_stick_y > 0){
-                        drivePower = 0.4;
-                    } else if(movepad.left_stick_y < 0){
-                        drivePower = -0.4;
+                if(slowDown || autoSlowBack) {
+                    if (movepad.left_stick_y > 0) {
+                        drivePower = movepad.left_stick_y * -0.4;
+                    }
+                } else if(slowDown) {
+                    if (movepad.left_stick_y < 0) {
+                        drivePower = movepad.left_stick_y * 0.4;
                     }
                 } else {
                     drivePower = -movepad.left_stick_y;
@@ -417,7 +424,7 @@ public class RoboController {
                 Wrist.setPosition(0.05);
             }
             if(open2){
-                Wrist.setPosition(0.5);
+                Wrist.setPosition(0.55);
             }
         }
         // used to set b to the opposite state of the right bumper (true/false or false/true)
