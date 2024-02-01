@@ -22,7 +22,7 @@ import java.util.List;
 public class TFOD_Team_Prop_Detection extends LinearOpMode {
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
-
+    private Recognition recog;
     // TFOD_MODEL_ASSET points to a model file stored in the project Asset location,
     // this is only used for Android Studio when using models in Assets.
     private static final String TFOD_MODEL_ASSET = "red_beacon_model.tflite";
@@ -42,6 +42,8 @@ public class TFOD_Team_Prop_Detection extends LinearOpMode {
      * The variable to store our instance of the vision portal.
      */
     private VisionPortal visionPortal;
+
+    public String currentLabel;
 
     @Override
     public void runOpMode() {
@@ -146,7 +148,7 @@ public class TFOD_Team_Prop_Detection extends LinearOpMode {
     /**
      * Add telemetry about TensorFlow Object Detection (TFOD) recognitions.
      */
-    private void telemetryTfod() {
+    public void telemetryTfod() {
 
         List<Recognition> currentRecognitions = tfod.getRecognitions();
         telemetry.addData("# Objects Detected", currentRecognitions.size());
@@ -155,7 +157,7 @@ public class TFOD_Team_Prop_Detection extends LinearOpMode {
         for (Recognition recognition : currentRecognitions) {
             double x = (recognition.getLeft() + recognition.getRight()) / 2 ;
             double y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
-
+            recog = recognition; //NATHAN DID THIS
             telemetry.addData(""," ");
             telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
             telemetry.addData("- Position", "%.0f / %.0f", x, y);
@@ -163,5 +165,9 @@ public class TFOD_Team_Prop_Detection extends LinearOpMode {
         }   // end for() loop
 
     }   // end method telemetryTfod()
+
+    public String getLabel(){
+        return recog.getLabel();
+    }
 
 }   // end class
