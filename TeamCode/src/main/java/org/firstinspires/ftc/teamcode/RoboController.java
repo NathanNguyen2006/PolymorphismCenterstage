@@ -9,7 +9,6 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import java.lang.Math;
@@ -115,7 +114,6 @@ public class RoboController {
 
     public boolean slowDown = false;
 
-    public boolean autoSlowBack = false;
 
     // gamepad 1 (blue) - movement of wheels
     public void interpretMovepad(Gamepad movepad){
@@ -138,9 +136,6 @@ public class RoboController {
         // 5 inches away or closer, vibrate the controller of the wheels to alert the driver
         if(distanceSensor.getDistance(DistanceUnit.INCH) <= 5) {
             movepad.rumble(2000);
-            autoSlowBack = true;
-        } else {
-            autoSlowBack = false;
         }
 
         // driveMode = true --> using left and right triggers for wheels (vibrate twice when switching to this)
@@ -156,7 +151,7 @@ public class RoboController {
         }
         DM = !(movepad.triangle);
 
-        if(movepad.left_bumper){
+        if(movepad.left_bumper || movepad.right_bumper){
             slowDown = true;
         } else {
             slowDown = false;
@@ -196,7 +191,7 @@ public class RoboController {
         }
         else if(movepad.left_trigger > 0.2){
             if(driveMode){
-                if(slowDown || autoSlowBack){
+                if(slowDown){
                     drivePower = -0.3;
                 } else {
                     drivePower = -movepad.left_trigger;
@@ -227,7 +222,7 @@ public class RoboController {
         }
         else if(movepad.left_stick_y < -0.2){
             if(!driveMode){
-                if(slowDown || autoSlowBack) {
+                if(slowDown) {
                     drivePower = 0.3;
                 } else {
                     drivePower = -movepad.left_stick_y;
