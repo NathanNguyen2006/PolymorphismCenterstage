@@ -1,16 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
-import java.util.List;
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-//import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
 /**
  * This 2022-2023 OpMode illustrates the basics of using the TensorFlow Object Detection API to
@@ -22,55 +13,32 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@Autonomous(name = "Autonomous Mode LEFT", group = "Concept")
+@Autonomous(name = "Autonomous Mode LEFT (for blue)", group = "Concept")
 //@Disabled
 public class AutoModeLeft extends LinearOpMode {
     private RoboController roboController;
 
-    //private SolidColorStrategy strategy;
-    //private Direction direction = Direction.Left;
-
-
     @Override
     public void runOpMode() {
         roboController = new RoboController(this);
-        //strategy = new SolidColorStrategy(this, direction);
 
         /** Wait for the game to begin */
         telemetry.addData(">", "Press Play to start op mode");
         telemetry.update();
         waitForStart();
 
-        //roboController.ClawR.setPosition(0.5);
-
         if (opModeIsActive()) {
-            // waits 2 seconds and then just moves to the right (for the red side)
-            sleep(2000);
+            // raise the claw so that it stays up completely
+            roboController.Wrist.setPosition(0.53);
 
+            // wait a little until the claw is flipped up
+            sleep(1500);
+
+            // just moves to the left (for the blue side)
             roboController.moveOnXAxis(RoboController.inchesToCounts(-52));
 
-            /*
-            Signal face = Signal.One;
-            for (int i = 0; i < 5; i++) {
-                Signal newFace = getConeFace();
-                if (newFace != null) {
-                    face = newFace;
-                    break;
-                }
-                else sleep(2000);
-            }
-            roboController.moveTo(face, direction);
-
-             */
-
+            // autonomous mode has now ended
             stop();
         }
     }
-
-    /*
-    private Signal getConeFace() {
-        return strategy.getConePosition();
-    }
-
-     */
 }

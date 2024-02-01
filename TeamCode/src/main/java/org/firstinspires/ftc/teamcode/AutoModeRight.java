@@ -13,55 +13,32 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@Autonomous(name = "Autonomous Mode RIGHT", group = "Concept")
+@Autonomous(name = "Autonomous Mode RIGHT (for red)", group = "Concept")
 //@Disabled
 public class AutoModeRight extends LinearOpMode {
     private RoboController roboController;
 
-    //private SolidColorStrategy strategy;
-    //private Direction direction = Direction.Right;
-
-
     @Override
     public void runOpMode() {
         roboController = new RoboController(this);
-        //strategy = new SolidColorStrategy(this, direction);
 
         /** Wait for the game to begin */
         telemetry.addData(">", "Press Play to start op mode");
         telemetry.update();
         waitForStart();
 
-        //roboController.ClawR.setPosition(0.5);
-
         if (opModeIsActive()) {
-            // waits 2 seconds and then just moves to the right (for the red side)
-            sleep(2000);
+            // raise the claw so that it stays up completely
+            roboController.Wrist.setPosition(0.53);
 
+            // wait a little until the claw is flipped up
+            sleep(1500);
+
+            // just moves to the right (for the red side)
             roboController.moveOnXAxis(RoboController.inchesToCounts(52));
 
-            /*
-            Signal face = Signal.One;
-            for (int i = 0; i < 5; i++) {
-                Signal newFace = getConeFace();
-                if (newFace != null) {
-                    face = newFace;
-                    break;
-                }
-                else sleep(2000);
-            }
-            roboController.moveTo(face, direction);
-
-             */
-
+            // autonomous mode has now ended
             stop();
         }
     }
-
-    /*
-    private Signal getConeFace() {
-        return strategy.getConePosition();
-    }
-
-     */
 }
