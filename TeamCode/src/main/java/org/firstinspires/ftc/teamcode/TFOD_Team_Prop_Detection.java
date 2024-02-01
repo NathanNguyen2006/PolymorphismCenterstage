@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
@@ -7,7 +8,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
-
+import android.util.Size;
 import java.util.List;
 
 /*
@@ -17,12 +18,13 @@ import java.util.List;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
-@TeleOp(name = "Concept: TensorFlow Object Detection", group = "Concept")
+@Autonomous(name = "Concept: TensorFlow Object Detection", group = "Concept")
 
 public class TFOD_Team_Prop_Detection extends LinearOpMode {
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
     private Recognition recog;
+    private RoboController roboController;
     // TFOD_MODEL_ASSET points to a model file stored in the project Asset location,
     // this is only used for Android Studio when using models in Assets.
     private static final String TFOD_MODEL_ASSET = "red_beacon_model.tflite";
@@ -49,6 +51,11 @@ public class TFOD_Team_Prop_Detection extends LinearOpMode {
     public void runOpMode() {
 
         initTfod();
+        if (tfod != null) {
+           //tfod.activate();
+        }
+
+        String currentLabel = this.getLabel();
 
         // Wait for the DS start button to be touched.
         telemetry.addData("DS preview on/off", "3 dots, Camera Stream");
@@ -58,7 +65,7 @@ public class TFOD_Team_Prop_Detection extends LinearOpMode {
 
         if (opModeIsActive()) {
             while (opModeIsActive()) {
-
+                //System.out.println(tfod);
                 telemetryTfod();
 
                 // Push telemetry to the Driver Station.
@@ -73,6 +80,16 @@ public class TFOD_Team_Prop_Detection extends LinearOpMode {
 
                 // Share the CPU.
                 sleep(20);
+
+                if(currentLabel.equals("red beacon middle")){
+                    // move right to the middle of the adjacent panel
+                    roboController.moveOnXAxis(RoboController.inchesToCounts(27));
+                } else if(currentLabel.equals("red beacon right")){
+                    // move right to the middle of the adjacent panel
+                    roboController.moveOnYAxis(RoboController.inchesToCounts(27));
+                } else {
+                    roboController.moveOnYAxis(RoboController.inchesToCounts(3));
+                }
             }
         }
 
@@ -118,18 +135,18 @@ public class TFOD_Team_Prop_Detection extends LinearOpMode {
         }
 
         // Choose a camera resolution. Not all cameras support all resolutions.
-        //builder.setCameraResolution(new Size(640, 480));
+        builder.setCameraResolution(new Size(640, 480));
 
         // Enable the RC preview (LiveView).  Set "false" to omit camera monitoring.
-        //builder.enableLiveView(true);
+        builder.enableLiveView(true);
 
         // Set the stream format; MJPEG uses less bandwidth than default YUY2.
-        //builder.setStreamFormat(VisionPortal.StreamFormat.YUY2);
+        builder.setStreamFormat(VisionPortal.StreamFormat.YUY2);
 
         // Choose whether or not LiveView stops if no processors are enabled.
         // If set "true", monitor shows solid orange screen if no processors enabled.
         // If set "false", monitor shows camera view without annotations.
-        //builder.setAutoStopLiveView(false);
+        builder.setAutoStopLiveView(false);
 
         // Set and enable the processor.
         builder.addProcessor(tfod);
