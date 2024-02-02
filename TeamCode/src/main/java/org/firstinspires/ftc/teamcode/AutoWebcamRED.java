@@ -19,7 +19,6 @@ public class AutoWebcamRED  extends LinearOpMode {
     public void runOpMode() {
         /** Wait for the game to begin */
         camera.telemetryTfod();
-        String currentLabel = camera.getLabel();
 
         telemetry.addData(">", "Press Play to start op mode");
         telemetry.update();
@@ -34,15 +33,6 @@ public class AutoWebcamRED  extends LinearOpMode {
             // wait a little until the claw is flipped up
             sleep(1500);
 
-            if(currentLabel.equals("red beacon middle")){
-                // move right to the middle of the adjacent panel
-                roboController.moveOnXAxis(RoboController.inchesToCounts(27));
-            } else if(currentLabel.equals("red beacon right")){
-                // move right to the middle of the adjacent panel
-                roboController.moveOnYAxis(RoboController.inchesToCounts(27));
-            } else {
-                roboController.moveOnYAxis(RoboController.inchesToCounts(3));
-            }
 
             // autonomous mode has now ended
             stop();
