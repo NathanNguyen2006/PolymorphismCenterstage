@@ -55,7 +55,7 @@ public class TFOD_Team_Prop_Detection extends LinearOpMode {
            //tfod.activate();
         }
 
-        String currentLabel = this.getLabel();
+        //String currentLabel = this.getLabel();
 
         // Wait for the DS start button to be touched.
         telemetry.addData("DS preview on/off", "3 dots, Camera Stream");
@@ -80,16 +80,6 @@ public class TFOD_Team_Prop_Detection extends LinearOpMode {
 
                 // Share the CPU.
                 sleep(20);
-
-                if(currentLabel.equals("red beacon middle")){
-                    // move right to the middle of the adjacent panel
-                    roboController.moveOnXAxis(RoboController.inchesToCounts(27));
-                } else if(currentLabel.equals("red beacon right")){
-                    // move right to the middle of the adjacent panel
-                    roboController.moveOnYAxis(RoboController.inchesToCounts(27));
-                } else {
-                    roboController.moveOnYAxis(RoboController.inchesToCounts(3));
-                }
             }
         }
 
@@ -179,6 +169,16 @@ public class TFOD_Team_Prop_Detection extends LinearOpMode {
             telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
             telemetry.addData("- Position", "%.0f / %.0f", x, y);
             telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
+
+            if(recognition.getLabel().equals("red beacon middle")){
+                // move right to the middle of the adjacent panel
+                roboController.moveOnXAxis(RoboController.inchesToCounts(27));
+            } else if(recognition.getLabel().equals("red beacon right")){
+                // move up to the middle of the adjacent panel
+                roboController.moveOnYAxis(RoboController.inchesToCounts(27));
+            } else {
+                roboController.moveOnYAxis(RoboController.inchesToCounts(3));
+            }
         }   // end for() loop
 
     }   // end method telemetryTfod()
