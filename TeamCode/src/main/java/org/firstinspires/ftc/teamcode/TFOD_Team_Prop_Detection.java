@@ -18,7 +18,7 @@ import java.util.List;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
-@Autonomous(name = "Concept: TensorFlow Object Detection", group = "Concept")
+@TeleOp(name = "Concept: TensorFlow Object Detection", group = "Concept")
 
 public class TFOD_Team_Prop_Detection extends LinearOpMode {
 
@@ -69,7 +69,7 @@ public class TFOD_Team_Prop_Detection extends LinearOpMode {
                 telemetryTfod();
 
                 // Push telemetry to the Driver Station.
-                telemetry.update();
+                //telemetry.update();
 
                 // Save CPU resources; can resume streaming when needed.
                 if (gamepad1.dpad_down) {
@@ -164,7 +164,6 @@ public class TFOD_Team_Prop_Detection extends LinearOpMode {
         for (Recognition recognition : currentRecognitions) {
             double x = (recognition.getLeft() + recognition.getRight()) / 2 ;
             double y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
-            recog = recognition; //NATHAN DID THIS
             telemetry.addData(""," ");
             telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
             telemetry.addData("- Position", "%.0f / %.0f", x, y);
@@ -182,9 +181,4 @@ public class TFOD_Team_Prop_Detection extends LinearOpMode {
         }   // end for() loop
 
     }   // end method telemetryTfod()
-
-    public String getLabel(){
-        return recog.getLabel();
-    }
-
 }   // end class
