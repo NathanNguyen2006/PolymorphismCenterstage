@@ -1,11 +1,12 @@
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.teamcode.RoboController;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
@@ -18,20 +19,22 @@ import java.util.List;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
-@TeleOp(name = "TensorFlow Object Detection Test", group = "Concept")
+@Autonomous(name = "TensorFlow Object Detection Test", group = "Concept")
 
-public class WebcamAutonomous extends LinearOpMode {
-
+public class WebcamAutonomous extends LinearOpMode { 
+    RoboController roboController = new RoboController(this); 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
     // TFOD_MODEL_ASSET points to a model file stored in the project Asset location,
     // this is only used for Android Studio when using models in Assets.
-    private static final String TFOD_MODEL_ASSET = "red_beacon_model.tflite";
+    private static final String TFOD_MODEL_ASSET = "both_beacons_model.tflite";
     // TFOD_MODEL_FILE points to a model file stored onboard the Robot Controller's storage,
     // this is used when uploading models directly to the RC using the model upload interface.
-    private static final String TFOD_MODEL_FILE = "/sdcard/FIRST/tflitemodels/red_beacon_model.tflite";
+    private static final String TFOD_MODEL_FILE = "/sdcard/FIRST/tflitemodels/both_beacons_model.tflite";
     // Define the labels recognized in the model for TFOD (must be in training order!)
     private static final String[] LABELS = {
+            "blue beacon middle",
+            "blue beacon right",
             "red beacon middle",
             "red beacon right"
     };
@@ -60,11 +63,29 @@ public class WebcamAutonomous extends LinearOpMode {
         if (opModeIsActive()) {
             while (opModeIsActive()) {
 
-                telemetryTfod();
+                Recognition recognition = null;
+                for (int i = 0; i < 5; i++){
+                    recognition = telemetryTfod();
+                    if (recognition != null){
+                        break;
+                    }
+                    sleep(1000);
+                }
 
                 // Push telemetry to the Driver Station.
                 telemetry.update();
 
+                 if(recognition == null){
+                    roboController.moveOnYAxis(RoboController.inchesToCounts(13));
+                 } else if(recognition.getLabel().equals("red beacon middle")){
+                    // move right to the middle of the adjacent panel
+                    roboController.moveOnXAxis(RoboController.inchesToCounts(27));
+                 } else if(recognition.getLabel().equals("red beacon right")) {
+                     // move up to the middle of the adjacent panel
+                     roboController.moveOnYAxis(RoboController.inchesToCounts(27));
+                 }
+
+                
                 // Save CPU resources; can resume streaming when needed.
                 if (gamepad1.dpad_down) {
                     visionPortal.stopStreaming();
@@ -95,12 +116,12 @@ public class WebcamAutonomous extends LinearOpMode {
                 // choose one of the following:
                 //   Use setModelAssetName() if the custom TF Model is built in as an asset (AS only).
                 //   Use setModelFileName() if you have downloaded a custom team model to the Robot Controller.
-                //.setModelAssetName(TFOD_MODEL_ASSET)
+                .setModelAssetName(TFOD_MODEL_ASSET)
                 //.setModelFileName(TFOD_MODEL_FILE)
 
                 // The following default settings are available to un-comment and edit as needed to
                 // set parameters for custom models.
-                //.setModelLabels(LABELS)
+                .setModelLabels(LABELS)
                 //.setIsModelTensorFlow2(true)
                 //.setIsModelQuantized(true)
                 //.setModelInputSize(300)
@@ -149,7 +170,7 @@ public class WebcamAutonomous extends LinearOpMode {
     /**
      * Add telemetry about TensorFlow Object Detection (TFOD) recognitions.
      */
-    private void telemetryTfod() {
+    private Recognition telemetryTfod() {
 
         List<Recognition> currentRecognitions = tfod.getRecognitions();
         telemetry.addData("# Objects Detected", currentRecognitions.size());
@@ -164,7 +185,13 @@ public class WebcamAutonomous extends LinearOpMode {
             telemetry.addData("- Position", "%.0f / %.0f", x, y);
             telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
         }   // end for() loop
-
+        
+        if(currentRecognitions.size() > 0) {
+            return currentRecognitions.get(0);
+        }
+        else{
+            return null;
+        }
     }   // end method telemetryTfod()
 
 }   // end class

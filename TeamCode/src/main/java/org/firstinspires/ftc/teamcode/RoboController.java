@@ -132,11 +132,13 @@ public class RoboController {
         BLW.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         BRW.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        /*
         // if the bot is close enough to the back board (or any object really), meaning if it's
         // 5 inches away or closer, vibrate the controller of the wheels to alert the driver
         if(distanceSensor.getDistance(DistanceUnit.INCH) <= 5) {
             movepad.rumble(2000);
         }
+        */
 
         // driveMode = true --> using left and right triggers for wheels (vibrate twice when switching to this)
         // driveMode = false --> using up and down left joystick for wheels (vibrate once when switching to this)
@@ -720,7 +722,7 @@ public class RoboController {
         this.Spin(this.inchesToCounts(-18*isBlue));
     }
 
-    public void closetoBoard(int isBlue){ //not side
+    public void closeToBoard(int isBlue){ //not side
         this.Spin(this.inchesToCounts(18*isBlue));
         this.moveOnYAxis(this.inchesToCounts(-24));
     }
@@ -737,7 +739,7 @@ public class RoboController {
         this.Spin(this.inchesToCounts(-18*isBlue));
     }
 
-    public void closetoBoardObstructed(int isBlue){ //not side
+    public void closeToBoardObstructed(int isBlue){ //not side
 
         this.moveOnYAxis(this.inchesToCounts(36));
         this.Spin(this.inchesToCounts(18*isBlue));
