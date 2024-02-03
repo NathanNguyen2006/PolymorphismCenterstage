@@ -76,6 +76,8 @@ public class WebcamAutonomousBlueClose extends LinearOpMode {
                 // Push telemetry to the Driver Station.
                 telemetry.update();
 
+                roboController.speed = 1000;
+
                 if(recognition == null){
                     roboController.autoLeft();
                     roboController.closeToBoard(1, 1);

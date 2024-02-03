@@ -19,7 +19,9 @@ public class RoboController {
         return Math.abs(a-b)<eps;
     }
     private ElapsedTime runtime = new ElapsedTime();
-    private static final int speed = 1000;
+    public static int speed = 5000;
+
+    public static double ticks2 = 0;
 
     //Hardware
 
@@ -108,7 +110,7 @@ public class RoboController {
     public boolean canDriveBack = true;
     public boolean rumbled = false;
 
-    public boolean driveMode = false;
+    public boolean driveMode = true;
 
     public boolean DM = false;
 
@@ -564,6 +566,8 @@ public class RoboController {
     }
 
     public void moveOnXAxis(int ticks) {
+        ticks2 = ticks;
+
         DcMotorEx frontLeft = FLW,
             frontRight = FRW,
             rearLeft = BLW,
@@ -604,6 +608,8 @@ public class RoboController {
     }
 
     public void moveOnYAxis(int ticks) {
+        ticks2 = ticks;
+
         DcMotorEx frontLeft = FLW,
             frontRight = FRW,
             rearLeft = BLW,
@@ -714,7 +720,7 @@ public class RoboController {
         // move up to panel in front
         this.moveOnYAxis(this.inchesToCounts(25));
         // move slightly right to make room for pixel
-        this.moveOnXAxis(this.inchesToCounts(6));
+        this.moveOnXAxis(this.inchesToCounts(8));
         // spin 90 degrees left
         this.Spin(this.inchesToCounts(-18));
         // flip claw down
@@ -733,8 +739,6 @@ public class RoboController {
         // flip claw back up
         this.Wrist.setPosition(0.53);
         opMode.sleep(250);
-        // move slightly forward to get back to the middle of the panel
-        this.moveOnYAxis(this.inchesToCounts(6));
         this.Spin(this.inchesToCounts(18));
     }
 
@@ -746,7 +750,7 @@ public class RoboController {
         // move up to panel in front
         this.moveOnYAxis(this.inchesToCounts(25));
         // move slightly left to make room for pixel
-        this.moveOnXAxis(this.inchesToCounts(-6));
+        this.moveOnXAxis(this.inchesToCounts(-8));
         // spin 90 degrees right
         this.Spin(this.inchesToCounts(18));
         // flip claw down
@@ -765,8 +769,6 @@ public class RoboController {
         // flip claw back up
         this.Wrist.setPosition(0.53);
         opMode.sleep(250);
-        // move slightly forward to get back to the middle of the panel
-        this.moveOnYAxis(this.inchesToCounts(6));
         this.Spin(this.inchesToCounts(-18));
     }
 
@@ -800,7 +802,7 @@ public class RoboController {
         this.moveOnYAxis(RoboController.inchesToCounts(-19));
 
         //reposition on board
-        this.moveOnXAxis(RoboController.inchesToCounts(2*backPosition));
+        this.moveOnXAxis(RoboController.inchesToCounts(5*backPosition));
 
         // move the arm back until it reaches a position that's right against the backboard (2050)
         while(this.ArmR.getCurrentPosition() < 2050) {
