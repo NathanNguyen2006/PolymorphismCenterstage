@@ -19,7 +19,7 @@ public class RoboController {
         return Math.abs(a-b)<eps;
     }
     private ElapsedTime runtime = new ElapsedTime();
-    public static int speed = 5000;
+    public static int speed = 1000;
 
     public static double ticks2 = 0;
 
@@ -720,7 +720,7 @@ public class RoboController {
         // move up to panel in front
         this.moveOnYAxis(this.inchesToCounts(25));
         // move slightly right to make room for pixel
-        this.moveOnXAxis(this.inchesToCounts(8));
+        this.moveOnXAxis(this.inchesToCounts(10));
         // spin 90 degrees left
         this.Spin(this.inchesToCounts(-18));
         // flip claw down
@@ -750,7 +750,7 @@ public class RoboController {
         // move up to panel in front
         this.moveOnYAxis(this.inchesToCounts(25));
         // move slightly left to make room for pixel
-        this.moveOnXAxis(this.inchesToCounts(-8));
+        this.moveOnXAxis(this.inchesToCounts(-10));
         // spin 90 degrees right
         this.Spin(this.inchesToCounts(18));
         // flip claw down
@@ -802,7 +802,7 @@ public class RoboController {
         this.moveOnYAxis(RoboController.inchesToCounts(-19));
 
         //reposition on board
-        this.moveOnXAxis(RoboController.inchesToCounts(5*backPosition));
+        this.moveOnXAxis(RoboController.inchesToCounts(7*backPosition));
 
         // move the arm back until it reaches a position that's right against the backboard (2050)
         while(this.ArmR.getCurrentPosition() < 2050) {
