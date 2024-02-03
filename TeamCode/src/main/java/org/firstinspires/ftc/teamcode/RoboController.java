@@ -457,7 +457,7 @@ public class RoboController {
             // uses square to toggle drone launcher position
             if(c && armpad.square){
                 if(Drone.getPosition() > 0){
-                    Drone.setPosition(0.5);
+                    Drone.setPosition(0);
                 } else {
                     Drone.setPosition(0.7);
                 }

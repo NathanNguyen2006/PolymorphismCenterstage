@@ -92,7 +92,7 @@ public class WebcamAutonomousRedClose extends LinearOpMode {
                      telemetry.update();
                      // move up to the middle of the adjacent panel
                      roboController.autoRight();
-                     roboController.closeToBoardObstructed(-1);
+                     roboController.closeToBoard(-1, -1);
                  }
 
                 
