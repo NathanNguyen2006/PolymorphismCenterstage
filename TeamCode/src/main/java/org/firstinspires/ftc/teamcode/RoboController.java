@@ -734,10 +734,10 @@ public class RoboController {
         // flip claw back up
         this.Wrist.setPosition(0.53);
         opMode.sleep(500);
-        // move forward to the middle of the panel
-        this.moveOnYAxis(this.inchesToCounts(8));
         // spin back to face forward
         this.Spin(this.inchesToCounts(18));
+        // move forward to the middle of the panel
+        this.moveOnXAxis(this.inchesToCounts(-8));
     }
 
     // complete !!!!
@@ -767,10 +767,10 @@ public class RoboController {
         // flip claw back up
         this.Wrist.setPosition(0.53);
         opMode.sleep(500);
-        // move forward to the middle of the panel
-        this.moveOnYAxis(this.inchesToCounts(8));
         // spin back to face forward
         this.Spin(this.inchesToCounts(-18));
+        // move forward to the middle of the panel
+        this.moveOnXAxis(this.inchesToCounts(8));
     }
 
     public void farToBoard(int isBlue){ //not middle
@@ -803,7 +803,7 @@ public class RoboController {
         this.moveOnYAxis(RoboController.inchesToCounts(-19));
 
         //reposition on board
-        this.moveOnXAxis(RoboController.inchesToCounts(7*backPosition));
+        this.moveOnXAxis(RoboController.inchesToCounts(8*backPosition));
 
         // move the arm back until it reaches a position that's right against the backboard (2050)
         while(this.ArmR.getCurrentPosition() < 2050) {
