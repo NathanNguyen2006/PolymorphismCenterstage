@@ -19,9 +19,8 @@ public class RoboController {
         return Math.abs(a-b)<eps;
     }
     private ElapsedTime runtime = new ElapsedTime();
-    public static int speed = 1000;
-
-    public static double ticks2 = 0;
+    // change to 5000?????
+    public static int speed = 3000;
 
     //Hardware
 
@@ -566,8 +565,6 @@ public class RoboController {
     }
 
     public void moveOnXAxis(int ticks) {
-        ticks2 = ticks;
-
         DcMotorEx frontLeft = FLW,
             frontRight = FRW,
             rearLeft = BLW,
@@ -608,8 +605,6 @@ public class RoboController {
     }
 
     public void moveOnYAxis(int ticks) {
-        ticks2 = ticks;
-
         DcMotorEx frontLeft = FLW,
             frontRight = FRW,
             rearLeft = BLW,
@@ -693,12 +688,12 @@ public class RoboController {
     public void autoMiddle(){
         // flip claw up
         this.Wrist.setPosition(0.53);
-        opMode.sleep(250);
+        opMode.sleep(500);
         // move up to the beacon
         this.moveOnYAxis(this.inchesToCounts(24));
         // flip claw down
         Wrist.setPosition(0.05);
-        opMode.sleep(250);
+        opMode.sleep(750);
         // rotate pixel out
         this.ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
         this.ClawR.setPower(0.75);
@@ -716,16 +711,16 @@ public class RoboController {
     public void autoLeft(){
         // flip claw up
         this.Wrist.setPosition(0.53);
-        opMode.sleep(250);
+        opMode.sleep(500);
         // move up to panel in front
         this.moveOnYAxis(this.inchesToCounts(25));
         // move slightly right to make room for pixel
-        this.moveOnXAxis(this.inchesToCounts(10));
+        this.moveOnXAxis(this.inchesToCounts(8));
         // spin 90 degrees left
         this.Spin(this.inchesToCounts(-18));
         // flip claw down
         this.Wrist.setPosition(0.05);
-        opMode.sleep(250);
+        opMode.sleep(750);
         // rotate pixel out
         this.ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
         this.ClawR.setPower(0.75);
@@ -738,7 +733,10 @@ public class RoboController {
         this.ClawL.setPower(0);
         // flip claw back up
         this.Wrist.setPosition(0.53);
-        opMode.sleep(250);
+        opMode.sleep(500);
+        // move forward to the middle of the panel
+        this.moveOnYAxis(this.inchesToCounts(8));
+        // spin back to face forward
         this.Spin(this.inchesToCounts(18));
     }
 
@@ -746,16 +744,16 @@ public class RoboController {
     public void autoRight(){
         // flip claw up
         this.Wrist.setPosition(0.53);
-        opMode.sleep(250);
+        opMode.sleep(500);
         // move up to panel in front
         this.moveOnYAxis(this.inchesToCounts(25));
         // move slightly left to make room for pixel
-        this.moveOnXAxis(this.inchesToCounts(-10));
+        this.moveOnXAxis(this.inchesToCounts(-8));
         // spin 90 degrees right
         this.Spin(this.inchesToCounts(18));
         // flip claw down
         this.Wrist.setPosition(0.05);
-        opMode.sleep(250);
+        opMode.sleep(750);
         // rotate pixel out
         this.ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
         this.ClawR.setPower(0.75);
@@ -768,7 +766,10 @@ public class RoboController {
         this.ClawL.setPower(0);
         // flip claw back up
         this.Wrist.setPosition(0.53);
-        opMode.sleep(250);
+        opMode.sleep(500);
+        // move forward to the middle of the panel
+        this.moveOnYAxis(this.inchesToCounts(8));
+        // spin back to face forward
         this.Spin(this.inchesToCounts(-18));
     }
 
