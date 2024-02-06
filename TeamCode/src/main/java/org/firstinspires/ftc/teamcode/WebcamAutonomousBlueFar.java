@@ -77,7 +77,7 @@ public class WebcamAutonomousBlueFar extends LinearOpMode {
                 telemetry.update();
 
                 if(recognition == null){
-                    roboController.autoLeft();
+                    roboController.autoCloseToTruss(-1);
                     roboController.farToBoardObstructed(1);
                 } else if(recognition.getLabel().equals("blue beacon middle")){
                     // move right to the middle of the adjacent panel
@@ -85,7 +85,7 @@ public class WebcamAutonomousBlueFar extends LinearOpMode {
                     roboController.farToBoard(1);
                 } else if(recognition.getLabel().equals("blue beacon right")) {
                     // move up to the middle of the adjacent panel
-                    roboController.autoRight();
+                    roboController.autoAwayFromTruss(1);
                     roboController.farToBoard(1);
                 }
 

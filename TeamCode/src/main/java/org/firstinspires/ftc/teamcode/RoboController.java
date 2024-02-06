@@ -20,7 +20,7 @@ public class RoboController {
     }
     private ElapsedTime runtime = new ElapsedTime();
     // change to 5000?????
-    public static int speed = 3000;
+    public static int speed = 2000;
 
     //Hardware
 
@@ -659,7 +659,7 @@ public class RoboController {
         frontLeft.setTargetPosition(ticks); //pos
         rearLeft.setTargetPosition(ticks); //neg
         frontRight.setTargetPosition(-ticks); //neg
-        rearRight.setTargetPosition(-ticks); //po    s
+        rearRight.setTargetPosition(-ticks); //pos
 
         frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -690,7 +690,7 @@ public class RoboController {
         this.Wrist.setPosition(0.53);
         opMode.sleep(500);
         // move up to the beacon
-        this.moveOnYAxis(this.inchesToCounts(24));
+        this.moveOnYAxis(this.inchesToCounts(26));
         // flip claw down
         Wrist.setPosition(0.05);
         opMode.sleep(750);
@@ -707,17 +707,21 @@ public class RoboController {
         // flip claw back up
         this.Wrist.setPosition(0.53);
         opMode.sleep(250);
+        this.moveOnYAxis(RoboController.inchesToCounts(-26));
     }
-    public void autoLeft(){
+
+    // backPositions:
+    // middle: 0
+    // left: -1
+    // right: 1
+    public void autoAwayFromTruss(int position){
         // flip claw up
         this.Wrist.setPosition(0.53);
         opMode.sleep(500);
-        // move up to panel in front
-        this.moveOnYAxis(this.inchesToCounts(25));
-        // move slightly right to make room for pixel
-        this.moveOnXAxis(this.inchesToCounts(8));
-        // spin 90 degrees left
-        this.Spin(this.inchesToCounts(-18));
+        // move to panel next to it
+        this.moveOnXAxis(this.inchesToCounts(13*position));
+        // move to panel forward
+        this.moveOnYAxis(this.inchesToCounts(12));
         // flip claw down
         this.Wrist.setPosition(0.05);
         opMode.sleep(750);
@@ -734,23 +738,25 @@ public class RoboController {
         // flip claw back up
         this.Wrist.setPosition(0.53);
         opMode.sleep(500);
-        // spin back to face forward
-        this.Spin(this.inchesToCounts(18));
-        // move forward to the middle of the panel
-        this.moveOnXAxis(this.inchesToCounts(-8));
+        // move to panel backwards
+        this.moveOnYAxis(this.inchesToCounts(-11));
+        // move to panel next to it
+        this.moveOnXAxis(this.inchesToCounts(13*-position));
     }
 
     // complete !!!!
-    public void autoRight(){
+    // backPositions:
+    // middle: 0
+    // left: -1
+    // right: 1
+    public void autoCloseToTruss(int position){
         // flip claw up
         this.Wrist.setPosition(0.53);
         opMode.sleep(500);
         // move up to panel in front
-        this.moveOnYAxis(this.inchesToCounts(25));
-        // move slightly left to make room for pixel
-        this.moveOnXAxis(this.inchesToCounts(-8));
-        // spin 90 degrees right
-        this.Spin(this.inchesToCounts(18));
+        this.moveOnYAxis(this.inchesToCounts(27));
+        // spin 90 degrees
+        this.Spin(this.inchesToCounts(18*position));
         // flip claw down
         this.Wrist.setPosition(0.05);
         opMode.sleep(750);
@@ -768,9 +774,10 @@ public class RoboController {
         this.Wrist.setPosition(0.53);
         opMode.sleep(500);
         // spin back to face forward
-        this.Spin(this.inchesToCounts(-18));
+        this.Spin(this.inchesToCounts(18*-position));
         // move forward to the middle of the panel
-        this.moveOnXAxis(this.inchesToCounts(8));
+        this.moveOnXAxis(this.inchesToCounts(1*position));
+        this.moveOnYAxis(RoboController.inchesToCounts(-27));
     }
 
     public void farToBoard(int isBlue){ //not middle
@@ -788,9 +795,7 @@ public class RoboController {
     // left: 1
     // right: -1
     public void closeToBoard(int isBlue, int backPosition){ //not side
-        this.moveOnYAxis(RoboController.inchesToCounts(-27));
-
-        // move left to the middle of the adjacent panel
+        // move to panel next to it
         this.moveOnXAxis(RoboController.inchesToCounts(27*-isBlue));
 
         // move forward to the middle of the adjacent panel
@@ -845,7 +850,7 @@ public class RoboController {
         this.moveOnYAxis(RoboController.inchesToCounts(3));
 
         // move right to the middle of the adjacent panel
-        this.moveOnXAxis(RoboController.inchesToCounts(27));
+        this.moveOnXAxis(RoboController.inchesToCounts(27*isBlue));
 
         // move back to the middle of the adjacent panel (to park in the backstage area)
         this.moveOnYAxis(RoboController.inchesToCounts(-13));
