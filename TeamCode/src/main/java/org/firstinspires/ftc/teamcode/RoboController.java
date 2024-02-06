@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -8,6 +9,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import java.lang.Math;
 
 public class RoboController {
@@ -16,7 +19,8 @@ public class RoboController {
         return Math.abs(a-b)<eps;
     }
     private ElapsedTime runtime = new ElapsedTime();
-    private static final int speed = 1000;
+    // change to 5000?????
+    public static int speed = 3000;
 
     //Hardware
 
@@ -31,9 +35,11 @@ public class RoboController {
     public DcMotor ArmR;
     public DcMotor Extender;
     public Servo Wrist;
-    public Servo ClawR;
-    public Servo ClawL;
+    public CRServo ClawR;
+    public CRServo ClawL;
     public Servo Drone;
+
+    public DistanceSensor distanceSensor;
 
 
 
@@ -68,12 +74,15 @@ public class RoboController {
         BLW.setDirection(DcMotor.Direction.REVERSE);
         BRW.setDirection(DcMotor.Direction.FORWARD);
 
+        // Distance Sensor
+        distanceSensor = hardwareMap.get(DistanceSensor.class, "BackupSens");
+
         //Arms
         ArmL = hardwareMap.get(DcMotor.class,"ArmL");
         ArmR = hardwareMap.get(DcMotor.class,"ArmR");
         Extender = hardwareMap.get(DcMotor.class,"Extender");
-        ClawR = hardwareMap.get(Servo.class, "ClawR");
-        ClawL = hardwareMap.get(Servo.class, "ClawL");
+        ClawR = hardwareMap.get(CRServo.class, "ClawR");
+        ClawL = hardwareMap.get(CRServo.class, "ClawL");
         Wrist = hardwareMap.get(Servo.class, "Wrist");
         Drone = hardwareMap.get(Servo.class, "Drone");
 
@@ -97,35 +106,131 @@ public class RoboController {
     public double armBasePower;
     public double armTopPower;
 
+    public boolean canDriveBack = true;
+    public boolean rumbled = false;
+
+    public boolean driveMode = true;
+
+    public boolean DM = false;
+
+    public boolean slowDown = false;
+
+
+    // gamepad 1 (blue) - movement of wheels
     public void interpretMovepad(Gamepad movepad){
+        Gamepad.RumbleEffect rumbleEffect1 = new Gamepad.RumbleEffect.Builder()
+                .addStep(1.0, 1.0, 500)  //  Rumble 100% for 500 mSec
+                .build();
+
+        Gamepad.RumbleEffect rumbleEffect2 = new Gamepad.RumbleEffect.Builder()
+                .addStep(1.0, 1.0, 500)  //  Rumble 100% for 500 mSec
+                .addStep(0.0, 0.0, 300)  //  Pause for 300 mSec
+                .addStep(1.0, 1.0, 500)  //  Rumble 100% for 500 mSec
+                .build();
 
         FLW.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         FRW.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         BLW.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         BRW.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        /*
+        // if the bot is close enough to the back board (or any object really), meaning if it's
+        // 5 inches away or closer, vibrate the controller of the wheels to alert the driver
+        if(distanceSensor.getDistance(DistanceUnit.INCH) <= 5) {
+            movepad.rumble(2000);
+        }
+        */
+
+        // driveMode = true --> using left and right triggers for wheels (vibrate twice when switching to this)
+        // driveMode = false --> using up and down left joystick for wheels (vibrate once when switching to this)
+        if(DM && movepad.triangle){
+            driveMode = !driveMode;
+
+            if(driveMode){
+                movepad.runRumbleEffect(rumbleEffect2);
+            } else {
+                movepad.runRumbleEffect(rumbleEffect1);
+            }
+        }
+        DM = !(movepad.triangle);
+
+        if(movepad.left_bumper || movepad.right_bumper){
+            slowDown = true;
+        } else {
+            slowDown = false;
+        }
+
         if(Math.abs(movepad.right_stick_x) > .2){
-            turnPower = movepad.right_stick_x*0.35;
+            if(slowDown){
+                if(movepad.right_stick_x > 0){
+                    turnPower = 0.2;
+                } else if(movepad.right_stick_x < 0){
+                    turnPower = -0.2;
+                }
+            } else {
+                turnPower = movepad.right_stick_x * 0.5;
+            }
         }
         else{
             turnPower = 0;
         }
 
-        if(movepad.left_stick_x > 0.3){
-            strafePower = 1;
+        if(movepad.left_stick_x > 0.2){
+            if(slowDown){
+                strafePower = 0.3;
+            } else {
+                strafePower = movepad.left_stick_x;
+            }
+
             //direction = Compass.East;
         }
-        else if(movepad.left_stick_x < -0.3){
-            strafePower = -1;
+        else if(movepad.left_stick_x < -0.2){
+            if(slowDown){
+                strafePower = -0.3;
+            } else {
+                strafePower = movepad.left_stick_x;
+            }
             //direction = Compass.West;
         }
-        else if(movepad.left_stick_y < -0.3){
-            drivePower = 0.75;
+        else if(movepad.left_trigger > 0.2){
+            if(driveMode){
+                if(slowDown){
+                    drivePower = -0.3;
+                } else {
+                    drivePower = -movepad.left_trigger;
+                }
+            }
+
             //direction = Compass.North;
         }
-        else if(movepad.left_stick_y > 0.3){
-            drivePower = -0.75;
+        else if(movepad.right_trigger > 0.2){
+            if(driveMode){
+                if(slowDown){
+                    drivePower = 0.3;
+                } else {
+                    drivePower = movepad.right_trigger;
+                }
+            }
+
             //direction = Compass.South;
+        }
+        else if(movepad.left_stick_y > 0.2){
+            if(!driveMode){
+                if(slowDown) {
+                    drivePower = -0.3;
+                } else {
+                    drivePower = -movepad.left_stick_y;
+                }
+            }
+        }
+        else if(movepad.left_stick_y < -0.2){
+            if(!driveMode){
+                if(slowDown) {
+                    drivePower = 0.3;
+                } else {
+                    drivePower = -movepad.left_stick_y;
+                }
+            }
         }
         else{
             drivePower = 0;
@@ -212,16 +317,17 @@ public class RoboController {
     boolean b = false;
     boolean c = false;
     boolean permaPower = false;
-    boolean open = false;
+    boolean rotate = false;
     boolean open2 = false;
 
     //Not Implemented
+    // gamepad 2 (red) - movement of arm
     public void interpretArmpad(Gamepad armpad){
 
         // sets max range for how far the arm can move back
-        // when the arm goes further than 2160, the power of the arm is set to go in the
+        // when the arm goes further than 2300, the power of the arm is set to go in the
         // opposite direction to counteract the power set by the joystick
-        if(ArmR.getCurrentPosition() > 2200) {
+        if(ArmR.getCurrentPosition() > 2300) {
             ArmL.setPower(-0.1);
             ArmR.setPower(-0.1);
         }
@@ -244,29 +350,51 @@ public class RoboController {
             ArmL.setPower(0);
             ArmR.setPower(0);
         }
-         if(armpad.right_stick_y > 0.5  ){
 
-            Extender.setPower(0.7);
-        }
-        else if(armpad.right_stick_y < -0.5 ){
+        if(armpad.right_stick_y > 0.5){
             Extender.setPower(-0.7);
+        }
+        else if(armpad.right_stick_y < -0.5){
+            Extender.setPower(0.7);
         }
         else{
             Extender.setPower(0);
         }
 
+        /*
         if(a && armpad.left_bumper){
             open = !open;
             if(!open) {
                 ClawR.setPosition(0);
-                ClawL.setPosition(1);
+                ClawL.setPosition(0.8);
             }
             if(open){
-                ClawR.setPosition(0.9);
+                ClawR.setPosition(0.8);
                 ClawL.setPosition(0);
             }
         }
         a = !armpad.left_bumper;
+        */
+
+
+
+        // depending on the direction the claw is set to, it will rotate in that
+        // direction if it's set to rotate
+        // otherwise the claw won't rotate at all
+        if(armpad.dpad_up){
+            ClawR.setDirection(DcMotorSimple.Direction.FORWARD);
+            ClawR.setPower(0.5);
+            ClawL.setDirection(DcMotorSimple.Direction.REVERSE);
+            ClawL.setPower(0.5);
+        } else if(armpad.dpad_down) {
+            ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
+            ClawR.setPower(0.5);
+            ClawL.setDirection(DcMotorSimple.Direction.FORWARD);
+            ClawL.setPower(0.5);
+        } else {
+            ClawR.setPower(0);
+            ClawL.setPower(0);
+        }
 
         //if(armpad.right_bumper) {
             //ClawR.setPosition(0.4);
@@ -294,12 +422,17 @@ public class RoboController {
         if(b && (armpad.right_bumper)){
             open2 = !open2;
             if(!open2) {
-                Wrist.setPosition(0);
+                Wrist.setPosition(0.05);
             }
             if(open2){
-                Wrist.setPosition(0.55);
+                Wrist.setPosition(0.525);
             }
         }
+        // used to set b to the opposite state of the right bumper (true/false or false/true)
+        // so that pressing the right bumper won't flip the wrist forever. it will only flip
+        // it once in the one instance where b and the right bumper are both true, before b
+        // gets set to false
+        // (or at least i think this is how it functions)
         b = !(armpad.right_bumper);
 
 //        if(armpad.left_trigger != 0){
@@ -322,13 +455,15 @@ public class RoboController {
                 ArmL.setPower(1);
             }
 
-            if(armpad.square){
-                Drone.setPosition(0.7);
+            // uses square to toggle drone launcher position
+            if(c && armpad.square){
+                if(Drone.getPosition() > 0){
+                    Drone.setPosition(0);
+                } else {
+                    Drone.setPosition(0.7);
+                }
             }
-
-            if(armpad.circle){
-                Drone.setPosition(0);
-            }
+            c = !(armpad.square);
 
             /*
             if(armpad.circle){
@@ -547,5 +682,197 @@ public class RoboController {
         }
 
         opMode.sleep(250);
+    }
+
+    // complete !!!!
+    public void autoMiddle(){
+        // flip claw up
+        this.Wrist.setPosition(0.53);
+        opMode.sleep(500);
+        // move up to the beacon
+        this.moveOnYAxis(this.inchesToCounts(24));
+        // flip claw down
+        Wrist.setPosition(0.05);
+        opMode.sleep(750);
+        // rotate pixel out
+        this.ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.ClawR.setPower(0.75);
+        this.ClawL.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.ClawL.setPower(0.75);
+        // rotate for half a second
+        opMode.sleep(500);
+        // stop rotating claw
+        this.ClawR.setPower(0);
+        this.ClawL.setPower(0);
+        // flip claw back up
+        this.Wrist.setPosition(0.53);
+        opMode.sleep(250);
+    }
+    public void autoLeft(){
+        // flip claw up
+        this.Wrist.setPosition(0.53);
+        opMode.sleep(500);
+        // move up to panel in front
+        this.moveOnYAxis(this.inchesToCounts(25));
+        // move slightly right to make room for pixel
+        this.moveOnXAxis(this.inchesToCounts(8));
+        // spin 90 degrees left
+        this.Spin(this.inchesToCounts(-18));
+        // flip claw down
+        this.Wrist.setPosition(0.05);
+        opMode.sleep(750);
+        // rotate pixel out
+        this.ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.ClawR.setPower(0.75);
+        this.ClawL.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.ClawL.setPower(0.75);
+        // rotate for half a second
+        opMode.sleep(500);
+        // stop rotating claw
+        this.ClawR.setPower(0);
+        this.ClawL.setPower(0);
+        // flip claw back up
+        this.Wrist.setPosition(0.53);
+        opMode.sleep(500);
+        // spin back to face forward
+        this.Spin(this.inchesToCounts(18));
+        // move forward to the middle of the panel
+        this.moveOnXAxis(this.inchesToCounts(-8));
+    }
+
+    // complete !!!!
+    public void autoRight(){
+        // flip claw up
+        this.Wrist.setPosition(0.53);
+        opMode.sleep(500);
+        // move up to panel in front
+        this.moveOnYAxis(this.inchesToCounts(25));
+        // move slightly left to make room for pixel
+        this.moveOnXAxis(this.inchesToCounts(-8));
+        // spin 90 degrees right
+        this.Spin(this.inchesToCounts(18));
+        // flip claw down
+        this.Wrist.setPosition(0.05);
+        opMode.sleep(750);
+        // rotate pixel out
+        this.ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.ClawR.setPower(0.75);
+        this.ClawL.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.ClawL.setPower(0.75);
+        // rotate for half a second
+        opMode.sleep(500);
+        // stop rotating claw
+        this.ClawR.setPower(0);
+        this.ClawL.setPower(0);
+        // flip claw back up
+        this.Wrist.setPosition(0.53);
+        opMode.sleep(500);
+        // spin back to face forward
+        this.Spin(this.inchesToCounts(-18));
+        // move forward to the middle of the panel
+        this.moveOnXAxis(this.inchesToCounts(8));
+    }
+
+    public void farToBoard(int isBlue){ //not middle
+        this.moveOnYAxis(this.inchesToCounts(36));
+        this.Spin(this.inchesToCounts(-18*isBlue));
+        this.moveOnYAxis(this.inchesToCounts(72));
+        this.Spin(this.inchesToCounts(-18*isBlue));
+        this.moveOnYAxis(this.inchesToCounts(36));
+        this.Spin(this.inchesToCounts(-18*isBlue));
+    }
+
+    // complete !!!!
+    // backPositions:
+    // middle: 0
+    // left: 1
+    // right: -1
+    public void closeToBoard(int isBlue, int backPosition){ //not side
+        this.moveOnYAxis(RoboController.inchesToCounts(-27));
+
+        // move left to the middle of the adjacent panel
+        this.moveOnXAxis(RoboController.inchesToCounts(27*-isBlue));
+
+        // move forward to the middle of the adjacent panel
+        this.moveOnYAxis(RoboController.inchesToCounts(27));
+
+        // turn right by about 90 degrees
+        this.Spin(RoboController.inchesToCounts(18*isBlue));
+
+        // move back right against the middle of the backboard
+        this.moveOnYAxis(RoboController.inchesToCounts(-19));
+
+        //reposition on board
+        this.moveOnXAxis(RoboController.inchesToCounts(8*backPosition));
+
+        // move the arm back until it reaches a position that's right against the backboard (2050)
+        while(this.ArmR.getCurrentPosition() < 2050) {
+            this.ArmL.setPower(0.45);
+            this.ArmR.setPower(0.45);
+        }
+
+        // once the arm is against the backboard, stop moving it back
+        this.ArmL.setPower(0);
+        this.ArmR.setPower(0);
+
+        // push pixels out
+        this.ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.ClawR.setPower(0.5);
+        this.ClawL.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.ClawL.setPower(0.5);
+
+        // wait one and a half seconds in case the pixels haven't been completely scored yet
+        opMode.sleep(1500);
+
+        // stop rotating claw
+        this.ClawR.setPower(0);
+        this.ClawL.setPower(0);
+
+        // move the arm forward until it reaches a position that's about where the floor is (10)
+        while(this.ArmR.getCurrentPosition() > 10) {
+            this .ArmL.setPower(-0.45);
+            this.ArmR.setPower(-0.45);
+        }
+
+        // once the arm is against the floor, stop moving it forward
+        this.ArmL.setPower(0);
+        this.ArmR.setPower(0);
+
+        // wait a second to give the bot time to flip the claw
+        opMode.sleep(1000);
+
+        // move forward so that the bot isn't right against the backboard
+        this.moveOnYAxis(RoboController.inchesToCounts(3));
+
+        // move right to the middle of the adjacent panel
+        this.moveOnXAxis(RoboController.inchesToCounts(27));
+
+        // move back to the middle of the adjacent panel (to park in the backstage area)
+        this.moveOnYAxis(RoboController.inchesToCounts(-13));
+
+        // autonomous mode has now ended
+        opMode.stop();
+    }
+
+    public void farToBoardObstructed(int isBlue){ //not middle
+        this.Spin(this.inchesToCounts(18*isBlue));
+        this.moveOnYAxis(this.inchesToCounts(24));
+        this.Spin(this.inchesToCounts(-18*isBlue));
+        this.moveOnYAxis(this.inchesToCounts(24));
+        this.Spin(this.inchesToCounts(-18*isBlue));
+        this.moveOnYAxis(this.inchesToCounts(96));
+        this.Spin(this.inchesToCounts(-18*isBlue));
+        this.moveOnYAxis(this.inchesToCounts(24));
+        this.Spin(this.inchesToCounts(-18*isBlue));
+    }
+
+    public void closeToBoardObstructed(int isBlue){ //not side
+
+        this.moveOnYAxis(this.inchesToCounts(36));
+        this.Spin(this.inchesToCounts(18*isBlue));
+        this.moveOnYAxis(this.inchesToCounts(36));
+        this.Spin(this.inchesToCounts(18*isBlue));
+        this.moveOnYAxis(this.inchesToCounts(36));
+        this.Spin(this.inchesToCounts(18*isBlue));
     }
 }

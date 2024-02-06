@@ -2,17 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-/**
- * This 2022-2023 OpMode illustrates the basics of using the TensorFlow Object Detection API to
- * determine which image is being presented to the robot.
- *
- * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list.
- *
- * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
- * is explained below.
- */
 @Autonomous(name = "Autonomous Mode Scoring BLUE", group = "Concept")
 
 public class AutoModeScoreBLUE extends LinearOpMode {
@@ -29,7 +20,12 @@ public class AutoModeScoreBLUE extends LinearOpMode {
 
         if (opModeIsActive()) {
             // autonomous scoring for the blue side (towards the backboard)
-            sleep(1000);
+
+            // raise the claw so that it stays up completely
+            roboController.Wrist.setPosition(0.53);
+
+            // wait a little until the claw is flipped up
+            sleep(1500);
 
             // move left to the middle of the adjacent panel
             roboController.moveOnXAxis(RoboController.inchesToCounts(-27));
@@ -43,7 +39,7 @@ public class AutoModeScoreBLUE extends LinearOpMode {
             // move back right against the middle of the backboard
             roboController.moveOnYAxis(RoboController.inchesToCounts(-19));
 
-            // move the arm back until it reaches a position thats right against the backboard (2050)
+            // move the arm back until it reaches a position that's right against the backboard (2050)
             while(roboController.ArmR.getCurrentPosition() < 2050) {
                 roboController.ArmL.setPower(0.45);
                 roboController.ArmR.setPower(0.45);
@@ -53,14 +49,20 @@ public class AutoModeScoreBLUE extends LinearOpMode {
             roboController.ArmL.setPower(0);
             roboController.ArmR.setPower(0);
 
-            // open the claw to release the pixels
-            roboController.ClawR.setPosition(1);
-            roboController.ClawL.setPosition(0);
+            // push pixels out
+            roboController.ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
+            roboController.ClawR.setPower(0.5);
+            roboController.ClawL.setDirection(DcMotorSimple.Direction.FORWARD);
+            roboController.ClawL.setPower(0.5);
 
-            // wait a second in case the pixels haven't been completely scored yet
-            sleep(1000);
+            // wait one and a half seconds in case the pixels haven't been completely scored yet
+            sleep(1500);
 
-            // move the arm forward until it reaches a position thats about where the floor is (10)
+            // stop rotating claw
+            roboController.ClawR.setPower(0);
+            roboController.ClawL.setPower(0);
+
+            // move the arm forward until it reaches a position that's about where the floor is (10)
             while(roboController.ArmR.getCurrentPosition() > 10) {
                 roboController.ArmL.setPower(-0.45);
                 roboController.ArmR.setPower(-0.45);
@@ -69,22 +71,6 @@ public class AutoModeScoreBLUE extends LinearOpMode {
             // once the arm is against the floor, stop moving it forward
             roboController.ArmL.setPower(0);
             roboController.ArmR.setPower(0);
-
-            // flip the claw down so that it can be closed without obstruction
-            roboController.Wrist.setPosition(0);
-
-            // wait a second to give the bot time to flip the claw
-            sleep(1000);
-
-            // close the claw
-            roboController.ClawR.setPosition(0);
-            roboController.ClawL.setPosition(1);
-
-            // wait a second to give the bot time to close the claw
-            sleep(1000);
-
-            // flip the claw back up so that the bot can move without obstruction
-            roboController.Wrist.setPosition(0.55);
 
             // wait a second to give the bot time to flip the claw
             sleep(1000);
@@ -95,8 +81,10 @@ public class AutoModeScoreBLUE extends LinearOpMode {
             // move right to the middle of the adjacent panel
             roboController.moveOnXAxis(RoboController.inchesToCounts(27));
 
-            // move back to the space next to the backboard
+            // move back to the middle of the adjacent panel (to park in the backstage area)
             roboController.moveOnYAxis(RoboController.inchesToCounts(-13));
+
+            // autonomous mode has now ended
             stop();
         }
     }

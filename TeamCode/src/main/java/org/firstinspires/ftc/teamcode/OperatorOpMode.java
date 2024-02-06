@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 @TeleOp
 public class OperatorOpMode extends LinearOpMode{
     //Personal Class
@@ -55,13 +57,16 @@ public class OperatorOpMode extends LinearOpMode{
             telemetry.addData("Turn", roboController.turnPower);
             //telemetry.addData("Armbasepos", roboController.getThePosition());
             telemetry.addData("Wrist", roboController.Wrist.getPosition());
-            telemetry.addData("ClawR", roboController.ClawR.getPosition());
-            telemetry.addData("ClawL", roboController.ClawL.getPosition());
+            telemetry.addData("ClawR (dir)", roboController.ClawR.getDirection());
+            telemetry.addData("ClawL (dir)", roboController.ClawL.getDirection());
+            telemetry.addData("ClawR (power)", roboController.ClawR.getPower());
+            telemetry.addData("ClawL (power)", roboController.ClawL.getPower());
             telemetry.addData("ArmL", roboController.ArmL.getCurrentPosition());
             telemetry.addData("ArmR", roboController.ArmR.getCurrentPosition());
             telemetry.addData("ArmRpow", roboController.ArmR.getPower());
             telemetry.addData("Drone: Plane Launcher", roboController.Drone.getPosition());
             telemetry.addData("y-stick value", armPad.left_stick_y);
+            telemetry.addData("Distance from sensor to object", roboController.distanceSensor.getDistance(DistanceUnit.INCH));
             telemetry.update();
         }
     }
