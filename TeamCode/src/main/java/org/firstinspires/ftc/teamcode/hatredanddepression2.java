@@ -59,7 +59,7 @@ public class hatredanddepression2 extends LinearOpMode {
 
             } else if (position == 2) {
                 roboController.moveOnYAxis(RoboController.inchesToCounts(26));
-                roboController.Spin(RoboController.inchesToCounts(19));
+                roboController.Spin(RoboController.inchesToCounts(19 ));
                 roboController.ClawR.setPosition(0.4);
                 sleep(5000);
                 roboController.moveOnYAxis(RoboController.inchesToCounts(36));
