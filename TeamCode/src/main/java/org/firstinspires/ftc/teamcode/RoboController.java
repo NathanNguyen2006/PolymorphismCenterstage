@@ -8,18 +8,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import java.lang.Math;
 
 public class RoboController {
-
-    public static boolean almostEqual(double a, double b, double eps){
-        return Math.abs(a-b)<eps;
-    }
-    private ElapsedTime runtime = new ElapsedTime();
-    // change to 5000?????
     public static int speed = 2000;
 
     //Hardware
@@ -43,10 +35,6 @@ public class RoboController {
 
 
 
-    private boolean handClosed = false;
-    private boolean previousRightBumper = false;
-    private boolean previousLeftBumper = false;
-    private boolean twisterTurned = false;
 
     public double strafePower = 0;
     public double drivePower = 0;
@@ -75,30 +63,25 @@ public class RoboController {
         BRW.setDirection(DcMotor.Direction.FORWARD);
 
         // Distance Sensor
-        distanceSensor = hardwareMap.get(DistanceSensor.class, "BackupSens");
+       // distanceSensor = hardwareMap.get(DistanceSensor.class, "BackupSens");
 
         //Arms
         ArmL = hardwareMap.get(DcMotor.class,"ArmL");
         ArmR = hardwareMap.get(DcMotor.class,"ArmR");
-        Extender = hardwareMap.get(DcMotor.class,"Extender");
+        Extender = hardwareMap.get(DcMotor.class,"Ext");
         ClawR = hardwareMap.get(CRServo.class, "ClawR");
         ClawL = hardwareMap.get(CRServo.class, "ClawL");
         Wrist = hardwareMap.get(Servo.class, "Wrist");
-        Drone = hardwareMap.get(Servo.class, "Drone");
+       // Drone = hardwareMap.get(Servo.class, "Drone");
 
 
-        ArmL.setDirection(DcMotor.Direction.REVERSE);
+        //ArmL.setDirection(DcMotor.Direction.REVERSE);
 
         //Reset Encoders
         ArmL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ArmR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ArmL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         ArmR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        //Pid stuff unused lol
-        //ArmTopPid = new Pid( 0.3, 0.3, 0.3, 1, -1, 1);
-       // ArmBasePid = new Pid(0.1, 0.1, 0.15, 1, -1, 1);
-
 
     }
 
@@ -128,10 +111,10 @@ public class RoboController {
                 .addStep(1.0, 1.0, 500)  //  Rumble 100% for 500 mSec
                 .build();
 
-        FLW.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        FRW.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        BLW.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        BRW.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        FLW.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FRW.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BLW.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BRW.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         /*
         // if the bot is close enough to the back board (or any object really), meaning if it's
@@ -327,23 +310,23 @@ public class RoboController {
         // sets max range for how far the arm can move back
         // when the arm goes further than 2300, the power of the arm is set to go in the
         // opposite direction to counteract the power set by the joystick
-        if(ArmR.getCurrentPosition() > 2300) {
-            ArmL.setPower(-0.1);
-            ArmR.setPower(-0.1);
-        }
+//        if(ArmR.getCurrentPosition() > 2300) {
+//            ArmL.setPower(-0.1);
+//            ArmR.setPower(-0.1);
+//        }
         // moving the left joystick up or down will also move the arm up or down
-        else if(armpad.left_stick_y > 0.5 ){
-            ArmL.setPower(-0.45);
-            ArmR.setPower(-0.45);
+         if(armpad.left_stick_y > 0.5 ){
+            ArmL.setPower(-.15);
+            ArmR.setPower(-1);
         }
         else if(armpad.left_stick_y < -0.5) {
-            if (ArmR.getCurrentPosition() > 1100) {
-                ArmL.setPower(0.3);
-                ArmR.setPower(0.3);
-            } else {
-                ArmL.setPower(0.45);
-                ArmR.setPower(0.45);
-            }
+//            if (ArmR.getCurrentPosition() > 1100) {
+//                ArmL.setPower(0.3);
+//                ArmR.setPower(0.3);
+//            } else {
+                ArmL.setPower(0.95);
+                ArmR.setPower(1);
+           // }
         }
 
         else{
@@ -361,20 +344,7 @@ public class RoboController {
             Extender.setPower(0);
         }
 
-        /*
-        if(a && armpad.left_bumper){
-            open = !open;
-            if(!open) {
-                ClawR.setPosition(0);
-                ClawL.setPosition(0.8);
-            }
-            if(open){
-                ClawR.setPosition(0.8);
-                ClawL.setPosition(0);
-            }
-        }
-        a = !armpad.left_bumper;
-        */
+
 
 
 
@@ -396,28 +366,6 @@ public class RoboController {
             ClawL.setPower(0);
         }
 
-        //if(armpad.right_bumper) {
-            //ClawR.setPosition(0.4);
-            //ClawL.setPosition(0.9);
-            //double o = ClawR.getPosition();
-            //double p = ClawL.getPosition();
-            //p = p + 0.05;
-            //o = o - 0.05;
-            //ClawL.setPosition(p);
-            //ClawR.setPosition(o);
-        //}
-        //clawR = 0.4
-        //clawL = 0.9
-
-        //b = !armpad.dpad_left;
-
-//            if(a == true && armpad.dpad_up) {
-//                double x = Wrist.getPosition();
-//                x = x - 0.05;
-//                Wrist.setPosition(x);
-//
-//            }
-//        a = !armpad.dpad_up;
 
         if(b && (armpad.right_bumper)){
             open2 = !open2;
@@ -457,11 +405,11 @@ public class RoboController {
 
             // uses square to toggle drone launcher position
             if(c && armpad.square){
-                if(Drone.getPosition() > 0){
-                    Drone.setPosition(0);
-                } else {
-                    Drone.setPosition(0.7);
-                }
+                //if(Drone.getPosition() > 0){
+                 //   Drone.setPosition(0);
+                //} else {
+               //     Drone.setPosition(0.7);
+               // }
             }
             c = !(armpad.square);
 
