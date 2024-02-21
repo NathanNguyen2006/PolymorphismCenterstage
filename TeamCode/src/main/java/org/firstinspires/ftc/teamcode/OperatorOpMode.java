@@ -50,7 +50,7 @@ public class OperatorOpMode extends LinearOpMode{
             roboController.interpretArmpad(armPad);
             //roboController.interpretArmpad(armPad);
             // roboController.testWheels(movePad)
-            telemetry.addData("Status", "Running");
+            telemetry.addData(">Status", "Running");
             telemetry.addData("Direction", roboController.direction);
             telemetry.addData("Drive", roboController.drivePower);
             telemetry.addData("Strafe", roboController.strafePower);
