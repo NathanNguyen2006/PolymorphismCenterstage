@@ -86,12 +86,6 @@ public class RoboController {
     }
 
     //arm stuff
-    public double armBasePower;
-    public double armTopPower;
-
-    public boolean canDriveBack = true;
-    public boolean rumbled = false;
-
     public boolean driveMode = true;
 
     public boolean DM = false;
@@ -115,14 +109,6 @@ public class RoboController {
         FRW.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         BLW.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         BRW.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        /*
-        // if the bot is close enough to the back board (or any object really), meaning if it's
-        // 5 inches away or closer, vibrate the controller of the wheels to alert the driver
-        if(distanceSensor.getDistance(DistanceUnit.INCH) <= 5) {
-            movepad.rumble(2000);
-        }
-        */
 
         // driveMode = true --> using left and right triggers for wheels (vibrate twice when switching to this)
         // driveMode = false --> using up and down left joystick for wheels (vibrate once when switching to this)
@@ -164,18 +150,13 @@ public class RoboController {
             } else {
                 strafePower = movepad.left_stick_x;
             }
-
-            //direction = Compass.East;
-        }
-        else if(movepad.left_stick_x < -0.2){
+        } else if(movepad.left_stick_x < -0.2){
             if(slowDown){
                 strafePower = -0.3;
             } else {
                 strafePower = movepad.left_stick_x;
             }
-            //direction = Compass.West;
-        }
-        else if(movepad.left_trigger > 0.2){
+        } else if(movepad.left_trigger > 0.2){
             if(driveMode){
                 if(slowDown){
                     drivePower = -0.3;
@@ -183,10 +164,7 @@ public class RoboController {
                     drivePower = -movepad.left_trigger;
                 }
             }
-
-            //direction = Compass.North;
-        }
-        else if(movepad.right_trigger > 0.2){
+        } else if(movepad.right_trigger > 0.2){
             if(driveMode){
                 if(slowDown){
                     drivePower = 0.3;
@@ -194,10 +172,7 @@ public class RoboController {
                     drivePower = movepad.right_trigger;
                 }
             }
-
-            //direction = Compass.South;
-        }
-        else if(movepad.left_stick_y > 0.2){
+        } else if(movepad.left_stick_y > 0.2){
             if(!driveMode){
                 if(slowDown) {
                     drivePower = -0.3;
@@ -205,8 +180,7 @@ public class RoboController {
                     drivePower = -movepad.left_stick_y;
                 }
             }
-        }
-        else if(movepad.left_stick_y < -0.2){
+        } else if(movepad.left_stick_y < -0.2){
             if(!driveMode){
                 if(slowDown) {
                     drivePower = 0.3;
@@ -214,8 +188,7 @@ public class RoboController {
                     drivePower = -movepad.left_stick_y;
                 }
             }
-        }
-        else{
+        } else{
             drivePower = 0;
             strafePower = 0;
         }
@@ -296,11 +269,9 @@ public class RoboController {
         }
     }
 
-    boolean a = true;
     boolean b = false;
     boolean c = false;
     boolean permaPower = false;
-    boolean rotate = false;
     boolean open2 = false;
 
     //Not Implemented
@@ -314,9 +285,13 @@ public class RoboController {
 //            ArmL.setPower(-0.1);
 //            ArmR.setPower(-0.1);
 //        }
+
+        ArmL.setDirection(DcMotorSimple.Direction.FORWARD);
+        ArmR.setDirection(DcMotorSimple.Direction.FORWARD);
+
         // moving the left joystick up or down will also move the arm up or down
          if(armpad.left_stick_y > 0.5 ){
-            ArmL.setPower(-.15);
+            ArmL.setPower(-1);
             ArmR.setPower(-1);
         }
         else if(armpad.left_stick_y < -0.5) {
@@ -324,7 +299,7 @@ public class RoboController {
 //                ArmL.setPower(0.3);
 //                ArmR.setPower(0.3);
 //            } else {
-                ArmL.setPower(0.95);
+                ArmL.setPower(1);
                 ArmR.setPower(1);
            // }
         }
@@ -332,21 +307,21 @@ public class RoboController {
         else{
             ArmL.setPower(0);
             ArmR.setPower(0);
+             //Extender.setPower(-1);
         }
 
         if(armpad.right_stick_y > 0.5){
-            Extender.setPower(-0.7);
+            System.out.println("THere");
+            Extender.setPower(-1);
         }
         else if(armpad.right_stick_y < -0.5){
-            Extender.setPower(0.7);
+            Extender.setPower(1);
+            System.out.println("THere1");
         }
         else{
             Extender.setPower(0);
+            System.out.println("THere2");
         }
-
-
-
-
 
         // depending on the direction the claw is set to, it will rotate in that
         // direction if it's set to rotate
@@ -383,13 +358,7 @@ public class RoboController {
         // (or at least i think this is how it functions)
         b = !(armpad.right_bumper);
 
-//        if(armpad.left_trigger != 0){
-//            Wrist.setPosition(0);
-//        }
-//            if(armpad.right_trigger != 0) {
-//            Wrist.setPosition(0.55);
-//        }
-
+        /*
             if(armpad.triangle){
                 ArmL.setTargetPosition(-150);
                 ArmR.setTargetPosition(-150);
@@ -402,6 +371,7 @@ public class RoboController {
                 ArmR.setPower(1);
                 ArmL.setPower(1);
             }
+         */
 
             // uses square to toggle drone launcher position
             if(c && armpad.square){
