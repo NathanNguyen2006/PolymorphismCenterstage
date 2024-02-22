@@ -310,13 +310,16 @@ public class RoboController {
         }
 
         if(armpad.right_stick_y > 0.5){
+            System.out.println("THere");
             Extender.setPower(-0.7);
         }
         else if(armpad.right_stick_y < -0.5){
             Extender.setPower(0.7);
+            System.out.println("THere1");
         }
         else{
             Extender.setPower(0);
+            System.out.println("THere2");
         }
 
         // depending on the direction the claw is set to, it will rotate in that
