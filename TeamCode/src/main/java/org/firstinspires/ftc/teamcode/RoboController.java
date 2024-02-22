@@ -307,14 +307,15 @@ public class RoboController {
         else{
             ArmL.setPower(0);
             ArmR.setPower(0);
+             //Extender.setPower(-1);
         }
 
         if(armpad.right_stick_y > 0.5){
             System.out.println("THere");
-            Extender.setPower(-0.7);
+            Extender.setPower(-1);
         }
         else if(armpad.right_stick_y < -0.5){
-            Extender.setPower(0.7);
+            Extender.setPower(1);
             System.out.println("THere1");
         }
         else{
