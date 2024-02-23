@@ -105,10 +105,10 @@ public class RoboController {
                 .addStep(1.0, 1.0, 500)  //  Rumble 100% for 500 mSec
                 .build();
 
-        FLW.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        FRW.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        BLW.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        BRW.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FLW.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        FRW.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        BLW.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        BRW.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // driveMode = true --> using left and right triggers for wheels (vibrate twice when switching to this)
         // driveMode = false --> using up and down left joystick for wheels (vibrate once when switching to this)
