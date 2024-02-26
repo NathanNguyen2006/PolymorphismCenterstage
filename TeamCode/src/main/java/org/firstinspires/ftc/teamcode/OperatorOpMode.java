@@ -57,7 +57,8 @@ public class OperatorOpMode extends LinearOpMode{
             telemetry.addData("Turn", roboController.turnPower);
             //telemetry.addData("Armbasepos", roboController.getThePosition());
             telemetry.addData("Ext", roboController.Extender.getCurrentPosition());
-            telemetry.addData("Wrist", roboController.Wrist.getPosition());
+            telemetry.addData("WristL", roboController.WristL.getPosition());
+            telemetry.addData("WristR", roboController.WristR.getPosition());
             telemetry.addData("ClawR (dir)", roboController.ClawR.getDirection());
             telemetry.addData("ClawL (dir)", roboController.ClawL.getDirection());
             telemetry.addData("ClawR (power)", roboController.ClawR.getPower());

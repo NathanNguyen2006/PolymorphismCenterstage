@@ -23,7 +23,8 @@ public class AutoModeNoStrafeBLUE extends LinearOpMode {
             // does NOT utilize strafing
 
             // raise the claw so that it stays up completely
-            roboController.Wrist.setPosition(0.53);
+            roboController.WristL.setPosition(0.47);
+            roboController.WristR.setPosition(0.53);
 
             // wait a little until the claw is flipped up
             sleep(1000);

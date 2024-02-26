@@ -61,7 +61,8 @@ public class hatredanddepressionblue extends LinearOpMode {
                 roboController.Spin(RoboController.inchesToCounts(19));
                 roboController.moveOnYAxis(RoboController.inchesToCounts(-8));
                 //roboController.Place(2500);
-                roboController.Wrist.setPosition(0.55);
+                roboController.WristL.setPosition(0.45);
+                roboController.WristR.setPosition(0.55);
                 //roboController.ClawR.setPosition(0);
                 //roboController.ClawL.setPosition(1);
                 sleep(5000);
