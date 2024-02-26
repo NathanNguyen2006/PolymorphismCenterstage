@@ -26,7 +26,8 @@ public class RoboController {
     public DcMotor ArmL;
     public DcMotor ArmR;
     public DcMotor Extender;
-    public Servo Wrist;
+    public Servo WristL;
+    public Servo WristR;
     public CRServo ClawR;
     public CRServo ClawL;
     public Servo Drone;
@@ -71,7 +72,8 @@ public class RoboController {
         Extender = hardwareMap.get(DcMotor.class,"Ext");
         ClawR = hardwareMap.get(CRServo.class, "ClawR");
         ClawL = hardwareMap.get(CRServo.class, "ClawL");
-        Wrist = hardwareMap.get(Servo.class, "Wrist");
+        WristL = hardwareMap.get(Servo.class, "WristL");
+        WristR = hardwareMap.get(Servo.class, "WristR");
        // Drone = hardwareMap.get(Servo.class, "Drone");
 
 
@@ -345,10 +347,12 @@ public class RoboController {
         if(b && (armpad.right_bumper)){
             open2 = !open2;
             if(!open2) {
-                Wrist.setPosition(0.05);
+                WristL.setPosition(0.95);
+                WristR.setPosition(0.05);
             }
             if(open2){
-                Wrist.setPosition(0.525);
+                WristL.setPosition(0.475);
+                WristR.setPosition(0.525);
             }
         }
         // used to set b to the opposite state of the right bumper (true/false or false/true)
@@ -605,12 +609,14 @@ public class RoboController {
     // complete !!!!
     public void autoMiddle(){
         // flip claw up
-        this.Wrist.setPosition(0.53);
+        this.WristL.setPosition(0.47);
+        this.WristR.setPosition(0.53);
         opMode.sleep(500);
         // move up to the beacon
         this.moveOnYAxis(this.inchesToCounts(26));
         // flip claw down
-        Wrist.setPosition(0.05);
+        WristL.setPosition(0.95);
+        WristR.setPosition(0.05);
         opMode.sleep(750);
         // rotate pixel out
         this.ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -623,7 +629,8 @@ public class RoboController {
         this.ClawR.setPower(0);
         this.ClawL.setPower(0);
         // flip claw back up
-        this.Wrist.setPosition(0.53);
+        this.WristL.setPosition(0.47);
+        this.WristR.setPosition(0.53);
         opMode.sleep(250);
         this.moveOnYAxis(RoboController.inchesToCounts(-26));
     }
@@ -634,14 +641,16 @@ public class RoboController {
     // right: 1
     public void autoAwayFromTruss(int position){
         // flip claw up
-        this.Wrist.setPosition(0.53);
+        this.WristL.setPosition(0.47);
+        this.WristR.setPosition(0.53);
         opMode.sleep(500);
         // move to panel next to it
         this.moveOnXAxis(this.inchesToCounts(13*position));
         // move to panel forward
         this.moveOnYAxis(this.inchesToCounts(12));
         // flip claw down
-        this.Wrist.setPosition(0.05);
+        WristL.setPosition(0.95);
+        WristR.setPosition(0.05);
         opMode.sleep(750);
         // rotate pixel out
         this.ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -654,7 +663,8 @@ public class RoboController {
         this.ClawR.setPower(0);
         this.ClawL.setPower(0);
         // flip claw back up
-        this.Wrist.setPosition(0.53);
+        this.WristL.setPosition(0.47);
+        this.WristR.setPosition(0.53);
         opMode.sleep(500);
         // move to panel backwards
         this.moveOnYAxis(this.inchesToCounts(-11));
@@ -669,14 +679,16 @@ public class RoboController {
     // right: 1
     public void autoCloseToTruss(int position){
         // flip claw up
-        this.Wrist.setPosition(0.53);
+        this.WristL.setPosition(0.47);
+        this.WristR.setPosition(0.53);
         opMode.sleep(500);
         // move up to panel in front
         this.moveOnYAxis(this.inchesToCounts(27));
         // spin 90 degrees
         this.Spin(this.inchesToCounts(18*position));
         // flip claw down
-        this.Wrist.setPosition(0.05);
+        WristL.setPosition(0.95);
+        WristR.setPosition(0.05);
         opMode.sleep(750);
         // rotate pixel out
         this.ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -689,7 +701,8 @@ public class RoboController {
         this.ClawR.setPower(0);
         this.ClawL.setPower(0);
         // flip claw back up
-        this.Wrist.setPosition(0.53);
+        this.WristL.setPosition(0.47);
+        this.WristR.setPosition(0.53);
         opMode.sleep(500);
         // spin back to face forward
         this.Spin(this.inchesToCounts(18*-position));
