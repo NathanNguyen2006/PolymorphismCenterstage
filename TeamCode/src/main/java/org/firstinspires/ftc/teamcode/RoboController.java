@@ -313,16 +313,13 @@ public class RoboController {
         }
 
         if(armpad.right_stick_y > 0.5){
-            System.out.println("THere");
             Extender.setPower(-1);
         }
         else if(armpad.right_stick_y < -0.5){
             Extender.setPower(1);
-            System.out.println("THere1");
         }
         else{
             Extender.setPower(0);
-            System.out.println("THere2");
         }
 
         // depending on the direction the claw is set to, it will rotate in that
@@ -355,6 +352,7 @@ public class RoboController {
                 WristR.setPosition(0.525);
             }
         }
+
         // used to set b to the opposite state of the right bumper (true/false or false/true)
         // so that pressing the right bumper won't flip the wrist forever. it will only flip
         // it once in the one instance where b and the right bumper are both true, before b
