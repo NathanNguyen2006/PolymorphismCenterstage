@@ -296,7 +296,7 @@ public class RoboController {
             ArmL.setPower(-1);
             ArmR.setPower(-1);
         }
-        else if(armpad.left_stick_y < -0.5) {
+        else if(armpad.left_stick_y < -0.5 && ArmR.getCurrentPosition() > -1300) {
 //            if (ArmR.getCurrentPosition() > 1100) {
 //                ArmL.setPower(0.3);
 //                ArmR.setPower(0.3);
