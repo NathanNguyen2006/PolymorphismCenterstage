@@ -292,24 +292,27 @@ public class RoboController {
         ArmR.setDirection(DcMotorSimple.Direction.FORWARD);
 
         // moving the left joystick up or down will also move the arm up or down
-         if(armpad.left_stick_y > 0.5 ){
+        if(ArmR.getCurrentPosition() < -1000)  {
+            ArmL.setPower(1);
+            ArmR.setPower(1);
+        }
+         else if(armpad.left_stick_y > 0.5 ){
             ArmL.setPower(-1);
             ArmR.setPower(-1);
         }
-        else if(armpad.left_stick_y < -0.5 && ArmR.getCurrentPosition() > -1300) {
+        else if(armpad.left_stick_y < -0.5 ) {
 //            if (ArmR.getCurrentPosition() > 1100) {
 //                ArmL.setPower(0.3);
 //                ArmR.setPower(0.3);
 //            } else {
-                ArmL.setPower(1);
-                ArmR.setPower(1);
+
            // }
         }
 
         else{
             ArmL.setPower(0);
             ArmR.setPower(0);
-             //Extender.setPower(-1);
+            //Extender.setPower(-1);
         }
 
         if(armpad.right_stick_y > 0.5){
