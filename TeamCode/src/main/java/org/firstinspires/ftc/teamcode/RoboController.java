@@ -341,6 +341,43 @@ public class RoboController {
         }
 
 
+        //thing
+        if(armpad.circle){
+            ArmL.setTargetPosition(-1096);
+            ArmR.setTargetPosition(-1112);
+            Extender.setTargetPosition(206);
+            ArmL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            ArmR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            Extender.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            if(ArmL.getCurrentPosition()> ArmL.getTargetPosition()) {
+                ArmL.setPower(1);
+            }
+            else  if(ArmL.getCurrentPosition()< ArmL.getTargetPosition()) {
+                ArmL.setPower(-1);
+            }
+            else{
+                ArmL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            }
+            if(ArmR.getCurrentPosition()> ArmR.getTargetPosition()) {
+                ArmR.setPower(1);
+            }
+            else if(ArmR.getCurrentPosition()< ArmR.getTargetPosition()) {
+                ArmR.setPower(-1);
+            }
+            else{
+                ArmR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            }
+            if(Extender.getCurrentPosition() > Extender.getTargetPosition()) {
+                Extender.setPower(1);
+            }
+            else if(Extender.getCurrentPosition()< Extender.getTargetPosition()) {
+                Extender.setPower(-1);
+            }
+            else{
+                Extender.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            }
+        }
+
         if(b && (armpad.right_bumper)){
             open2 = !open2;
             if(!open2) {
