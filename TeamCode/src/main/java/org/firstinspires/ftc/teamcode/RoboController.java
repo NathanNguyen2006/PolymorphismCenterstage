@@ -74,7 +74,7 @@ public class RoboController {
         ClawL = hardwareMap.get(CRServo.class, "ClawL");
         WristL = hardwareMap.get(Servo.class, "WristL");
         WristR = hardwareMap.get(Servo.class, "WristR");
-       // Drone = hardwareMap.get(Servo.class, "Drone");
+        Drone = hardwareMap.get(Servo.class, "Drone");
 
 
         //ArmL.setDirection(DcMotor.Direction.REVERSE);
@@ -417,11 +417,11 @@ public class RoboController {
 
             // uses square to toggle drone launcher position
             if(c && armpad.square){
-                //if(Drone.getPosition() > 0){
-                 //   Drone.setPosition(0);
-                //} else {
-               //     Drone.setPosition(0.7);
-               // }
+                if(Drone.getPosition() > 0){
+                    Drone.setPosition(0);
+                } else {
+                    Drone.setPosition(0.7);
+                }
             }
             c = !(armpad.square);
 
