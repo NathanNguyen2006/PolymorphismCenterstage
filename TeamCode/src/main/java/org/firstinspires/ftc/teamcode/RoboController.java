@@ -685,14 +685,14 @@ public class RoboController {
     // complete !!!!
     public void autoMiddle(){
         // flip claw up
-        this.WristL.setPosition(0.47);
-        this.WristR.setPosition(0.53);
+        this.WristL.setPosition(0.83);
+        this.WristR.setPosition(0.17);
         opMode.sleep(500);
         // move up to the beacon
         this.moveOnYAxis(this.inchesToCounts(26));
         // flip claw down
-        WristL.setPosition(0.95);
-        WristR.setPosition(0.05);
+        this.WristL.setPosition(0.3);
+        this.WristR.setPosition(0.7);
         opMode.sleep(750);
         // rotate pixel out
         this.ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -705,8 +705,8 @@ public class RoboController {
         this.ClawR.setPower(0);
         this.ClawL.setPower(0);
         // flip claw back up
-        this.WristL.setPosition(0.47);
-        this.WristR.setPosition(0.53);
+        this.WristL.setPosition(0.83);
+        this.WristR.setPosition(0.17);
         opMode.sleep(250);
         this.moveOnYAxis(RoboController.inchesToCounts(-26));
     }
@@ -717,16 +717,16 @@ public class RoboController {
     // right: 1
     public void autoAwayFromTruss(int position){
         // flip claw up
-        this.WristL.setPosition(0.47);
-        this.WristR.setPosition(0.53);
+        this.WristL.setPosition(0.83);
+        this.WristR.setPosition(0.17);
         opMode.sleep(500);
         // move to panel next to it
         this.moveOnXAxis(this.inchesToCounts(13*position));
         // move to panel forward
         this.moveOnYAxis(this.inchesToCounts(12));
         // flip claw down
-        WristL.setPosition(0.95);
-        WristR.setPosition(0.05);
+        this.WristL.setPosition(0.3);
+        this.WristR.setPosition(0.7);
         opMode.sleep(750);
         // rotate pixel out
         this.ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -739,8 +739,8 @@ public class RoboController {
         this.ClawR.setPower(0);
         this.ClawL.setPower(0);
         // flip claw back up
-        this.WristL.setPosition(0.47);
-        this.WristR.setPosition(0.53);
+        this.WristL.setPosition(0.83);
+        this.WristR.setPosition(0.17);
         opMode.sleep(500);
         // move to panel backwards
         this.moveOnYAxis(this.inchesToCounts(-11));

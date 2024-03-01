@@ -33,9 +33,11 @@ public class WebcamAutonomousRedFar extends LinearOpMode {
     // Define the labels recognized in the model for TFOD (must be in training order!)
     private static final String[] LABELS = {
             "blue beacon middle",
-            "blue beacon right",
+            "blue beacon left",
+            "right blue beacon",
             "red beacon middle",
-            "red beacon right"
+            "red beacon left",
+            "right red beacon"
     };
 
     /**
@@ -77,16 +79,16 @@ public class WebcamAutonomousRedFar extends LinearOpMode {
                 telemetry.update();
 
                 if(recognition == null){
-                    roboController.autoAwayFromTruss(-1);
-                    roboController.farToBoard(1);
+                    // move up to the middle of the adjacent panel
+                    roboController.autoCloseToTruss(1);
+                    roboController.farToBoardObstructed(-1);
                 } else if(recognition.getLabel().equals("red beacon middle")){
                     // move right to the middle of the adjacent panel
                     roboController.autoMiddle();
                     roboController.farToBoard(1);
-                } else if(recognition.getLabel().equals("red beacon right")) {
-                    // move up to the middle of the adjacent panel
-                    roboController.autoCloseToTruss(1);
-                    roboController.farToBoardObstructed(-1);
+                } else if(recognition.getLabel().equals("red beacon left")) {
+                    roboController.autoAwayFromTruss(-1);
+                    roboController.farToBoard(1);
                 }
 
                 

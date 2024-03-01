@@ -33,9 +33,11 @@ public class WebcamAutonomousRedClose extends LinearOpMode {
     // Define the labels recognized in the model for TFOD (must be in training order!)
     private static final String[] LABELS = {
             "blue beacon middle",
-            "blue beacon right",
+            "blue beacon left",
+            "right blue beacon",
             "red beacon middle",
-            "red beacon right"
+            "red beacon left",
+            "right red beacon"
     };
 
     /**
@@ -77,27 +79,27 @@ public class WebcamAutonomousRedClose extends LinearOpMode {
                 telemetry.update();
 
                  if(recognition == null){
-                     telemetry.addData("detected:", "left");
+                     // FIX THIS FOR THE FUTURE
+                     //for close to board method in this specific sensor auto
+                     //duplicate close to board method and reverse the values
+                     //then test
+
+                     telemetry.addData("detected:", "right");
                      telemetry.update();
-                    roboController.autoCloseToTruss(-1);
-                    roboController.closeToBoard(-1, 1);
+                     // move up to the middle of the adjacent panel
+                     roboController.autoAwayFromTruss(1);
+                     roboController.closeToBoard(-1, -1);
                  } else if(recognition.getLabel().equals("red beacon middle")){
                      telemetry.addData("detected:", recognition.getLabel());
                      telemetry.update();
                     // move right to the middle of the adjacent panel
                     roboController.autoMiddle();
                     roboController.closeToBoard(-1, 0);
-                 } else if(recognition.getLabel().equals("red beacon right")) {
-                     // FIX THIS FOR THE FUTURE
-                     //for close to board method in this specific sensor auto
-                     //duplicate close to board method and reverse the values
-                     //then test
-
+                 } else if(recognition.getLabel().equals("red beacon left")) {
                      telemetry.addData("detected:", recognition.getLabel());
                      telemetry.update();
-                     // move up to the middle of the adjacent panel
-                     roboController.autoAwayFromTruss(1);
-                     roboController.closeToBoard(-1, -1);
+                     roboController.autoCloseToTruss(-1);
+                     roboController.closeToBoard(-1, 1);
                  }
 
                 
