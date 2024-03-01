@@ -79,17 +79,19 @@ public class WebcamAutonomousBlueClose extends LinearOpMode {
                 telemetry.addData(">", "MOST RECENT");
                 telemetry.update();
 
-                roboController.speed = 1000;
+                double x = (recognition.getLeft() + recognition.getRight()) / 2 ;
+
+                roboController.presetAuto();
 
                 if(recognition == null){
                     // move up to the middle of the adjacent panel
                     roboController.autoCloseToTruss(1);
                     roboController.closeToBoard(1, -1);
-                } else if(recognition.getLabel().equals("blue beacon middle")){
+                } else if(x >= 200 || (x >= 200  && recognition.getLabel().equals("blue beacon middle"))){
                     // move right to the middle of the adjacent panel
                     roboController.autoMiddle();
                     roboController.closeToBoard(1, 0);
-                } else if(recognition.getLabel().equals("blue beacon left")) {
+                } else if(x >= 200 || (x >= 200  && recognition.getLabel().equals("blue beacon left"))){
                     roboController.autoAwayFromTruss(-1);
                     roboController.closeToBoard(1, 1);
                 }

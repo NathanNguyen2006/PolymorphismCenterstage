@@ -78,15 +78,19 @@ public class WebcamAutonomousRedFar extends LinearOpMode {
                 // Push telemetry to the Driver Station.
                 telemetry.update();
 
+                double x = (recognition.getLeft() + recognition.getRight()) / 2 ;
+
+                roboController.presetAuto();
+
                 if(recognition == null){
                     // move up to the middle of the adjacent panel
                     roboController.autoCloseToTruss(1);
                     roboController.farToBoardObstructed(-1);
-                } else if(recognition.getLabel().equals("red beacon middle")){
+                } else if(x >= 200 || (x >= 200  && recognition.getLabel().equals("red beacon middle"))){
                     // move right to the middle of the adjacent panel
                     roboController.autoMiddle();
                     roboController.farToBoard(1);
-                } else if(recognition.getLabel().equals("red beacon left")) {
+                } else if(x < 200 || (x < 200 && recognition.getLabel().equals("red beacon left"))){
                     roboController.autoAwayFromTruss(-1);
                     roboController.farToBoard(1);
                 }

@@ -293,7 +293,11 @@ public class RoboController {
         ArmR.setDirection(DcMotorSimple.Direction.FORWARD);
 
         // moving the left joystick up or down will also move the arm up or down
-        if(armpad.left_stick_y > 0.5 ){
+        if(ArmR.getCurrentPosition()<-1050){
+            ArmL.setPower(1);
+            ArmR.setPower(1);
+        }
+       else  if(armpad.left_stick_y > 0.5 ){
             ArmL.setPower(-1);
             ArmR.setPower(-1);
         }
@@ -383,6 +387,7 @@ public class RoboController {
             ArmL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             Extender.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
+
         if(armpad.share){
             ArmL.setTargetPosition(0);
             ArmR.setTargetPosition(0);
@@ -887,5 +892,18 @@ public class RoboController {
         this.Spin(this.inchesToCounts(18*isBlue));
         this.moveOnYAxis(this.inchesToCounts(36));
         this.Spin(this.inchesToCounts(18*isBlue));
+    }
+
+    public void presetAuto(){
+        this.Extender.setPower(-1);
+        opMode.sleep(1000);
+        while(ArmR.getCurrentPosition()>-1050){
+            this.ArmL.setPower(-0.45);
+            this.ArmR.setPower(-0.45);
+        }
+        this.ArmL.setPower(0);
+        this.ArmR.setPower(0);
+        this.WristL.setPosition(0.47);
+        this.WristR.setPosition(0.53);
     }
 }

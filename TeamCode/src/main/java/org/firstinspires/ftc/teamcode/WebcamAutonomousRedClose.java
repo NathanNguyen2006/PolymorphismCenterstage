@@ -78,6 +78,10 @@ public class WebcamAutonomousRedClose extends LinearOpMode {
                 // Push telemetry to the Driver Station.
                 telemetry.update();
 
+                double x = (recognition.getLeft() + recognition.getRight()) / 2 ;
+
+                roboController.presetAuto();
+
                  if(recognition == null){
                      // FIX THIS FOR THE FUTURE
                      //for close to board method in this specific sensor auto
@@ -89,13 +93,13 @@ public class WebcamAutonomousRedClose extends LinearOpMode {
                      // move up to the middle of the adjacent panel
                      roboController.autoAwayFromTruss(1);
                      roboController.closeToBoard(-1, -1);
-                 } else if(recognition.getLabel().equals("red beacon middle")){
+                 } else if(x >= 200 || (x >= 200  && recognition.getLabel().equals("red beacon middle"))){
                      telemetry.addData("detected:", recognition.getLabel());
                      telemetry.update();
                     // move right to the middle of the adjacent panel
                     roboController.autoMiddle();
                     roboController.closeToBoard(-1, 0);
-                 } else if(recognition.getLabel().equals("red beacon left")) {
+                 } else if(x < 200 || (x < 200 && recognition.getLabel().equals("red beacon left"))){
                      telemetry.addData("detected:", recognition.getLabel());
                      telemetry.update();
                      roboController.autoCloseToTruss(-1);
