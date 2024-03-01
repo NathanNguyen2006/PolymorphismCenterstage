@@ -877,6 +877,7 @@ public class RoboController {
         this.moveOnYAxis(this.inchesToCounts(24));
         this.Spin(this.inchesToCounts(-18*isBlue));
     }
+    //
 
     public void closeToBoardObstructed(int isBlue){ //not side
 
