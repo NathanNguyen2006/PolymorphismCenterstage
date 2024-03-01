@@ -58,13 +58,13 @@ public class RoboController {
 
 
         // Set direction of motors
-        FLW.setDirection(DcMotor.Direction.REVERSE);
+        FLW.setDirection(DcMotor.Direction.FORWARD);
         FRW.setDirection(DcMotor.Direction.FORWARD);
         BLW.setDirection(DcMotor.Direction.REVERSE);
         BRW.setDirection(DcMotor.Direction.FORWARD);
 
         // Distance Sensor
-       // distanceSensor = hardwareMap.get(DistanceSensor.class, "BackupSens");
+        // distanceSensor = hardwareMap.get(DistanceSensor.class, "BackupSens");
 
         //Arms
         ArmL = hardwareMap.get(DcMotor.class,"ArmL");
@@ -199,7 +199,7 @@ public class RoboController {
         //Direction
         if (movepad.dpad_up) direction = Compass.North; //drivePower = 0.5;
         else if (movepad.dpad_down) direction = Compass.South; //drivePower = -0.5;
-        //else{ drivePower = 0;}
+            //else{ drivePower = 0;}
 
         else if (movepad.dpad_right) direction = Compass.East; //strafePower = 0.9;
         else if (movepad.dpad_left) direction = Compass.West; //strafePower = -0.9;
@@ -275,6 +275,7 @@ public class RoboController {
     boolean c = false;
     boolean permaPower = false;
     boolean open2 = false;
+    boolean open123 = false;
 
     //Not Implemented
     // gamepad 2 (red) - movement of arm
@@ -292,11 +293,7 @@ public class RoboController {
         ArmR.setDirection(DcMotorSimple.Direction.FORWARD);
 
         // moving the left joystick up or down will also move the arm up or down
-        if(ArmR.getCurrentPosition() < -1000)  {
-            ArmL.setPower(1);
-            ArmR.setPower(1);
-        }
-         else if(armpad.left_stick_y > 0.5 ){
+        if(armpad.left_stick_y > 0.5 ){
             ArmL.setPower(-1);
             ArmR.setPower(-1);
         }
@@ -305,8 +302,9 @@ public class RoboController {
 //                ArmL.setPower(0.3);
 //                ArmR.setPower(0.3);
 //            } else {
-
-           // }
+            ArmL.setPower(1);
+            ArmR.setPower(1);
+            // }
         }
 
         else{
@@ -346,9 +344,9 @@ public class RoboController {
 
         //thing
         if(armpad.circle){
-            ArmL.setTargetPosition(-1096);
-            ArmR.setTargetPosition(-1112);
-            Extender.setTargetPosition(206);
+            ArmL.setTargetPosition(-963);
+            ArmR.setTargetPosition(-976);
+            Extender.setTargetPosition(1960);
             ArmL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             ArmR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             Extender.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -380,16 +378,55 @@ public class RoboController {
                 Extender.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             }
         }
-
+        else{
+            ArmR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            ArmL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            Extender.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
+        if(armpad.share){
+            ArmL.setTargetPosition(0);
+            ArmR.setTargetPosition(0);
+            Extender.setTargetPosition(0);
+            ArmL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            ArmR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            Extender.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            if(ArmL.getCurrentPosition()> ArmL.getTargetPosition()) {
+                ArmL.setPower(1);
+            }
+            else  if(ArmL.getCurrentPosition()< ArmL.getTargetPosition()) {
+                ArmL.setPower(-1);
+            }
+            else{
+                ArmL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            }
+            if(ArmR.getCurrentPosition()> ArmR.getTargetPosition()) {
+                ArmR.setPower(1);
+            }
+            else if(ArmR.getCurrentPosition()< ArmR.getTargetPosition()) {
+                ArmR.setPower(-1);
+            }
+            else{
+                ArmR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            }
+            if(Extender.getCurrentPosition() > Extender.getTargetPosition()) {
+                Extender.setPower(1);
+            }
+            else if(Extender.getCurrentPosition()< Extender.getTargetPosition()) {
+                Extender.setPower(-1);
+            }
+            else{
+                Extender.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            }
+        }
         if(b && (armpad.right_bumper)){
             open2 = !open2;
             if(!open2) {
-                WristL.setPosition(0.95);
-                WristR.setPosition(0.05);
+                WristL.setPosition(0.83);
+                WristR.setPosition(0.17);
             }
             if(open2){
-                WristL.setPosition(0.475);
-                WristR.setPosition(0.525);
+                WristL.setPosition(0.3);
+                WristR.setPosition(0.7);
             }
         }
 
@@ -415,15 +452,16 @@ public class RoboController {
             }
          */
 
-            // uses square to toggle drone launcher position
-            if(c && armpad.square){
-                if(Drone.getPosition() > 0){
-                    Drone.setPosition(0);
-                } else {
-                    Drone.setPosition(0.7);
-                }
+        // uses square to toggle drone launcher position
+        if(c && armpad.square){
+            open123 = !open123;
+            if(open123){
+                Drone.setPosition(1);
+            } else {
+                Drone.setPosition(0.725);
             }
-            c = !(armpad.square);
+        }
+        c = !(armpad.square);
 
             /*
             if(armpad.circle){
@@ -435,7 +473,7 @@ public class RoboController {
             }
              */
 
-            //double 1775 for board
+        //double 1775 for board
         //double 95 for floor
     }
 
@@ -526,9 +564,9 @@ public class RoboController {
 
     public void moveOnXAxis(int ticks) {
         DcMotorEx frontLeft = FLW,
-            frontRight = FRW,
-            rearLeft = BLW,
-            rearRight = BRW;
+                frontRight = FRW,
+                rearLeft = BLW,
+                rearRight = BRW;
 
         // Reset encoders
         frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -553,12 +591,12 @@ public class RoboController {
         rearRight.setVelocity(-speed);
 
         while (opMode.opModeIsActive() && frontLeft.isBusy()) {
-          // Loop until the motor reaches its target position.
-          opMode.telemetry.addData("Front Left Encoder", frontLeft.getCurrentPosition());
-          opMode.telemetry.addData("Front Right Encoder", frontRight.getCurrentPosition());
-          opMode.telemetry.addData("Rear Left Encoder", rearLeft.getCurrentPosition());
-          opMode.telemetry.addData("Rear Right Encoder", rearRight.getCurrentPosition());
-          opMode.telemetry.update();
+            // Loop until the motor reaches its target position.
+            opMode.telemetry.addData("Front Left Encoder", frontLeft.getCurrentPosition());
+            opMode.telemetry.addData("Front Right Encoder", frontRight.getCurrentPosition());
+            opMode.telemetry.addData("Rear Left Encoder", rearLeft.getCurrentPosition());
+            opMode.telemetry.addData("Rear Right Encoder", rearRight.getCurrentPosition());
+            opMode.telemetry.update();
         }
 
         opMode.sleep(250);
@@ -566,9 +604,9 @@ public class RoboController {
 
     public void moveOnYAxis(int ticks) {
         DcMotorEx frontLeft = FLW,
-            frontRight = FRW,
-            rearLeft = BLW,
-            rearRight = BRW;
+                frontRight = FRW,
+                rearLeft = BLW,
+                rearRight = BRW;
 
         // Reset encoders
         frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -593,12 +631,12 @@ public class RoboController {
         rearRight.setVelocity(speed);
 
         while (opMode.opModeIsActive() && frontLeft.isBusy()) {
-          // Loop until the motor reaches its target position.
-          opMode.telemetry.addData("Front Left Encoder", frontLeft.getCurrentPosition());
-          opMode.telemetry.addData("Front Right Encoder", frontRight.getCurrentPosition());
-          opMode.telemetry.addData("Rear Left Encoder", rearLeft.getCurrentPosition());
-          opMode.telemetry.addData("Rear Right Encoder", rearRight.getCurrentPosition());
-          opMode.telemetry.update();
+            // Loop until the motor reaches its target position.
+            opMode.telemetry.addData("Front Left Encoder", frontLeft.getCurrentPosition());
+            opMode.telemetry.addData("Front Right Encoder", frontRight.getCurrentPosition());
+            opMode.telemetry.addData("Rear Left Encoder", rearLeft.getCurrentPosition());
+            opMode.telemetry.addData("Rear Right Encoder", rearRight.getCurrentPosition());
+            opMode.telemetry.update();
         }
 
         opMode.sleep(250);
