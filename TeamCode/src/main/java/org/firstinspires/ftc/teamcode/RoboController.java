@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import java.lang.Math;
 
 public class RoboController {
-    public static int speed = 2000;
+    public static int speed = 1000;
 
     //Hardware
 
