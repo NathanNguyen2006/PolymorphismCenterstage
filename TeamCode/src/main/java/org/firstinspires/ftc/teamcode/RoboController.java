@@ -675,7 +675,7 @@ public class RoboController {
         rearLeft.setDirection(DcMotor.Direction.REVERSE);
         rearRight.setDirection(DcMotor.Direction.FORWARD);
 
-        frontLeft.setTargetPosition(ticks); //pos
+        frontLeft.setTargetPosition(-ticks); //pos
         rearLeft.setTargetPosition(-ticks); //neg
         frontRight.setTargetPosition(-ticks); //neg
         rearRight.setTargetPosition(ticks); //pos
