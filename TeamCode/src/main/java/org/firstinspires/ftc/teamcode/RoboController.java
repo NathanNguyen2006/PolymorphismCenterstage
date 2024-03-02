@@ -579,9 +579,14 @@ public class RoboController {
         rearLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rearRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        frontLeft.setDirection(DcMotor.Direction.FORWARD);
+        frontRight.setDirection(DcMotor.Direction.FORWARD);
+        rearLeft.setDirection(DcMotor.Direction.REVERSE);
+        rearRight.setDirection(DcMotor.Direction.FORWARD);
+
         frontLeft.setTargetPosition(ticks);
-        rearLeft.setTargetPosition(-ticks);
-        frontRight.setTargetPosition(-ticks);
+        rearLeft.setTargetPosition(ticks);
+        frontRight.setTargetPosition(ticks);
         rearRight.setTargetPosition(ticks);
 
         frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -589,11 +594,11 @@ public class RoboController {
         rearLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rearRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        frontLeft.setVelocity(-speed);
+        frontLeft.setVelocity(speed);
         rearLeft.setVelocity(speed);
 
         frontRight.setVelocity(speed);
-        rearRight.setVelocity(-speed);
+        rearRight.setVelocity(speed);
 
         while (opMode.opModeIsActive() && frontLeft.isBusy()) {
             // Loop until the motor reaches its target position.
@@ -618,6 +623,11 @@ public class RoboController {
         frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rearLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rearRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        frontLeft.setDirection(DcMotor.Direction.FORWARD);
+        frontRight.setDirection(DcMotor.Direction.FORWARD);
+        rearLeft.setDirection(DcMotor.Direction.REVERSE);
+        rearRight.setDirection(DcMotor.Direction.FORWARD);
 
         // Set position
         frontLeft.setTargetPosition(ticks);
@@ -658,6 +668,11 @@ public class RoboController {
         frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rearLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rearRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        frontLeft.setDirection(DcMotor.Direction.FORWARD);
+        frontRight.setDirection(DcMotor.Direction.FORWARD);
+        rearLeft.setDirection(DcMotor.Direction.REVERSE);
+        rearRight.setDirection(DcMotor.Direction.FORWARD);
 
         frontLeft.setTargetPosition(ticks); //pos
         rearLeft.setTargetPosition(ticks); //neg
@@ -759,12 +774,10 @@ public class RoboController {
     // left: -1
     // right: 1
     public void autoCloseToTruss(int position){
-        // flip claw up
-        this.WristL.setPosition(0.47);
-        this.WristR.setPosition(0.53);
         opMode.sleep(500);
         // move up to panel in front
         this.moveOnYAxis(this.inchesToCounts(27));
+        opMode.sleep(500);
         // spin 90 degrees
         this.Spin(this.inchesToCounts(18*position));
         // flip claw down
@@ -898,7 +911,7 @@ public class RoboController {
         this.Extender.setPower(1);
         opMode.sleep(500);
         this.Extender.setPower(0);
-        while(ArmR.getCurrentPosition()>-600){
+        while(ArmR.getCurrentPosition()>-500){
             this.ArmL.setPower(-0.45);
             this.ArmR.setPower(-0.45);
         }
