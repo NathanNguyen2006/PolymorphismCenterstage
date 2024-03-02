@@ -898,7 +898,7 @@ public class RoboController {
         this.Extender.setPower(1);
         opMode.sleep(500);
         this.Extender.setPower(0);
-        while(ArmR.getCurrentPosition()>-800){
+        while(ArmR.getCurrentPosition()>-600){
             this.ArmL.setPower(-0.45);
             this.ArmR.setPower(-0.45);
         }
