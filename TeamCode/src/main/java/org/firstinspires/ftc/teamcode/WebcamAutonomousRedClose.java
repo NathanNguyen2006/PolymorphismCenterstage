@@ -85,6 +85,7 @@ public class WebcamAutonomousRedClose extends LinearOpMode {
                 }
 
                 roboController.presetAuto();
+                roboController.driveFor();
 
                  if(recognition == null){
                      // FIX THIS FOR THE FUTURE

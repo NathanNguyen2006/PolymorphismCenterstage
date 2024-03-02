@@ -612,6 +612,7 @@ public class RoboController {
         opMode.sleep(250);
     }
 
+
     public void moveOnYAxis(int ticks) {
         DcMotorEx frontLeft = FLW,
                 frontRight = FRW,
@@ -627,7 +628,7 @@ public class RoboController {
         frontLeft.setDirection(DcMotor.Direction.FORWARD);
         frontRight.setDirection(DcMotor.Direction.FORWARD);
         rearLeft.setDirection(DcMotor.Direction.REVERSE);
-        rearRight.setDirection(DcMotor.Direction.FORWARD);
+        rearRight.setDirection(DcMotor.Direction.REVERSE);
 
         // Set position
         frontLeft.setTargetPosition(ticks);
@@ -675,9 +676,9 @@ public class RoboController {
         rearRight.setDirection(DcMotor.Direction.FORWARD);
 
         frontLeft.setTargetPosition(ticks); //pos
-        rearLeft.setTargetPosition(ticks); //neg
+        rearLeft.setTargetPosition(-ticks); //neg
         frontRight.setTargetPosition(-ticks); //neg
-        rearRight.setTargetPosition(-ticks); //pos
+        rearRight.setTargetPosition(ticks); //pos
 
         frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -919,5 +920,13 @@ public class RoboController {
         this.ArmR.setPower(0);
         this.WristL.setPosition(0.47);
         this.WristR.setPosition(0.53);
+    }
+
+    public void driveFor(){
+        opMode.sleep(5000);
+        this.moveOnYAxis(this.inchesToCounts(20));
+        opMode.sleep(5000);
+        this.Spin(this.inchesToCounts(18));
+        opMode.sleep(3000);
     }
 }
