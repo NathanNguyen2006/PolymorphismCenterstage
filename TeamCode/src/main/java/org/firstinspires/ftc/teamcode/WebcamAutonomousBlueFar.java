@@ -86,11 +86,11 @@ public class WebcamAutonomousBlueFar extends LinearOpMode {
                     // move up to the middle of the adjacent panel
                     roboController.autoAwayFromTruss(1);
                     roboController.farToBoard(1);
-                } else if(x >= 200 || (x >= 200  && recognition.getLabel().equals("blue beacon middle"))){
+                } else if(x >= 255 || (x >= 255  && recognition.getLabel().equals("blue beacon middle"))){
                     // move right to the middle of the adjacent panel
                     roboController.autoMiddle();
                     roboController.farToBoard(1);
-                } else if(x < 200 || (x < 200 && recognition.getLabel().equals("blue beacon left"))){
+                } else if(x < 255 || (x < 255 && recognition.getLabel().equals("blue beacon left"))){
                     roboController.autoCloseToTruss(-1);
                     roboController.farToBoardObstructed(1);
                 }

@@ -93,13 +93,13 @@ public class WebcamAutonomousRedClose extends LinearOpMode {
                      // move up to the middle of the adjacent panel
                      roboController.autoAwayFromTruss(1);
                      roboController.closeToBoard(-1, -1);
-                 } else if(x >= 200 || (x >= 200  && recognition.getLabel().equals("red beacon middle"))){
+                 } else if(x >= 255 || (x >= 255  && recognition.getLabel().equals("red beacon middle"))){
                      telemetry.addData("detected:", recognition.getLabel());
                      telemetry.update();
                     // move right to the middle of the adjacent panel
                     roboController.autoMiddle();
                     roboController.closeToBoard(-1, 0);
-                 } else if(x < 200 || (x < 200 && recognition.getLabel().equals("red beacon left"))){
+                 } else if(x < 255 || (x < 255 && recognition.getLabel().equals("red beacon left"))){
                      telemetry.addData("detected:", recognition.getLabel());
                      telemetry.update();
                      roboController.autoCloseToTruss(-1);
