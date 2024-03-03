@@ -21,11 +21,11 @@ public class Just_Forward extends LinearOpMode {
 
         if (opModeIsActive()) {
 
-            roboController.moveOnYAxis(RoboController.inchesToCounts(30));
+            roboController.moveOnYAxis(RoboController.inchesToCounts(24));
 
 
 
-            //roboController.moveOnXAxis(RoboController.inchesToCounts(30));
+            roboController.moveOnXAxis(RoboController.inchesToCounts(24));
 
 
 
