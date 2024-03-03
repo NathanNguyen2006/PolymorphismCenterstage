@@ -29,7 +29,19 @@ public class AutoModeParkRED extends LinearOpMode {
             sleep(1500);
 
             // move right to park
-            roboController.moveOnXAxis(RoboController.inchesToCounts(27));
+            roboController.FRW.setPower(-0.8);
+            roboController.FLW.setPower(0.8);
+            roboController.BRW.setPower(0.8);
+            roboController.BLW.setPower(-0.8);
+
+            // wait a little until the claw is flipped up
+            sleep(5000);
+
+            // stop
+            roboController.FRW.setPower(0);
+            roboController.FLW.setPower(0);
+            roboController.BRW.setPower(0);
+            roboController.BLW.setPower(0);
 
             // autonomous mode has now ended
             stop();

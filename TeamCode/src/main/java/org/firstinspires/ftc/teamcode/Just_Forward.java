@@ -23,11 +23,11 @@ public class Just_Forward extends LinearOpMode {
 
             roboController.moveOnYAxis(RoboController.inchesToCounts(30));
 
-            sleep(4000);
+
 
             //roboController.moveOnXAxis(RoboController.inchesToCounts(30));
 
-            sleep(4000);
+
 
            // roboController.Spin(RoboController.inchesToCounts(18));
 

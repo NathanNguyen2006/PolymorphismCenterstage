@@ -85,6 +85,18 @@ public class RoboController {
         ArmL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         ArmR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        FRW.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FLW.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BLW.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BRW.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        FRW.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FLW.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BLW.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BRW.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+
     }
 
     //arm stuff
@@ -458,7 +470,7 @@ public class RoboController {
          */
 
         // uses square to toggle drone launcher position
-        if(c && armpad.square){
+        if(!c && armpad.square){
             open123 = !open123;
             if(open123){
                 Drone.setPosition(1);
@@ -581,15 +593,14 @@ public class RoboController {
         rearLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rearRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        frontLeft.setDirection(DcMotor.Direction.FORWARD);
-        frontRight.setDirection(DcMotor.Direction.FORWARD);
-        rearLeft.setDirection(DcMotor.Direction.REVERSE);
-        rearRight.setDirection(DcMotor.Direction.FORWARD);
-
         frontLeft.setTargetPosition(ticks);
-        rearLeft.setTargetPosition(ticks);
-        frontRight.setTargetPosition(-ticks);
-        rearRight.setTargetPosition(ticks);
+        rearLeft.setTargetPosition(-ticks);
+        frontRight.setTargetPosition(ticks);
+        rearRight.setTargetPosition(-ticks);
+
+
+
+
 
         frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -597,9 +608,9 @@ public class RoboController {
         rearRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         frontLeft.setVelocity(speed);
-        rearLeft.setVelocity(speed);
+        rearLeft.setVelocity(-speed);
 
-        frontRight.setVelocity(speed);
+        frontRight.setVelocity(-speed);
         rearRight.setVelocity(speed);
 
         while (opMode.opModeIsActive() && frontLeft.isBusy()) {
@@ -628,11 +639,6 @@ public class RoboController {
         frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rearLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rearRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        frontLeft.setDirection(DcMotor.Direction.FORWARD);
-        frontRight.setDirection(DcMotor.Direction.FORWARD);
-        rearLeft.setDirection(DcMotor.Direction.REVERSE);
-        rearRight.setDirection(DcMotor.Direction.FORWARD);
 
         // Set position
         frontLeft.setTargetPosition(ticks);
@@ -674,15 +680,10 @@ public class RoboController {
         rearLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rearRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        frontLeft.setDirection(DcMotor.Direction.FORWARD);
-        frontRight.setDirection(DcMotor.Direction.FORWARD);
-        rearLeft.setDirection(DcMotor.Direction.REVERSE);
-        rearRight.setDirection(DcMotor.Direction.FORWARD);
-
         frontLeft.setTargetPosition(-ticks); //pos
         rearLeft.setTargetPosition(-ticks); //neg
         frontRight.setTargetPosition(-ticks); //neg
-        rearRight.setTargetPosition(ticks); //pos
+        rearRight.setTargetPosition(-ticks); //pos
 
         frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -690,10 +691,10 @@ public class RoboController {
         rearRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         frontLeft.setVelocity(-speed);
-        rearLeft.setVelocity(speed);
+        rearLeft.setVelocity(-speed);
 
         frontRight.setVelocity(speed);
-        rearRight.setVelocity(-speed);
+        rearRight.setVelocity(speed);
 
         while (opMode.opModeIsActive() && frontLeft.isBusy()) {
             // Loop until the motor reaches its target position.
@@ -872,6 +873,351 @@ public class RoboController {
         // autonomous mode has now ended
         opMode.stop();
     }
+
+    // without encoders vvvv
+
+    public void autoMiddle2(int isBlue){
+        // move to panel forward
+        this.FRW.setPower(0.5);
+        this.FLW.setPower(0.5);
+        this.BRW.setPower(0.5);
+        this.BLW.setPower(0.5);
+        opMode.sleep(1000);
+
+        // stop
+        this.FRW.setPower(0);
+        this.FLW.setPower(0);
+        this.BRW.setPower(0);
+        this.BLW.setPower(0);
+        opMode.sleep(500);
+
+        // flip claw down
+        WristL.setPosition(0.95);
+        WristR.setPosition(0.05);
+        opMode.sleep(500);
+        // rotate pixel out
+        this.ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.ClawR.setPower(0.75);
+        this.ClawL.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.ClawL.setPower(0.75);
+        // rotate for half a second
+        opMode.sleep(500);
+        // stop rotating claw
+        this.ClawR.setPower(0);
+        this.ClawL.setPower(0);
+        // flip claw back up
+        this.WristL.setPosition(0.47);
+        this.WristR.setPosition(0.53);
+        opMode.sleep(250);
+
+        // spin 90 degrees in a direction depending on which side we're on
+        this.FRW.setPower(-0.3 * isBlue);
+        this.FLW.setPower(0.3 * isBlue);
+        this.BRW.setPower(-0.3 * isBlue);
+        this.BLW.setPower(0.3 * isBlue);
+        opMode.sleep(1000);
+
+        // stop
+        this.FRW.setPower(0);
+        this.FLW.setPower(0);
+        this.BRW.setPower(0);
+        this.BLW.setPower(0);
+    }
+
+    public void autoAwayFromTruss2(int isBlue){
+        // move to panel forward
+        this.FRW.setPower(0.5);
+        this.FLW.setPower(0.5);
+        this.BRW.setPower(0.5);
+        this.BLW.setPower(0.5);
+        opMode.sleep(1000);
+
+        // stop
+        this.FRW.setPower(0);
+        this.FLW.setPower(0);
+        this.BRW.setPower(0);
+        this.BLW.setPower(0);
+        opMode.sleep(500);
+
+        //spin 90
+        this.FRW.setPower(-0.3 * isBlue);
+        this.FLW.setPower(0.3 * isBlue);
+        this.BRW.setPower(-0.3 * isBlue);
+        this.BLW.setPower(0.3 * isBlue);
+        opMode.sleep(1000);
+
+        // stop
+        this.FRW.setPower(0);
+        this.FLW.setPower(0);
+        this.BRW.setPower(0);
+        this.BLW.setPower(0);
+        opMode.sleep(500);
+
+        // flip claw down
+        WristL.setPosition(0.95);
+        WristR.setPosition(0.05);
+        opMode.sleep(500);
+        // rotate pixel out
+        this.ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.ClawR.setPower(0.75);
+        this.ClawL.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.ClawL.setPower(0.75);
+        // rotate for half a second
+        opMode.sleep(500);
+        // stop rotating claw
+        this.ClawR.setPower(0);
+        this.ClawL.setPower(0);
+        // flip claw back up
+        this.WristL.setPosition(0.47);
+        this.WristR.setPosition(0.53);
+        opMode.sleep(500);
+
+        // spin 90
+        this.FRW.setPower(-0.3 * -isBlue);
+        this.FLW.setPower(0.3 * -isBlue);
+        this.BRW.setPower(-0.3 * -isBlue);
+        this.BLW.setPower(0.3 * -isBlue);
+        opMode.sleep(1000);
+        // stop
+        this.FRW.setPower(0);
+        this.FLW.setPower(0);
+        this.BRW.setPower(0);
+        this.BLW.setPower(0);
+        opMode.sleep(500);
+
+        // move to panel forward
+        this.FRW.setPower(-0.5);
+        this.FLW.setPower(-0.5);
+        this.BRW.setPower(-0.5);
+        this.BLW.setPower(-0.5);
+        opMode.sleep(1000);
+
+        // stop
+        this.FRW.setPower(0);
+        this.FLW.setPower(0);
+        this.BRW.setPower(0);
+        this.BLW.setPower(0);
+        opMode.sleep(500);
+
+        // strafe (right)
+        this.FRW.setPower(-0.8 * isBlue);
+        this.FLW.setPower(0.8 * isBlue);
+        this.BRW.setPower(0.8 * isBlue);
+        this.BLW.setPower(-0.8 * isBlue);
+        opMode.sleep(1000);
+
+        // stop
+        this.FRW.setPower(0);
+        this.FLW.setPower(0);
+        this.BRW.setPower(0);
+        this.BLW.setPower(0);
+        opMode.sleep(500);
+
+        // move to panel forward
+        this.FRW.setPower(0.5);
+        this.FLW.setPower(0.5);
+        this.BRW.setPower(0.5);
+        this.BLW.setPower(0.5);
+        opMode.sleep(1000);
+
+        // stop
+        this.FRW.setPower(0);
+        this.FLW.setPower(0);
+        this.BRW.setPower(0);
+        this.BLW.setPower(0);
+        opMode.sleep(500);
+
+        // spin 90
+        this.FRW.setPower(-0.3 * -isBlue);
+        this.FLW.setPower(0.3 * -isBlue);
+        this.BRW.setPower(-0.3 * -isBlue);
+        this.BLW.setPower(0.3 * -isBlue);
+        opMode.sleep(1000);
+        // stop
+        this.FRW.setPower(0);
+        this.FLW.setPower(0);
+        this.BRW.setPower(0);
+        this.BLW.setPower(0);
+        opMode.sleep(500);
+    }
+
+    public void autoCloseToTruss2(int isBlue){
+        // move to panel forward
+        this.FRW.setPower(0.5);
+        this.FLW.setPower(0.5);
+        this.BRW.setPower(0.5);
+        this.BLW.setPower(0.5);
+        opMode.sleep(1000);
+
+        // stop
+        this.FRW.setPower(0);
+        this.FLW.setPower(0);
+        this.BRW.setPower(0);
+        this.BLW.setPower(0);
+        opMode.sleep(500);
+
+        // spin 90
+        this.FRW.setPower(-0.3 * -isBlue);
+        this.FLW.setPower(0.3 * -isBlue);
+        this.BRW.setPower(-0.3 * -isBlue);
+        this.BLW.setPower(0.3 * -isBlue);
+        opMode.sleep(1000);
+        // stop
+        this.FRW.setPower(0);
+        this.FLW.setPower(0);
+        this.BRW.setPower(0);
+        this.BLW.setPower(0);
+        opMode.sleep(500);
+
+        // flip claw down
+        WristL.setPosition(0.95);
+        WristR.setPosition(0.05);
+        opMode.sleep(500);
+        // rotate pixel out
+        this.ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.ClawR.setPower(0.75);
+        this.ClawL.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.ClawL.setPower(0.75);
+        // rotate for half a second
+        opMode.sleep(500);
+        // stop rotating claw
+        this.ClawR.setPower(0);
+        this.ClawL.setPower(0);
+        // flip claw back up
+        this.WristL.setPosition(0.47);
+        this.WristR.setPosition(0.53);
+    }
+
+    public void scoreBackboard2(int backPosition, int isBlue){
+        opMode.sleep(400);
+        // move to panel forward
+        this.FRW.setPower(-0.5);
+        this.FLW.setPower(-0.5);
+        this.BRW.setPower(-0.5);
+        this.BLW.setPower(-0.5);
+        opMode.sleep(3000);
+
+        // stop
+        this.FRW.setPower(0);
+        this.FLW.setPower(0);
+        this.BRW.setPower(0);
+        this.BLW.setPower(0);
+        opMode.sleep(500);
+
+        // reposition on board
+        // strafe (right)
+        this.FRW.setPower(-0.8 * backPosition);
+        this.FLW.setPower(0.8 * backPosition);
+        this.BRW.setPower(0.8 * backPosition);
+        this.BLW.setPower(-0.8 * backPosition);
+        opMode.sleep(250);
+
+        // stop
+        this.FRW.setPower(0);
+        this.FLW.setPower(0);
+        this.BRW.setPower(0);
+        this.BLW.setPower(0);
+        opMode.sleep(500);
+
+        // move the arm back until it reaches a position that's right against the backboard (2050)
+        while(this.ArmR.getCurrentPosition() < 2050) {
+            this.ArmL.setPower(0.45);
+            this.ArmR.setPower(0.45);
+        }
+
+        // once the arm is against the backboard, stop moving it back
+        this.ArmL.setPower(0);
+        this.ArmR.setPower(0);
+
+        // push pixels out
+        this.ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.ClawR.setPower(0.75);
+        this.ClawL.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.ClawL.setPower(0.75);
+
+        // wait one second in case the pixels haven't been completely scored yet
+        opMode.sleep(1000);
+
+        // stop rotating claw
+        this.ClawR.setPower(0);
+        this.ClawL.setPower(0);
+
+        // move the arm forward until it reaches a position that's about where the floor is (10)
+        while(this.ArmR.getCurrentPosition() > 10) {
+            this .ArmL.setPower(-0.45);
+            this.ArmR.setPower(-0.45);
+        }
+
+        // once the arm is against the floor, stop moving it forward
+        this.ArmL.setPower(0);
+        this.ArmR.setPower(0);
+
+        // move forward so that the bot isn't right against the backboard
+        this.FRW.setPower(0.5);
+        this.FLW.setPower(0.5);
+        this.BRW.setPower(0.5);
+        this.BLW.setPower(0.5);
+        opMode.sleep(200);
+
+        // stop
+        this.FRW.setPower(0);
+        this.FLW.setPower(0);
+        this.BRW.setPower(0);
+        this.BLW.setPower(0);
+        opMode.sleep(500);
+
+        // move right to the middle of the adjacent panel
+        // strafe (right)
+        this.FRW.setPower(-0.8 * isBlue);
+        this.FLW.setPower(0.8 * isBlue);
+        this.BRW.setPower(0.8 * isBlue);
+        this.BLW.setPower(-0.8 * isBlue);
+        opMode.sleep(1500);
+
+        // stop
+        this.FRW.setPower(0);
+        this.FLW.setPower(0);
+        this.BRW.setPower(0);
+        this.BLW.setPower(0);
+        opMode.sleep(500);
+
+        // move back to the middle of the adjacent panel (to park in the backstage area)
+        this.FRW.setPower(0.5);
+        this.FLW.setPower(0.5);
+        this.BRW.setPower(0.5);
+        this.BLW.setPower(0.5);
+        opMode.sleep(3000);
+
+        // stop
+        this.FRW.setPower(0);
+        this.FLW.setPower(0);
+        this.BRW.setPower(0);
+        this.BLW.setPower(0);
+        opMode.sleep(500);
+
+        // autonomous mode has now ended
+        opMode.stop();
+    }
+
+    public void presetAuto2(){
+        // extend arm out for half a second
+        this.Extender.setPower(1);
+        opMode.sleep(500);
+        this.Extender.setPower(0);
+
+        // move arm down to the ground
+        while(ArmR.getCurrentPosition()>-550) {
+            this.ArmL.setPower(-0.45);
+            this.ArmR.setPower(-0.45);
+        }
+        this.ArmL.setPower(0);
+        this.ArmR.setPower(0);
+
+        // rotate wrist up
+        this.WristL.setPosition(0.47);
+        this.WristR.setPosition(0.53);
+    }
+
 
     // not used much vvvv
     public void farToBoard(int isBlue){ //not middle
