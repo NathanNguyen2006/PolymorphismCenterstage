@@ -568,6 +568,8 @@ public class RoboController {
     }
 
     public void moveOnXAxis(int ticks) {
+        opMode.telemetry.addData("x", "");
+        opMode.telemetry.update();
         DcMotorEx frontLeft = FLW,
                 frontRight = FRW,
                 rearLeft = BLW,
@@ -586,7 +588,7 @@ public class RoboController {
 
         frontLeft.setTargetPosition(ticks);
         rearLeft.setTargetPosition(ticks);
-        frontRight.setTargetPosition(ticks);
+        frontRight.setTargetPosition(-ticks);
         rearRight.setTargetPosition(ticks);
 
         frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -613,7 +615,9 @@ public class RoboController {
     }
 
 
-    public void moveOnYAxis(int ticks) {
+    public void moveOnYAxis(int ticks){
+        opMode.telemetry.addData("y", "");
+        opMode.telemetry.update();
         DcMotorEx frontLeft = FLW,
                 frontRight = FRW,
                 rearLeft = BLW,
@@ -628,7 +632,7 @@ public class RoboController {
         frontLeft.setDirection(DcMotor.Direction.FORWARD);
         frontRight.setDirection(DcMotor.Direction.FORWARD);
         rearLeft.setDirection(DcMotor.Direction.REVERSE);
-        rearRight.setDirection(DcMotor.Direction.REVERSE);
+        rearRight.setDirection(DcMotor.Direction.FORWARD);
 
         // Set position
         frontLeft.setTargetPosition(ticks);
@@ -703,18 +707,37 @@ public class RoboController {
         opMode.sleep(250);
     }
 
-    // complete !!!!
-    public void autoMiddle(){
-        // flip claw up
+    // ***vvv auto modes!!! vvv***
+
+    public void presetAuto(){
+        // extend arm out for half a second
+        this.Extender.setPower(1);
+        opMode.sleep(500);
+        this.Extender.setPower(0);
+
+        // move arm down to the ground
+        while(ArmR.getCurrentPosition()>-550) {
+            this.ArmL.setPower(-0.45);
+            this.ArmR.setPower(-0.45);
+        }
+        this.ArmL.setPower(0);
+        this.ArmR.setPower(0);
+
+        // rotate wrist up
         this.WristL.setPosition(0.47);
         this.WristR.setPosition(0.53);
-        opMode.sleep(500);
-        // move up to the beacon
+
+        // move to panel forward
         this.moveOnYAxis(this.inchesToCounts(26));
+        opMode.sleep(500);
+    }
+
+    // complete !!!!
+    public void autoMiddle(int isBlue){
         // flip claw down
         WristL.setPosition(0.95);
         WristR.setPosition(0.05);
-        opMode.sleep(750);
+        opMode.sleep(500);
         // rotate pixel out
         this.ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
         this.ClawR.setPower(0.75);
@@ -729,26 +752,21 @@ public class RoboController {
         this.WristL.setPosition(0.47);
         this.WristR.setPosition(0.53);
         opMode.sleep(250);
-        this.moveOnYAxis(RoboController.inchesToCounts(-26));
+        // spin 90 degrees in a direction depending on which side we're on
+        this.Spin(RoboController.inchesToCounts(18*isBlue));
     }
 
     // backPositions:
     // middle: 0
     // left: -1
     // right: 1
-    public void autoAwayFromTruss(int position){
-        // flip claw up
-        this.WristL.setPosition(0.47);
-        this.WristR.setPosition(0.53);
-        opMode.sleep(500);
-        // move to panel next to it
-        this.moveOnXAxis(this.inchesToCounts(13*position));
-        // move to panel forward
-        this.moveOnYAxis(this.inchesToCounts(12));
+    public void autoAwayFromTruss(int isBlue){
+        // spin 90 degrees in a direction depending on which side we're on
+        this.Spin(this.inchesToCounts(18*isBlue));
         // flip claw down
         WristL.setPosition(0.95);
         WristR.setPosition(0.05);
-        opMode.sleep(750);
+        opMode.sleep(500);
         // rotate pixel out
         this.ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
         this.ClawR.setPower(0.75);
@@ -763,10 +781,16 @@ public class RoboController {
         this.WristL.setPosition(0.47);
         this.WristR.setPosition(0.53);
         opMode.sleep(500);
+        // spin 90 degrees in a direction depending on which side we're on
+        this.Spin(this.inchesToCounts(18*-isBlue));
         // move to panel backwards
-        this.moveOnYAxis(this.inchesToCounts(-11));
+        this.moveOnYAxis(this.inchesToCounts(-24));
         // move to panel next to it
-        this.moveOnXAxis(this.inchesToCounts(13*-position));
+        this.moveOnXAxis(this.inchesToCounts(18*isBlue));
+        // move to panel forwards
+        this.moveOnYAxis(this.inchesToCounts(26));
+        // spin 90 degrees in a direction depending on which side we're on
+        this.Spin(this.inchesToCounts(18*-isBlue));
     }
 
     // complete !!!!
@@ -774,17 +798,13 @@ public class RoboController {
     // middle: 0
     // left: -1
     // right: 1
-    public void autoCloseToTruss(int position){
-        opMode.sleep(500);
-        // move up to panel in front
-        this.moveOnYAxis(this.inchesToCounts(27));
-        opMode.sleep(500);
-        // spin 90 degrees
-        this.Spin(this.inchesToCounts(18*position));
+    public void autoCloseToTruss(int isBlue){
+        // spin 90 degrees in a direction depending on which side we're on
+        this.Spin(this.inchesToCounts(18*isBlue));
         // flip claw down
         WristL.setPosition(0.95);
         WristR.setPosition(0.05);
-        opMode.sleep(750);
+        opMode.sleep(500);
         // rotate pixel out
         this.ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
         this.ClawR.setPower(0.75);
@@ -798,14 +818,62 @@ public class RoboController {
         // flip claw back up
         this.WristL.setPosition(0.47);
         this.WristR.setPosition(0.53);
-        opMode.sleep(500);
-        // spin back to face forward
-        this.Spin(this.inchesToCounts(18*-position));
-        // move forward to the middle of the panel
-        this.moveOnXAxis(this.inchesToCounts(1*position));
-        this.moveOnYAxis(RoboController.inchesToCounts(-27));
     }
 
+    public void scoreBackboard(int backPosition, int isBlue){
+        opMode.sleep(400);
+        // move back to the backboard
+        this.moveOnYAxis(RoboController.inchesToCounts(-45));
+        // reposition on board
+        this.moveOnXAxis(RoboController.inchesToCounts(8*backPosition));
+
+        // move the arm back until it reaches a position that's right against the backboard (2050)
+        while(this.ArmR.getCurrentPosition() < 2050) {
+            this.ArmL.setPower(0.45);
+            this.ArmR.setPower(0.45);
+        }
+
+        // once the arm is against the backboard, stop moving it back
+        this.ArmL.setPower(0);
+        this.ArmR.setPower(0);
+
+        // push pixels out
+        this.ClawR.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.ClawR.setPower(0.75);
+        this.ClawL.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.ClawL.setPower(0.75);
+
+        // wait one second in case the pixels haven't been completely scored yet
+        opMode.sleep(1000);
+
+        // stop rotating claw
+        this.ClawR.setPower(0);
+        this.ClawL.setPower(0);
+
+        // move the arm forward until it reaches a position that's about where the floor is (10)
+        while(this.ArmR.getCurrentPosition() > 10) {
+            this .ArmL.setPower(-0.45);
+            this.ArmR.setPower(-0.45);
+        }
+
+        // once the arm is against the floor, stop moving it forward
+        this.ArmL.setPower(0);
+        this.ArmR.setPower(0);
+
+        // move forward so that the bot isn't right against the backboard
+        this.moveOnYAxis(RoboController.inchesToCounts(3));
+
+        // move right to the middle of the adjacent panel
+        this.moveOnXAxis(RoboController.inchesToCounts(27*isBlue));
+
+        // move back to the middle of the adjacent panel (to park in the backstage area)
+        this.moveOnYAxis(RoboController.inchesToCounts(-13));
+
+        // autonomous mode has now ended
+        opMode.stop();
+    }
+
+    // not used much vvvv
     public void farToBoard(int isBlue){ //not middle
         this.moveOnYAxis(this.inchesToCounts(36));
         this.Spin(this.inchesToCounts(-18*isBlue));
@@ -906,20 +974,6 @@ public class RoboController {
         this.Spin(this.inchesToCounts(18*isBlue));
         this.moveOnYAxis(this.inchesToCounts(36));
         this.Spin(this.inchesToCounts(18*isBlue));
-    }
-
-    public void presetAuto(){
-        this.Extender.setPower(1);
-        opMode.sleep(500);
-        this.Extender.setPower(0);
-        while(ArmR.getCurrentPosition()>-500){
-            this.ArmL.setPower(-0.45);
-            this.ArmR.setPower(-0.45);
-        }
-        this.ArmL.setPower(0);
-        this.ArmR.setPower(0);
-        this.WristL.setPosition(0.47);
-        this.WristR.setPosition(0.53);
     }
 
     public void driveFor(){

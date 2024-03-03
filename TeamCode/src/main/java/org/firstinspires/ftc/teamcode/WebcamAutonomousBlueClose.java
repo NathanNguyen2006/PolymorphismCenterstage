@@ -18,7 +18,7 @@ import java.util.List;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
-@Autonomous(name = "BlueClose TensorFlow Object Detection Test", group = "Concept")
+@Autonomous(name = ">BlueClose TensorFlow Object Detection Test", group = "Concept")
 
 public class WebcamAutonomousBlueClose extends LinearOpMode {
     private RoboController roboController;
@@ -88,16 +88,14 @@ public class WebcamAutonomousBlueClose extends LinearOpMode {
                 roboController.presetAuto();
 
                 if(recognition == null){
-                    // move up to the middle of the adjacent panel
                     roboController.autoCloseToTruss(1);
-                    roboController.closeToBoard(1, -1);
+                    roboController.scoreBackboard(-1,1);
                 } else if(x >= 255 || (x >= 255  && recognition.getLabel().equals("blue beacon middle"))){
-                    // move right to the middle of the adjacent panel
-                    roboController.autoMiddle();
-                    roboController.closeToBoard(1, 0);
+                    roboController.autoMiddle(1);
+                    roboController.scoreBackboard(0,1);
                 } else if((x < 255 && x > 0) || ((x < 255 && x > 0)  && recognition.getLabel().equals("blue beacon left"))){
                     roboController.autoAwayFromTruss(-1);
-                    roboController.closeToBoard(1, 1);
+                    roboController.scoreBackboard(1,1);
                 }
 
                 

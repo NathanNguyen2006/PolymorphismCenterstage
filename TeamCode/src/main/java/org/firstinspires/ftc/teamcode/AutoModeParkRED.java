@@ -2,12 +2,11 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-@Autonomous(name = "TEST: Just_Forward", group = "Concept")
+@Autonomous(name = "Autonomous Mode Parking RED", group = "Concept")
 
-public class Just_Forward extends LinearOpMode {
+public class AutoModeParkRED extends LinearOpMode {
     private RoboController roboController;
 
     @Override
@@ -20,16 +19,17 @@ public class Just_Forward extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
+            // autonomous scoring for the red side (towards the backboard)
 
-            roboController.moveOnYAxis(RoboController.inchesToCounts(30));
+            // raise the claw so that it stays up completely
+            roboController.WristL.setPosition(0.47);
+            roboController.WristR.setPosition(0.53);
 
-            sleep(4000);
+            // wait a little until the claw is flipped up
+            sleep(1500);
 
-            //roboController.moveOnXAxis(RoboController.inchesToCounts(30));
-
-            sleep(4000);
-
-           // roboController.Spin(RoboController.inchesToCounts(18));
+            // move right to park
+            roboController.moveOnXAxis(RoboController.inchesToCounts(27));
 
             // autonomous mode has now ended
             stop();
