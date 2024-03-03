@@ -23,7 +23,7 @@ public class Just_Forward extends LinearOpMode {
             roboController.FLW.setDirection(DcMotor.Direction.FORWARD);
             roboController.FRW.setDirection(DcMotor.Direction.FORWARD);
             roboController.BLW.setDirection(DcMotor.Direction.REVERSE);
-            roboController.BRW.setDirection(DcMotor.Direction.FORWARD);
+            roboController.BRW.setDirection(DcMotor.Direction.REVERSE);
 
             roboController.moveOnYAxis(RoboController.inchesToCounts(30));
 
